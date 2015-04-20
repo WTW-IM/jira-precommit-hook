@@ -6,6 +6,7 @@
   "scripts": {
     "build": "rm -rf lib && babel src --out-dir lib",
     "lint": "eslint ./",
+    "prepublish": "npm run test && npm run build",
     "test": "mocha && npm run lint"
   },
   "keywords": [
