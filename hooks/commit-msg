@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-//var echoer = require(''); // the file that is being made by Curtis and Matthew
 var fs = require('fs');
+var {precommit} = require('../src/precommit-entry.js');
 
 var commitMsg = fs.readFileSync(process.argv[2]).toString();
-//echoer(commitMsg);
+precommit(commitMsg);
