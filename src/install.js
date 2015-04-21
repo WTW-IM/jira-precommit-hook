@@ -10,7 +10,9 @@ while(fs.existsSync(currentPath)) {
 		break;
 	}
 	else
+	{
 		currentPath = path.normalize(currentPath + '/..');
+	}
 }
 
 fs.createReadStream('hooks/commit-msg').pipe(fs.createWriteStream(currentPath + 'commit-msg'));
