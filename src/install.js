@@ -3,16 +3,34 @@ import path from 'path';
 
 let currentPath = process.env.pwd;
 
-while(fs.existsSync(currentPath)) {
-	if(fs.existsSync(currentPath + '/.git'))
-	{
-		currentPath = currentPath + '/.git/hooks/';
-		break;
-	}
-	else
-	{
-		currentPath = path.normalize(currentPath + '/..');
-	}
+try{
+	copyHookFiles(findGitFolder(currentPath));
+} catch(error) {
+	console.log(error.message);
 }
 
-fs.createReadStream('hooks/commit-msg').pipe(fs.createWriteStream(currentPath + 'commit-msg'));
+export function findGitFolder(startDirectory) {
+	let gitPath = startDirectory;
+
+	while(fs.existsSync(gitPath)) {
+		if(fs.existsSync(gitPath + '/.git')) {
+			gitPath = gitPath + '/.git';
+			break;
+		}
+		else {
+			let tempPath = gitPath;
+			gitPath = path.normalize(gitPath + '/..');
+
+			if(gitPath === tempPath) {
+				throw new Error('Cannot find Git Folder!!');
+			}
+		}
+	}
+
+	return gitPath;
+}
+
+export function copyHookFiles(destination) {
+	fs.createReadStream(path.resolve(path.join(__dirname, '../hooks/commit-msg')))
+	.pipe(fs.createWriteStream(destination + '/hooks/commit-msg'));
+}
