@@ -1,3 +1,7 @@
 #!/usr/bin/env node
 
-require('../lib/install.js');
+var path = require('path');
+
+if(!path.resolve(path.join(__dirname, '../'))){
+	require('../lib/install.js');
+}
