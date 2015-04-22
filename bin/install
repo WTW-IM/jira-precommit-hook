@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
 var path = require('path');
-if(path.resolve(path.join(__dirname, '../')) !== process.pwd){
+if(path.resolve(path.join(__dirname, '../')) !== process.cwd()){
 	require('../lib/install.js');
 }
