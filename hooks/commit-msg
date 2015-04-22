@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
-var precommit = require('../src/precommit-entry.js').precommit;
+var precommit = require('../src/precommit-entry.js');
 precommit(process.argv[2]);
