@@ -1,7 +1,4 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
-var {precommit} = require('../src/precommit-entry.js');
-
-var commitMsg = fs.readFileSync(process.argv[2]).toString();
-precommit(commitMsg);
+var precommit = require('../src/precommit-entry.js').precommit;
+precommit(process.argv[2]);
