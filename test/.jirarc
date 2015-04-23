@@ -1,0 +1,9 @@
+{
+	"projectName": "test",
+	"protocol":"https",
+	"host":"jira.com",
+	"port": 8080,
+	"version": "2.1.0",
+	"verbose": true,
+	"strictSSL": true
+}

@@ -1,4 +1,4 @@
-import {findParentFolder, copyHookFiles} from '../src/fs-utils.js';
+import {findParentFolder, getFilePath, copyHookFiles} from '../src/fs-utils.js';
 import path from 'path';
 import fs from 'fs';
 import fsp from 'fs-promise';
@@ -50,5 +50,17 @@ describe('Hook installation', () => {
       newFile.should.eql(oldFile);
       done();
     });
+  });
+});
+
+describe('Finding .gitignore', () => {
+  it('.gitignore is found from test', () => {
+    let gitPath = getFilePath(__dirname, '.gitignore');
+    gitPath.should.equal(path.join(__dirname, '../.gitignore'));
+  });
+
+  it('error is thrown if no .gitignore file exists', () => {
+    let fn = () => { getFilePath(path.join(__dirname, '../../')); };
+    expect(fn).to.throw(Error);
   });
 });
