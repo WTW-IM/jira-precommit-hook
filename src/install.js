@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {findParentFolder} from '../lib/fs-utils.js';
+import {findParentFolder} from '../src/fs-utils.js';
 
  let currentPath = process.env.pwd;
 

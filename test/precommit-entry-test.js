@@ -23,6 +23,6 @@ describe('Story test', () => {
 	it('Story does not exist');
 });
 
-describe('Initive test', () => {
-	it('Find parent initive');
+describe('Initiative test', () => {
+	it('Find parent initiative');
 });
