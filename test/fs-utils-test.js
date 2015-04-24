@@ -7,6 +7,7 @@ describe('Finding .git folder', () => {
 
 		gitPath.should.equal(path.join(__dirname, '../.git'));
 	});
+
 	it('error is thrown if no .git folder exists', () => {
 		let fn = () => { findParentFolder(path.join(__dirname, '../../')); };
 		expect(fn).to.throw(Error);
