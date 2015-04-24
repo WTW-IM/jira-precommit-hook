@@ -11,6 +11,6 @@ try{
 }
 
 export function copyHookFiles(gitDirectory) {
-	fs.createReadStream(path.resolve(path.join(__dirname, '../hooks/commit-msg')))
+	return fs.createReadStream(path.resolve(path.join(__dirname, '../hooks/commit-msg')))
 	.pipe(fs.createWriteStream(path.join(gitDirectory, '/hooks/commit-msg')));
 }
