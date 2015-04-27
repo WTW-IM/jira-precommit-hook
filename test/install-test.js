@@ -1,19 +1,28 @@
 import {copyHookFiles} from '../src/install.js';
 import path from 'path';
 import fs from 'fs';
+import fsp from 'fs-promise';
 
 describe('Hook installation', () => {
-	beforeEach(() => {
-		if(!fs.existsSync('test/tmp')) {
-			fs.mkdirSync('test/tmp');
-			fs.mkdirSync('test/tmp/.git');
-			fs.mkdirSync('test/tmp/.git/hooks');
-		}
+	before(() => fsp.exists('test/tmp')
+    .then(exists => {
+      if(!exists) {
+        fsp.mkdir('test/tmp')
+        .then(() => {
+          fsp.mkdir('test/tmp/.git')
+          .then(() => {
+            return fsp.mkdir('test/tmp/.git/hooks');
+          });
+        });
+      }
+    }));
 
-		if(fs.existsSync('test/tmp/.git/hooks/commit-msg')) {
-			fs.unlinkSync('test/tmp/.git/hooks/commit-msg');
-		}
-	});
+  beforeEach(() => fsp.exists('test/tmp/.git/hooks/commit-msg')
+    .then(exists => {
+      if(exists) {
+        return fsp.unlink('test/tmp/.git/hooks/commit-msg');
+      }
+  }));
 
 	it('Validate hook file is added', () => {
 		let stream = copyHookFiles(path.join(__dirname, '/tmp/.git'));
