@@ -8,14 +8,11 @@ describe('Hook installation', () => {
     .then(exists => {
       if(!exists) {
         fsp.mkdir('test/tmp')
-        .then(() => {
-          fsp.mkdir('test/tmp/.git')
-          .then(() => {
-            return fsp.mkdir('test/tmp/.git/hooks');
-          });
-        });
+        .then(() => fsp.mkdir('test/tmp/.git'))
+        .then(() => fsp.mkdir('test/tmp/.git/hooks'));
+        }
       }
-    }));
+    ));
 
   beforeEach(() => fsp.exists('test/tmp/.git/hooks/commit-msg')
     .then(exists => {
