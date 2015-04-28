@@ -1,4 +1,4 @@
-import {copyHookFiles} from '../src/install.js';
+import {copyHookFiles} from '../src/fs-utils.js';
 import path from 'path';
 import fs from 'fs';
 import fsp from 'fs-promise';

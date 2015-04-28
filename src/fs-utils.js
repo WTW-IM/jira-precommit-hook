@@ -21,3 +21,8 @@ export function findParentFolder(startDir, parentDirName) {
 
 	return currentDir;
 }
+
+export function copyHookFiles(gitDirectory) {
+  return fs.createReadStream(path.resolve(path.join(__dirname, '../hooks/commit-msg')))
+  .pipe(fs.createWriteStream(path.join(gitDirectory, '/hooks/commit-msg')));
+}
