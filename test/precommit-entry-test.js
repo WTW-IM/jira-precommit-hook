@@ -18,14 +18,14 @@ describe('Issue number test', () => {
 
 	it('Parse issue number', () => {
     getIssueReference('TW-5734', 'TW').should.eql(['TW-5734']);
-
   });
 
 	it('Parse multiple issue numbers', () => {
     getIssueReference('TW-763 blah TW-856', 'TW').should.eql(['TW-763', 'TW-856']);
   });
 
-  it('Parse multiple issue numbers, ignore duplicates', () => {
+  
+	it('Parse multiple issue numbers, ignore duplicates', () => {
     getIssueReference('TW-123 blah blah TW-123', 'TW').should.eql(['TW-123']);
   });
 
@@ -35,7 +35,6 @@ describe('Issue number test', () => {
         getIssueReference(content, 'TW').should.eql(['TW-2345']);
         done();
       });
-
   it('Parse issue number, ignore issue numbers in comments');
   });
 });
