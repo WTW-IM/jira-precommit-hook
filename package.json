@@ -7,7 +7,8 @@
     "build": "rm -rf lib && babel src --out-dir lib",
     "lint": "eslint ./",
     "prepublish": "npm run test && npm run build",
-    "test": "mocha && npm run lint"
+    "test": "mocha && npm run lint",
+    "install": "node bin/install"
   },
   "keywords": [
     "jira",
@@ -21,7 +22,8 @@
     "babel-eslint": "^3.0.1",
     "chai": "^2.2.0",
     "chai-as-promised": "^5.0.0",
-    "eslint": "^0.19.0",
+    "eslint": "^0.20.0",
+    "fs-promise": "^0.3.1",
     "mocha": "^2.2.4",
     "sinon": "^1.14.1",
     "sinon-chai": "^2.7.0"
