@@ -1,7 +1,8 @@
-#Directories
 node_modules/
 lib/
+
+#Dummy Test Directory
 test/tmp/
 
-#Files
+#Logging Output
 *.log
