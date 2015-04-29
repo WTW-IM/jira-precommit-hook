@@ -5,24 +5,24 @@ describe('precommit-entry test', () => {
 
     let msg = precommit('test/test.txt');
     msg.should.eventually.equal('hello')
-		.notify(done);
+    .notify(done);
   });
 });
 
 describe('Issue number test', () => {
-	it('Parse issue number, no issue numbers found');
+  it('Parse issue number, no issue numbers found');
 
-	it('Parse issue number');
+  it('Parse issue number');
 
-	it('Parse multiple issue numbers');
+  it('Parse multiple issue numbers');
 
-	it('Parse issue number, ignore issue numbers in comments');
+  it('Parse issue number, ignore issue numbers in comments');
 });
 
 describe('Story test', () => {
-	it('Story does not exist');
+  it('Story does not exist');
 });
 
 describe('Initiative test', () => {
-	it('Find parent initiative');
+  it('Find parent initiative');
 });

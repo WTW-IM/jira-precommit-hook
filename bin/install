@@ -2,5 +2,5 @@
 
 var path = require('path');
 if(path.resolve(path.join(__dirname, '../')) !== process.cwd()){
-	require('../lib/install.js');
+  require('../lib/install.js');
 }
