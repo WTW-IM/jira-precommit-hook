@@ -1,10 +1,12 @@
 import {getCommitMsg, getIssueReference} from '../src/precommit-entry.js';
+import os from 'os';
+
+let newLine = os.EOL;
 
 describe('precommit-entry test', () => {
   it('Commit hook msg', done => {
-
     let msg = getCommitMsg('test/test.txt');
-    msg.should.eventually.eql('TW-2345\r\n\r\n#TW-6346')
+    msg.should.eventually.eql(`TW-2345${newLine}${newLine}#TW-6346`)
     .notify(done);
   });
 });
