@@ -13,7 +13,7 @@ describe('precommit-entry test', () => {
 
 describe('Issue number test', () => {
 	it('Parse issue number, no issue numbers found', () => {
-    assert(getIssueReference('no issue numbers here', 'TW') === null, 'Expected to be null');
+    getIssueReference('no issue numbers here', 'TW').should.eql([]);
   });
 
 	it('Parse issue number', () => {
@@ -29,11 +29,10 @@ describe('Issue number test', () => {
     getIssueReference('TW-123 blah blah TW-123', 'TW').should.eql(['TW-123']);
   });
 
-	it('Parse issue number, ignore issue numbers in comments', done => {
-    getCommitMsg('test/test.txt')
+	it('Parse issue number, ignore issue numbers in comments', () => {
+    return getCommitMsg('test/test.txt')
       .then(content => {
         getIssueReference(content, 'TW').should.eql(['TW-2345']);
-        done();
       });
   it('Parse issue number, ignore issue numbers in comments');
   });
