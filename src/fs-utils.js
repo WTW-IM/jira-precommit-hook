@@ -23,6 +23,18 @@ export function findParentFolder(startDir, parentDirName) {
 }
 
 export function copyHookFiles(gitDirectory) {
-  return fs.createReadStream(path.resolve(path.join(__dirname, '../hooks/commit-msg')))
-  .pipe(fs.createWriteStream(path.join(gitDirectory, '/hooks/commit-msg')));
+  return new Promise((fulfill, reject) => {
+    fs.createReadStream(path.resolve(path.join(__dirname, '../hooks/commit-msg')))
+      .pipe(fs.createWriteStream(path.join(gitDirectory, '/hooks/commit-msg')))
+      .on('close', (error, resolve) => {
+        if(error) {
+          console.log('REJECT: ' + error);
+          reject(error);
+        }
+        else {
+          fulfill(resolve);
+        }
+      });
+  });
+
 }
