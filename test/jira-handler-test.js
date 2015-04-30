@@ -1,6 +1,7 @@
 import {getAPIConfig, getAuthentication, validateAPIConfig, validateAuthentication} from '../src/jira-handler.js';
 import {getFilePath} from '../src/fs-utils.js';
 import path from 'path';
+import fs from 'fs';
 
 let jiraPath = getFilePath(path.join(process.cwd(), 'test'), '.jirarc');
 let authPath = getFilePath(path.join(process.cwd(), 'test'), '.userconfig');
@@ -14,19 +15,13 @@ let goodJiraObject = {
   'verbose': true,
   'strictSSL': true
 };
-let missingHost = {
-  'projectName': 'test',
-  'port': 8080,
-  'version': '2.1.0',
-  'verbose': true,
-  'strictSSL': true
-};
-let missingProjectName = {
-  'host': 'jira.com'
-};
-let incompleteJiraObject = {
-  'projectName': 'test',
-  'host': 'jira.com'
+
+let badJiraObject = {
+	'projectName': 'test',
+	'port': 8080,
+	'version': '2.1.0',
+	'verbose': true,
+	'strictSSL': true
 };
 
 let goodAuthenticationObject = {
@@ -40,12 +35,16 @@ let missingPassword = {
   'username' : 'UserDudeBro'
 };
 
-describe('jira-handler tests', () => {
-  describe('APIConfig', () => {
-    it('Get project URL', () => {
-      return getAPIConfig(jiraPath)
-        .then(config => config.projectName.should.equal('test'));
-    });
+describe('jira-handler tests', function(){
+	describe('APIConfig', function() {
+		it('Get project URL', function(){
+			return getAPIConfig(jiraPath)
+				.then(config => config.projectName.should.equal('test'));
+		});
+
+
+
+
 
     it('Get host', () => {
       return getAPIConfig(jiraPath)
@@ -61,44 +60,19 @@ describe('jira-handler tests', () => {
       assert.throw( () => { validateAPIConfig(missingHost); }, '.jirarc missing host url. Please check the README for details');
     });
 
-    it('Missing project name', () => {
-      assert.throw( () => { validateAPIConfig(missingProjectName); }, '.jirarc missing project name. Please check the README for details');
-    });
-  });
+	describe('JiraAPI', () => {
+		before(() => {});
 
-  describe('Incomplete Jira Object tests', () => {
-    it('Comparing to default values', () => {
-      let object = validateAPIConfig(incompleteJiraObject);
-      object.protocol.should.equal('http');
-      object.port.should.equal(80);
-      object.version.should.equal('2.0.0');
-      object.verbose.should.equal(false);
-      object.strictSSL.should.equal(true);
-    });
-  });
+		it('Valid Jira API Object');
 
-  describe('Authentication', () => {
-    it('Get username', () => {
-      return getAuthentication(authPath)
-        .then(authConfig => authConfig.username.should.equal('UserDudeBro'));
-    });
+		it('Invalid Jira API Object');
 
-    it('Get password', () => {
-      return getAuthentication(authPath)
-        .then(authConfig => authConfig.password.should.equal('SuperSecret'));
-    });
+		it('Correct Issue ID');
 
-    it('Validation', () => {
-      let object = validateAuthentication(goodAuthenticationObject);
-      object.username.should.equal('UserDudeBro');
-    });
+		it('Incorrect Issues ID');
 
-    it('Missing Username', () => {
-      assert.throw( () => { validateAuthentication(missingUsername); }, '.userconfig missing username');
-    });
+		it('Issue has parent');
 
-    it('Missing Password', () => {
-      assert.throw( () => { validateAuthentication(missingPassword); }, '.userconfig missing password');
-    });
-  });
+		it('Issue does not have a parent');
+	});
 });

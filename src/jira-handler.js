@@ -1,4 +1,6 @@
-import {readJSON} from './fs-utils.js';
+import {readJSON, getFilePath} from './fs-utils.js';
+import {JiraApi} from 'jira';
+import fs from 'fs';
 import lodash from 'lodash';
 
 export function validateAPIConfig(config){
@@ -39,4 +41,54 @@ export function getAPIConfig(filePath){
 export function getAuthentication(filePath) {
   return readJSON(filePath)
       .then(config => validateAuthentication(config));
+}
+
+export function getAuthentication(filePath) {
+  if(!fs.existsSync(filePath)) {
+    process.stdin.resume();
+    process.stdin.setEncoding('utf8');
+    // create file with credentials provided by user
+    console.log('.userconfig does not exist, creating file');
+    console.log('What is your JIRA username?');
+    let username = 'x'; // read from user
+    console.log('What is your JIRA password?');
+    let password = 'x';
+
+    if(username && password) {
+      let fileString = username + '\n' + password;
+      fs.writeFile(filePath, fileString);
+    } else {
+      throw new Error('Username and/or password is invalid');
+    }
+  }
+  return readJSON(filePath)
+      .then(config => validateAuthentication(config));
+}
+
+export function getJiraAPI() {
+	let homePath = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
+	let APIConfig;
+	let userConfig;
+
+	return getAPIConfig(getFilePath(process.cwd(), '.jirarc'))
+	.then(config => APIConfig = config)
+	.then(() => getAuthentication(getFilePath(homePath, '.userconfig')))
+	.then(config => userConfig = config)
+	.then(() => new JiraApi(APIConfig.protocol, APIConfig.host, APIConfig.port,
+			userConfig.username, userConfig.password, APIConfig.version)
+	);
+}
+
+export function getJiraIssue(jiraObject, issueNumber) {
+	return new Promise((fulfill, reject) => {
+		jiraObject.findIssue(issueNumber, (error, resolve) => {
+			if(error) {
+				console.log('REJECT: ' + error);
+				reject(error);
+			}
+			else {
+				fulfill(resolve);
+			}
+		});
+	});
 }
