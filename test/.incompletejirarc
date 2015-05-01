@@ -1,4 +1,4 @@
 {
-	"projectName": "test",
-	"host":"jira.com"
+  "projectName": "test",
+  "host":"jira.com"
 }

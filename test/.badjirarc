@@ -1,7 +1,7 @@
 {
-	"projectName": "test",
-	"port": 8080,
-	"version": "2.1.0",
-	"verbose": true,
-	"strictSSL": true
+  "projectName": "test",
+  "port": 8080,
+  "version": "2.1.0",
+  "verbose": true,
+  "strictSSL": true
 }

@@ -3,10 +3,10 @@ import fs from 'fs';
 import lodash from 'lodash';
 
 export function validateAPIConfig(config){
-	// validate that this is a proper .jirarc file
-	if(!config.host || !config.projectName) {
-		throw new Error('.jirarc missing required field(s). Please check the README for details');
-	}
+  // validate that this is a proper .jirarc file
+  if(!config.host || !config.projectName) {
+    throw new Error('.jirarc missing required field(s). Please check the README for details');
+  }
   let defaults = {
     protocol: 'http',
     port: 80,
@@ -19,16 +19,16 @@ export function validateAPIConfig(config){
 }
 
 export function validateAuthentication(authConfig){
-	// validate that there are proper credentials
-	if(!authConfig.username || !authConfig.password) {
-		throw new Error('.userconfig missing required field(s)');
-	}
-	return authConfig;
+  // validate that there are proper credentials
+  if(!authConfig.username || !authConfig.password) {
+    throw new Error('.userconfig missing required field(s)');
+  }
+  return authConfig;
 }
 
 export function getAPIConfig(filePath){
-	return readJSON(filePath)
-		.then(config => validateAPIConfig(config));
+  return readJSON(filePath)
+    .then(config => validateAPIConfig(config));
 }
 
 export function getAuthentication(filePath) {
