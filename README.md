@@ -10,10 +10,9 @@ Goals:
   [pre-commit](https://www.npmjs.com/package/pre-commit) module.
 
 
-# JIRA NOTICE
+# NOTICE
 
-In the current build, if you do not have read-only access, you ***MUST*** include -u <username> in the command line when interacting with JIRA
-
+Currently only configured for read-only access to JIRA.
 
 # Project Configuration
 
