@@ -45,9 +45,10 @@ export function getAuthentication(filePath) {
 //Grabs data from files and returns a JIRA connection object wrapped in promise
 export function getJiraAPI() {
 	let homePath = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
+  let apiConfig = getAPIConfig(getFilePath(process.cwd(), '.jirarc'));
+  let userConfig = getAuthentication(getFilePath(homePath, '.userconfig'));
 
-  return Promise.all([getAPIConfig(getFilePath(process.cwd(), '.jirarc')),
-    getAuthentication(getFilePath(homePath, '.userconfig'))])
+  return Promise.all([apiConfig, userConfig])
   .then(values => {
     return new JiraApi(values[0].protocol, values[0].host, values[0].port,
       values[1].username, values[1].password, values[0].version);
