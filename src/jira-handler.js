@@ -1,11 +1,13 @@
 import {readJSON} from './fs-utils.js';
-import fs from 'fs';
 import lodash from 'lodash';
 
 export function validateAPIConfig(config){
   // validate that this is a proper .jirarc file
-  if(!config.host || !config.projectName) {
-    throw new Error('.jirarc missing required field(s). Please check the README for details');
+  if(!config.host) {
+    throw new Error('.jirarc missing host url. Please check the README for details');
+  }
+  if(!config.projectName) {
+    throw new Error('.jirarc missing project name. Please check the README for details');
   }
   let defaults = {
     protocol: 'http',
@@ -20,8 +22,11 @@ export function validateAPIConfig(config){
 
 export function validateAuthentication(authConfig){
   // validate that there are proper credentials
-  if(!authConfig.username || !authConfig.password) {
-    throw new Error('.userconfig missing required field(s)');
+  if(!authConfig.username) {
+    throw new Error('.userconfig missing username');
+  }
+  if(!authConfig.password) {
+    throw new Error('.userconfig missing password');
   }
   return authConfig;
 }
