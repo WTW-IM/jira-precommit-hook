@@ -27,5 +27,8 @@
     "mocha": "^2.2.4",
     "sinon": "^1.14.1",
     "sinon-chai": "^2.7.0"
+  },
+  "dependencies": {
+    "lodash": "^3.8.0"
   }
 }

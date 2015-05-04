@@ -1,4 +1,5 @@
 import fs from 'fs';
+import fsp from 'fs-promise';
 import path from 'path';
 
 export function findParentFolder(startDir, parentDirName) {
@@ -37,4 +38,29 @@ export function copyHookFiles(gitDirectory) {
       });
   });
 
+}
+
+export function getFilePath(startDir, desiredFileName){
+  let currentDir = startDir;
+
+  while(fs.existsSync(currentDir)) {
+    if(fs.existsSync(path.join(currentDir, desiredFileName))) {
+      currentDir = path.join(currentDir, desiredFileName);
+      break;
+    } else {
+      let tempPath = currentDir;
+      currentDir = path.normalize(path.join(currentDir, '/..'));
+
+      if(currentDir === tempPath) {
+        throw new Error(`Cannot find ${desiredFileName}`);
+      }
+    }
+  }
+
+  return currentDir;
+}
+
+export function readJSON(filePath){
+  return fsp.readFile(filePath)
+    .then(content => JSON.parse(content));
 }
