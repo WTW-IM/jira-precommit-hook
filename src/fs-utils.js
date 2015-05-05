@@ -36,5 +36,4 @@ export function copyHookFiles(gitDirectory) {
         }
       });
   });
-
 }

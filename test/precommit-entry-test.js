@@ -12,23 +12,23 @@ describe('precommit-entry test', () => {
 });
 
 describe('Issue number test', () => {
-	it('Parse issue number, no issue numbers found', () => {
+  it('Parse issue number, no issue numbers found', () => {
     getIssueReference('no issue numbers here', 'TW').should.eql([]);
   });
 
-	it('Parse issue number', () => {
+  it('Parse issue number', () => {
     getIssueReference('TW-5734', 'TW').should.eql(['TW-5734']);
   });
 
-	it('Parse multiple issue numbers', () => {
+  it('Parse multiple issue numbers', () => {
     getIssueReference('TW-763 blah TW-856', 'TW').should.eql(['TW-763', 'TW-856']);
   });
 
-	it('Parse multiple issue numbers, ignore duplicates', () => {
+  it('Parse multiple issue numbers, ignore duplicates', () => {
     getIssueReference('TW-123 blah blah TW-123', 'TW').should.eql(['TW-123']);
   });
 
-	it('Parse issue number, ignore issue numbers in comments', () => {
+  it('Parse issue number, ignore issue numbers in comments', () => {
     return getCommitMsg('test/test.txt')
       .then(content => {
         getIssueReference(content, 'TW').should.eql(['TW-2345']);
