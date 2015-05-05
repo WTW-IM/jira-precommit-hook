@@ -42,6 +42,6 @@ describe('precommit-entry tests', () => {
         .then(content => {
           pce.getIssueReference(content, 'TW').should.eql(['TW-2345']);
         });
+    });
   });
-      });
 });
