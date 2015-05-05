@@ -37,7 +37,6 @@ export function copyHookFiles(gitDirectory) {
         }
       });
   });
-
 }
 
 export function getFilePath(startDir, desiredFileName){
