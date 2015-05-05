@@ -1,5 +1,5 @@
 import fsp from 'fs-promise';
-import lodash from 'lodash';
+import _ from 'lodash';
 
 export function getCommitMsg (path) {
   return fsp.readFile(path, {encoding: 'utf8'});
@@ -12,5 +12,5 @@ export function getIssueReference(msgToParse, prjKey) {
   msgToParse = msgToParse.replace(commentPattern, '');
   let references = msgToParse.match(pattern);
 
-  return lodash.unique(references);
+  return _.unique(references);
 }
