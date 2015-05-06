@@ -1,9 +1,7 @@
-import * as pce from '../src/precommit-entry.js';
-import os from 'os';
+import * as pce from '../src/precommit-entry';
 import sinon from 'sinon';
 import fsp from 'fs-promise';
-
-let newLine = os.EOL;
+import issueHandler from '../src/issue-handler';
 
 describe('precommit-entry tests', () => {
   describe('Hook Message', () => {
@@ -39,9 +37,9 @@ describe('precommit-entry tests', () => {
 
     it('Parse issue number, ignore issue numbers in comments', () => {
       return pce.getCommitMsg('test/test.txt')
-        .then(content => {
-          pce.getIssueReference(content, 'TW').should.eql(['TW-2345']);
-        });
+      .then(content => {
+        pce.getIssueReference(content, 'TW').should.eql(['TW-2345']);
+      });
     });
   });
 });

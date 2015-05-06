@@ -1,6 +1,13 @@
 /* eslint no-process-exit:0 */
 import fsp from 'fs-promise';
-import _ from 'lodash';
+import lodash from 'lodash';
+import sinon from 'sinon';
+import issueHandler from './issue-handler';
+import os from 'os';
+import cpp from 'child-process-promise';
+
+let eol = os.EOL;
+let promise = cpp.exec;
 
 export function getIssueReference(msgToParse, prjKey) {
   let pattern = RegExp(`${prjKey}-\\d+`, 'g');
@@ -9,15 +16,47 @@ export function getIssueReference(msgToParse, prjKey) {
   msgToParse = msgToParse.replace(commentPattern, '');
   let references = msgToParse.match(pattern);
 
-  return _.unique(references);
+  return lodash.unique(references);
 }
 
 export function getCommitMsg (path) {
-  return fsp.readFile(path, {encoding:'utf8'})
-    .then(fileContents => getIssueReference(fileContents, 'TW')) // TW will be replaced by a JIRA request being done by Steven and Curtis.
-    .then(issues => issueStrategizer(issues)) // calls on Matthew's code to verify the integrity of the issues
+  let strategizerStub = sinon.stub(issueHandler, 'issueStrategizer', issues => {
+    let jsonObjects = [
+      {
+        'issueType': {
+          'name': 'Story'
+        }
+      },
+      {
+        'issueType': {
+          'name': 'Story'
+        }
+      },
+      {
+        'issueType': {
+          'name': 'Story'
+        }
+      }
+    ];
+    return jsonObjects;
+  });
+
+  let readFileStub = sinon.stub(fsp, 'readFile', filePath => {
+    return promise('TW-5032' + eol + 'TW-2380' + eol + 'TW-2018' + eol + eol);
+  });
+
+  return readFileStub(path)
+    .then(fileContents => getIssueReference(fileContents, 'TW'))
+    .then(issues => strategizerStub(issues))
     .catch(err => {
       console.error(err);
-      process.exit(1);
     });
+
+  // return fsp.readFile(path, {encoding:'utf8'})
+  //   .then(fileContents => getIssueReference(fileContents, 'TW')) // TW will be replaced by a JIRA request being done by Steven and Curtis.
+  //   .then(issues => issueHandler.issueStrategizer(issues)) // calls on Matthew's code to verify the integrity of the issues
+  //   .catch(err => {
+  //     console.error(err);
+  //     process.exit(1);
+  //   });
 }

@@ -1,4 +1,4 @@
-import strats from 'strategies/index';
+import strats from './strategies/index';
 
 function validateStrategies(issue) {
   let issueJSON = stevesStuff(issue); //Gets the jira issue json file
