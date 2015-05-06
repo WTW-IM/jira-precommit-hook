@@ -1,0 +1,23 @@
+{
+	"id": "9998",
+	"self": "http://jira.test.com/rest/api/2/issue/9998",
+	"key": "TW-9998",
+	"fields": {
+    "issuetype": {
+      "self": "http://jira.test.com/rest/api/2/issuetype/10602",
+      "id": "10602",
+      "description": "",
+      "iconUrl": "http://jira.test.com/images/icons/issuetypes/ico_story.png",
+      "name": "Story",
+      "subtask": false
+    },
+    "status": {
+      "self": "http://jira.test.com/rest/api/2/status/6",
+      "description": "",
+      "iconUrl": "http://jira.test.com/images/icons/statuses/closed.png",
+      "name": "Closed",
+      "id": "6"
+    },
+    "customfield_10805": "TW-9001"
+	}
+}

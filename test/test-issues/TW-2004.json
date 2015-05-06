@@ -1,0 +1,25 @@
+{
+  "key": "TW-2004",
+  "fields": {
+    "parent": {
+        "key": "TW-2003",
+        "fields": {
+          "issuetype": {
+            "name": "Story"
+          },
+          "status": {
+            "name": "Open",
+          },
+          "customfield_10805": "PM-2002"
+        }
+      }
+    },
+    "issuetype": {
+      "name": "Sub-task",
+      "subtask": true
+    },
+    "status": {
+      "name": "Open",
+    }
+  }
+}

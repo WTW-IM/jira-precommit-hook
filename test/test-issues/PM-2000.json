@@ -1,0 +1,11 @@
+{
+  "key": "PM-2000",
+  "fields": {
+    "status": {
+      "name": "Approved",
+    },
+    "issuetype": {
+      "name": "Initiative",
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "0002",
+  "self": "http://jira.test.com/rest/api/2/issue/0002",
+  "key": "TW-0002",
+  "fields": {
+    "parent": {
+      "id": "9999",
+      "key": "TW-9999",
+      "self": "http://jira.test.com/rest/api/2/issue/9999",
+      "fields": {
+        "status": {
+          "self": "http://jira.test.com/rest/api/2/status/1",
+          "description": "",
+          "iconUrl": "http://jira.test.com/images/icons/statuses/open.png",
+          "name": "Open",
+          "id": "1"
+        },
+        "issuetype": {
+          "self": "http://jira.test.com/rest/api/2/issuetype/10602",
+          "id": "10602",
+          "description": "",
+          "iconUrl": "http://jira.test.com/images/icons/issuetypes/ico_story.png",
+          "name": "Story",
+          "subtask": false
+        }
+      }
+    },
+    "issuetype": {
+      "self": "http://jira.test.com/rest/api/2/issuetype/5",
+      "id": "5",
+      "description": "",
+      "iconUrl": "http://jira.test.com/images/icons/issuetypes/subtask_alternate.png",
+      "name": "Sub-task",
+      "subtask": true
+    },
+    "status": {
+      "self": "http://jira.test.com/rest/api/2/status/1",
+      "description": "",
+      "iconUrl": "http://jira.test.com/images/icons/statuses/open.png",
+      "name": "Open",
+      "id": "1"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "key": "TW-2002",
+  "fields": {
+    "issuelinks": [
+      {
+        "type": {
+          "name": "Relates",
+          "inward": "relates to",
+          "outward": "relates to",
+          "self": "http://jira.extendhealth.com/rest/api/2/issueLinkType/10003"
+        },
+        "inwardIssue": {
+          "key": "PM-2000",
+          "fields": {
+            "status": {
+              "name": "Open"
+            },
+            "issuetype": {
+              "name": "Initiative"
+            }
+          }
+        }
+      }
+    ],
+    "status": {
+      "name": "Open"
+    },
+    "issuetype": {
+      "name": "Epic",
+      "subtask": false
+    }
+  }
+}

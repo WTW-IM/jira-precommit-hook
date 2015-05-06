@@ -1,0 +1,12 @@
+{
+	"key": "TW-2001",
+	"fields": {
+    "issuetype": {
+      "name": "Story"
+    },
+    "status": {
+      "name": "Open",
+    },
+    "customfield_10805": "PM-2000"
+	}
+}

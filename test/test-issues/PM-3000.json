@@ -1,0 +1,11 @@
+{
+  "key": "PM-3000",
+  "fields": {
+    "status": {
+      "name": "Closed",
+    },
+    "issuetype": {
+      "name": "Initiative",
+    }
+  }
+}

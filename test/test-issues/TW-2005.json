@@ -1,0 +1,13 @@
+{
+	"key": "TW-2005",
+	"fields": {
+    "issuetype": {
+      "name": "Story"
+    },
+    "status": {
+      "name": "Closed",
+    },
+    "customfield_10805": "PM-3002"
+	}
+}
+	
