@@ -16,7 +16,6 @@ describe('precommit-entry tests', () => {
       stub('test/issuesTestFile.txt');
       pce.getCommitMsg('issuesTestFile.txt')
         .then(results => {
-          console.log(results.length);
           results.length.should.equal(3);
           done();
         });

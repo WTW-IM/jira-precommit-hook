@@ -46,7 +46,6 @@ export function getCommitMsg (path) {
   return readFileStub(path)
     .then(fileContents => {
       getIssueReference(fileContents, 'TW');
-      console.log(fileContents);
     })
     .then(issues => strategizerStub(issues))
     .catch(err => {
