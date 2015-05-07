@@ -2,12 +2,11 @@
 import fsp from 'fs-promise';
 import lodash from 'lodash';
 import sinon from 'sinon';
-import issueHandler from './issue-handler';
+import sPromise from 'sinon-as-promised';
+import * as issueHandler from './issue-handler';
 import os from 'os';
-import cpp from 'child-process-promise';
 
 let eol = os.EOL;
-let promise = cpp.exec;
 
 export function getIssueReference(msgToParse, prjKey) {
   let pattern = RegExp(`${prjKey}-\\d+`, 'g');
@@ -41,12 +40,14 @@ export function getCommitMsg (path) {
     return jsonObjects;
   });
 
-  let readFileStub = sinon.stub(fsp, 'readFile', filePath => {
-    return promise('TW-5032' + eol + 'TW-2380' + eol + 'TW-2018' + eol + eol);
-  });
+  let readFileStub = sinon.stub();
+  readFileStub.resolves('TW-5032' + eol + 'TW-2380' + eol + 'TW-2018');
 
   return readFileStub(path)
-    .then(fileContents => getIssueReference(fileContents, 'TW'))
+    .then(fileContents => {
+      getIssueReference(fileContents, 'TW');
+      console.log(fileContents);
+    })
     .then(issues => strategizerStub(issues))
     .catch(err => {
       console.error(err);
