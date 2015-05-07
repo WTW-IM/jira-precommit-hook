@@ -1,24 +1,45 @@
 import * as pce from '../src/precommit-entry';
 import sinon from 'sinon';
+import sPromise from 'sinon-as-promised';
+import * as issueHandler from '../src/issue-handler';
 import fsp from 'fs-promise';
-import issueHandler from '../src/issue-handler';
+import os from 'os';
+
+let eol = os.EOL;
 
 describe('precommit-entry tests', () => {
   describe('Hook Message', () => {
     it('Commit hook msg', done => {
-      let stub = sinon.stub(pce, 'getCommitMsg', path => {
-        fsp.readFile(path, {encoding:'utf8'})
-          .then(contents => pce.getIssueReference(contents, 'TW'))
-          // what do I do with the issues?s
-          .then(issues => console.log('Issues:\n' + issues))
-          .catch(err => console.error(err));
+      let strategizerStub = sinon.stub(issueHandler, 'issueStrategizer', issues => {
+        let jsonObjects = [
+          {
+            'issueType': {
+              'name': 'Story'
+            }
+          },
+          {
+            'issueType': {
+              'name': 'Story'
+            }
+          },
+          {
+            'issueType': {
+              'name': 'Story'
+            }
+          }
+        ];
+        return jsonObjects;
+    });
+
+    let readFileStub = sinon.stub(fsp, 'readFile');
+    readFileStub.resolves('TW-5032' + eol + 'TW-2380' + eol + 'TW-2018');
+    pce.getCommitMsg('issuesTestFile.txt')
+      .then(results => {
+        results.length.should.equal(3);
+        strategizerStub.restore();
+        readFileStub.restore();
+        done();
       });
-      stub('test/issuesTestFile.txt');
-      pce.getCommitMsg('issuesTestFile.txt')
-        .then(results => {
-          results.length.should.equal(3);
-          done();
-        });
     });
   });
 
@@ -40,10 +61,8 @@ describe('precommit-entry tests', () => {
     });
 
     it('Parse issue number, ignore issue numbers in comments', () => {
-      return pce.getCommitMsg('test/test.txt')
-      .then(content => {
-        pce.getIssueReference(content, 'TW').should.eql(['TW-2345']);
-      });
+      let content = 'TW-2345' + eol + '#TW-6346';
+      pce.getIssueReference(content, 'TW').should.eql(['TW-2345']);
     });
   });
 });
