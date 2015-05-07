@@ -6,6 +6,9 @@
     },
     "status": {
       "name": "Open",
+      "statusCategory": {
+        "colorName": "yellow"
+      }
     },
     "customfield_10805": "PM-2000"
 	}

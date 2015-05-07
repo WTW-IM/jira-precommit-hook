@@ -1,14 +1,14 @@
 {
-  "key": "PM-3000",
+  "key": "TW-5001",
   "fields": {
     "status": {
-      "name": "Closed",
+      "name": "Open",
       "statusCategory": {
-         "colorName": "yellow"
+         "colorName": "blue"
        }
     },
     "issuetype": {
-      "name": "Initiative",
+      "name": "Maintenance Task"
     }
   }
 }

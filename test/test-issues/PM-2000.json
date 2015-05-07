@@ -3,6 +3,9 @@
   "fields": {
     "status": {
       "name": "Approved",
+      "statusCategory": {
+        "colorName": "yellow"
+      }
     },
     "issuetype": {
       "name": "Initiative",

@@ -6,6 +6,9 @@
     },
     "status": {
       "name": "Closed",
+      "statusCategory": {
+        "colorName": "red"
+      }
     },
     "customfield_10805": "PM-3000"
 	}

@@ -1,6 +1,6 @@
 import* as storyStrat from '../../src/strategies/story.js';
 
-describe('Story Strategy Tests', () => {
+describe('Story/Sub-task Strategy Match Tests', () => {
   it('Bad match', () => {
     storyStrat.matches('Bug').should.eql(false);
     storyStrat.matches().should.eql(false);
@@ -8,15 +8,16 @@ describe('Story Strategy Tests', () => {
 
   it('Good match', () => {
     storyStrat.matches('Story').should.eql(true);
+    storyStrat.matches('Sub-task').should.eql(true);
   });
 });
 
-describe('Sub-task Strategy Tests', () => {
-  it('Bad match', () => {
-    storyStrat.matches('subtask').should.eql(false);
+describe('Story/Sub-task Strategy Apply Tests', () => {
+  it('Open to commit against', () => {
+
   });
 
-  it('Good match', () => {
-    storyStrat.matches('Sub-task').should.eql(true);
+  it('Closed', () => {
+
   });
 });

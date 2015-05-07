@@ -6,6 +6,9 @@
     },
     "status": {
       "name": "Closed",
+      "statusCategory": {
+        "colorName": "black"
+      }
     },
     "customfield_10805": "PM-3002"
 	}
