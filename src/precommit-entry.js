@@ -1,5 +1,4 @@
 /* eslint no-process-exit:0 */
-import fsp from 'fs-promise';
 import lodash from 'lodash';
 import sinon from 'sinon';
 import sPromise from 'sinon-as-promised';
