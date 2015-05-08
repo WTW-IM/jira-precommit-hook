@@ -40,12 +40,11 @@ describe('precommit-entry tests', () => {
       fsp.readFile.restore();
     });
 
-    it('Commit hook msg', done => {
-    pce.getCommitMsg('issuesTestFile.txt')
-      .then(results => {
-        results.length.should.equal(3);
-        done();
-      });
+    it('read from issue list and return JSON array', () => {
+      return pce.getCommitMsg('issuesTestFile.txt')
+        .then(results => {
+          results.length.should.equal(3);
+        });
     });
   });
 
