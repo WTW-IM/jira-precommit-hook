@@ -42,9 +42,7 @@ describe('precommit-entry tests', () => {
 
     it('read from issue list and return JSON array', () => {
       return pce.getCommitMsg('issuesTestFile.txt')
-        .then(results => {
-          results.length.should.equal(3);
-        });
+        .then(results => results.length.should.equal(3));
     });
   });
 
