@@ -19,10 +19,7 @@ describe('Bug Strategy Apply Tests', () => {
       let issueFileDir = fsUtils.getFilePath(path.join('test', 'test-issues'), `${issueKey}.json`);
       return fsUtils.readJSON(issueFileDir)
         .then(content => {
-          if(content === null || content.fields.status.statusCategory.colorName !== 'yellow') {
-            return false;
-          }
-          return true;
+          return content !== null && content.fields.status.statusCategory.colorName === 'yellow';
         });
     });
   });
