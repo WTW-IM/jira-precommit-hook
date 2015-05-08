@@ -9,8 +9,8 @@ let eol = os.EOL;
 
 describe('precommit-entry tests', () => {
   describe('Hook Message', () => {
-    it('Commit hook msg', done => {
-      let strategizerStub = sinon.stub(issueHandler, 'issueStrategizer', issues => {
+    beforeEach(() => {
+      sinon.stub(issueHandler, 'issueStrategizer', issues => {
         let jsonObjects = [
           {
             'issueType': {
@@ -29,15 +29,21 @@ describe('precommit-entry tests', () => {
           }
         ];
         return jsonObjects;
+      });
+
+      let readFileStub = sinon.stub(fsp, 'readFile');
+      readFileStub.resolves('TW-5032' + eol + 'TW-2380' + eol + 'TW-2018');
     });
 
-    let readFileStub = sinon.stub(fsp, 'readFile');
-    readFileStub.resolves('TW-5032' + eol + 'TW-2380' + eol + 'TW-2018');
+    afterEach(() => {
+      issueHandler.issueStrategizer.restore();
+      fsp.readFile.restore();
+    });
+
+    it('Commit hook msg', done => {
     pce.getCommitMsg('issuesTestFile.txt')
       .then(results => {
         results.length.should.equal(3);
-        strategizerStub.restore();
-        readFileStub.restore();
         done();
       });
     });
