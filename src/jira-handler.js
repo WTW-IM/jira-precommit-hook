@@ -1,6 +1,34 @@
 import {readJSON, getFilePath} from './fs-utils.js';
 import {JiraApi} from 'jira';
-import lodash from 'lodash';
+import _ from 'lodash';
+
+function promisify(func) {
+  return function() {
+    let args = Array.prototype.slice.call(arguments);
+
+    return new Promise((fulfill, reject) => {
+      args.push((error, resolve) => {
+        if(error) {
+          reject(error);
+          throw new Error(error);
+        }
+        else {
+          fulfill(resolve);
+        }
+      });
+
+      func.apply(this, args);
+    });
+  };
+}
+
+Object.keys(JiraApi.prototype).forEach(key => {
+  let currentProperty = JiraApi.prototype[key];
+
+  if(typeof currentProperty === 'function') {
+    JiraApi.prototype[key] = promisify(currentProperty);
+  }
+});
 
 export function validateAPIConfig(config){
   // validate that this is a proper .jirarc file
@@ -17,7 +45,7 @@ export function validateAPIConfig(config){
     verbose: false,
     strictSSL: true
   };
-  config = lodash.defaults(config, defaults);
+  config = _.defaults(config, defaults);
   return config;
 }
 
@@ -54,17 +82,61 @@ export function getJiraAPI() {
   });
 }
 
-//Sends a request to get JIRA Issue and returns JSON wrapped in promise
-export function getJiraIssue(jiraObject, issueNumber) {
-	return new Promise((fulfill, reject) => {
-		jiraObject.findIssue(issueNumber, (error, resolve) => {
-			if(error) {
-				console.log('REJECT ' + error);
-				reject(error);
-			}
-			else {
-				fulfill(resolve);
-			}
-		});
-	});
+export function getEpicLinkField(jiraClient) {
+  return jiraClient.listFields()
+    .then(fields => {
+      for(let i = 0; i < fields.length; i++) {
+        if(fields[i].name === 'Epic Link') {
+          return fields[i].id;
+        }
+      }
+
+      throw new Error('Cannot find Epic Link Field.');
+    });
+}
+
+export function findParent(issue, jiraClient) {
+  let parent;
+  try {
+    switch(issue.fields.issuetype.name) {
+      case 'Sub-task':
+          parent = jiraClient.findIssue(issue.fields.parent.key)
+            .then(p => findParent(jiraClient, p));
+        break;
+      case 'Story':
+        if(issue.fields.issuelinks) {
+          for(let i = 0; i < issue.fields.issuelinks.length; i++) {
+            parent = issue.fields.issuelinks[i].inwardIssue;
+            if(issue.fields.issuelinks[i].inwardIssue.fields.issuetype.name === 'Initiative') {
+              break;
+            }
+          }
+        }
+        else {
+          let epicLink = issue.fields.customfield_10805;
+
+          if(epicLink !== null) {
+            parent = jiraClient.findIssue(issue.fields.parent.key)
+              .then(link => findParent(jiraClient, link));
+            break;
+          }
+        }
+        throw new Error('Cannot find parent.');
+      case 'Epic':
+        if(issue.fields.issuelinks) {
+          for(let i = 0; i < issue.fields.issuelinks.length; i++) {
+            parent = issue.fields.issuelinks[i].inwardIssue;
+            if(issue.fields.issuelinks[i].inwardIssue.fields.issuetype.name === 'Initiative') {
+              break;
+            }
+          }
+        }
+        break;
+    }
+  }
+  catch(err) {
+    console.log(err);
+  }
+
+  return parent;
 }
