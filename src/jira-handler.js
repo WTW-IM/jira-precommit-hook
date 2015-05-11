@@ -96,47 +96,41 @@ export function getEpicLinkField(jiraClient) {
 }
 
 export function findParent(issue, jiraClient) {
-  let parent;
-  try {
-    switch(issue.fields.issuetype.name) {
-      case 'Sub-task':
-          parent = jiraClient.findIssue(issue.fields.parent.key)
-            .then(p => findParent(jiraClient, p));
-        break;
-      case 'Story':
-        if(issue.fields.issuelinks) {
-          for(let i = 0; i < issue.fields.issuelinks.length; i++) {
-            parent = issue.fields.issuelinks[i].inwardIssue;
-            if(issue.fields.issuelinks[i].inwardIssue.fields.issuetype.name === 'Initiative') {
-              break;
-            }
-          }
-        }
-        else {
-          let epicLink = issue.fields.customfield_10805;
+  switch(issue.fields.issuetype.name) {
+    case 'Sub-task':
+      return jiraClient.findIssue(issue.fields.parent.key);
 
-          if(epicLink !== null) {
-            parent = jiraClient.findIssue(issue.fields.parent.key)
-              .then(link => findParent(jiraClient, link));
-            break;
-          }
-        }
-        throw new Error('Cannot find parent.');
-      case 'Epic':
-        if(issue.fields.issuelinks) {
-          for(let i = 0; i < issue.fields.issuelinks.length; i++) {
-            parent = issue.fields.issuelinks[i].inwardIssue;
-            if(issue.fields.issuelinks[i].inwardIssue.fields.issuetype.name === 'Initiative') {
-              break;
-            }
-          }
-        }
-        break;
-    }
-  }
-  catch(err) {
-    console.log(err);
-  }
+    case 'Story':
+      if(issue.fields.issuelinks) {
+        for(let i = 0; i < issue.fields.issuelinks.length; i++) {
+          let outwardIssue = issue.fields.issuelinks[i].outwardIssue;
 
-  return parent;
+          if(outwardIssue.fields.issuetype.name === 'Initiative') {
+            return jiraClient.findIssue(outwardIssue.key);
+          }
+        }
+      }
+
+      return getEpicLinkField(jiraClient)
+        .then(linkField => {
+          console.log(issue.fields[linkField]);
+          return jiraClient.findIssue(issue.fields[linkField]);
+        });
+
+    case 'Epic':
+      if(issue.fields.issuelinks) {
+        for(let i = 0; i < issue.fields.issuelinks.length; i++) {
+          let inwardIssue = issue.fields.issuelinks[i].inwardIssue;
+          if(inwardIssue.fields.issuetype.name === 'Initiative') {
+            return jiraClient.findIssue(inwardIssue.key);
+          }
+        }
+
+        throw new Error('Cannot find parent from Epic.');
+      }
+      break;
+
+      default:
+        throw new Error(`${issue.fields.issuetype.name} should not have a parent.`);
+  }
 }
