@@ -36,7 +36,7 @@ export default function createTestIssue(key, type, color, parentKey, parentType)
       }
       };
     case 'Story':
-      if(parentKey === 'Epic') {
+      if(parentType === 'Epic') {
         return {
           'fields': {
             'key': key,
