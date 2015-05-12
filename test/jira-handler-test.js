@@ -1,7 +1,6 @@
-import {getAPIConfig, getAuthentication, validateAPIConfig, validateAuthentication} from '../src/jira-handler.js';
-import {getFilePath} from '../src/fs-utils.js';
+import {getAPIConfig, getAuthentication, validateAPIConfig, validateAuthentication, findParent} from '../src/jira-handler.js';
+import {getFilePath, readJSON} from '../src/fs-utils.js';
 import path from 'path';
-import fs from 'fs';
 
 let jiraPath = getFilePath(path.join(process.cwd(), 'test'), '.jirarc');
 let authPath = getFilePath(path.join(process.cwd(), 'test'), '.userconfig');
@@ -60,19 +59,37 @@ describe('jira-handler tests', function(){
       assert.throw( () => { validateAPIConfig(missingHost); }, '.jirarc missing host url. Please check the README for details');
     });
 
-	describe('JiraAPI', () => {
-		before(() => {});
+  describe('Find Issue Parent', function() {
+    it('Find Epic Link', done => {
+      let fieldPath = getFilePath(path.join(__dirname, 'test-issues'), 'Field.json');
 
-		it('Valid Jira API Object');
+      readJSON(fieldPath)
+        .then(issue => {
+          for(let i = 0; i < issue.length; i++) {
+            if(issue[i].name === 'Epic Link') {
+              return issue[i].id;
+            }
+          }
+        })
+        .then(id => {
+          id.should.equal('customfield_10805');
+          done();
+        });
+    });
 
-		it('Invalid Jira API Object');
+    it('Parent not found', done => {
+      let fieldPath = getFilePath(path.join(__dirname, 'test-issues'), 'TW-9997.json');
 
-		it('Correct Issue ID');
+      readJSON(fieldPath)
+        .then(issue => {
+          findParent(issue);
+        });
+    });
 
-		it('Incorrect Issues ID');
+    it('Find Initiative from Sub-task');
 
-		it('Issue has parent');
+    it('Find Initiative from Story');
 
-		it('Issue does not have a parent');
-	});
+    it('Initiative not found');
+  });
 });
