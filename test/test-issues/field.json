@@ -1,0 +1,71 @@
+[
+  {
+    "id": "customfield_10803",
+    "name": "Epic Name",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[10806]",
+      "Epic Name"
+    ],
+    "schema": {
+      "type": "string",
+      "custom": "",
+      "customId": 10803
+    }
+  },
+  {
+    "id": "customfield_10804",
+    "name": "Epic Status",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[10807]",
+      "Epic Status"
+    ],
+    "schema": {
+      "type": "string",
+      "custom": "",
+      "customId": 10804
+    }
+  },
+  {
+    "id": "customfield_10805",
+    "name": "Epic Link",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[10805]",
+      "Epic Link"
+    ],
+    "schema": {
+      "type": "array",
+      "items": "string",
+      "custom": "",
+      "customId": 10805
+    }
+  },
+  {
+    "id": "customfield_10806",
+    "name": "Epic Color",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[10808]",
+      "Epic Color"
+    ],
+    "schema": {
+      "type": "string",
+      "custom": "",
+      "customId": 10806
+    }
+  }
+]
