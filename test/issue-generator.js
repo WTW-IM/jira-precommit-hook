@@ -1,115 +1,52 @@
+import _ from 'lodash';
+
 export default function createTestIssue(key, type, color, parentKey, parentType) {
-  switch(type) {
-    case 'Initiative':
-      return {
-        'fields': {
-          'key': key,
-          'status': {
-            'statusCategory': {
-              'colorName': color
-            }
-          },
-          'issuetype': {
-            'name': type
-          }
+  let baseIssue = {
+    'fields': {
+      'key': key,
+      'status': {
+        'statusCategory': {
+          'colorName': color
         }
-      };
+      },
+      'issuetype': {
+        'name': type
+      }
+    }
+  };
+
+  switch(type) {
     case 'Epic':
-      return {
+      return _.merge(baseIssue, {
         'fields': {
-          'key': key,
-          'status': {
-            'statusCategory': {
-              'colorName': color
-            }
-          },
-          'issuetype': {
-            'name': type
-          },
-      'issuelinks': [
-          {
+          'issuelinks': [{
             'inwardIssue': {
               'key': parentKey
-              }
             }
-        ]
-      }
-      };
+          }]
+        }
+      });
     case 'Story':
       if(parentType === 'Epic') {
-        return {
+        return _.merge(baseIssue, {
           'fields': {
-            'key': key,
-            'status': {
-              'statusCategory': {
-                'colorName': color
-              }
-            },
-            'issuetype': {
-              'name': type
-            },
             'customfield_10805': parentKey
           }
-        };
+        });
       }
-      return {
+      return _.merge(baseIssue, {
         'fields': {
-          'key': key,
-          'status': {
-            'statusCategory': {
-              'colorName': color
-            }
-          },
-          'issuetype': {
-            'name': type
-          },
-          'issuelinks': [
-          {
+          'issuelinks': [{
             'outwardIssue': {
               'key': parentKey
-              }
             }
-        ]
-      }
-    };
+          }]
+        }
+      });
+    case 'Initiative':
     case 'Sub-task':
-      return {
-        'fields': {
-          'key': key,
-          'parent': {
-            'key': parentKey
-          },
-          'status': {
-            'statusCategory': {
-              'colorName': color
-            }
-          },
-          'issuetype': {
-            'name': type
-          }
-        }
-      };
     case 'Bug':
-      return {
-        'fields': {
-          'key': key,
-          'status': {
-            'statusCategory': {
-              'colorName': color
-            }
-          }
-        }
-      };
     case 'MT':
-      return {
-        'fields': {
-          'key': key,
-          'status': {
-            'statusCategory': {
-              'colorName': color
-            }
-          }
-        }
-      };
+      return baseIssue;
   }
 }
