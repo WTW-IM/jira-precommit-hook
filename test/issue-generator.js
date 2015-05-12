@@ -46,7 +46,7 @@ export default function createTestIssue(key, type, color, parentKey, parentType)
               }
             },
             'issuetype': {
-              'name': color
+              'name': type
             },
             'customfield_10805': parentKey
           }
