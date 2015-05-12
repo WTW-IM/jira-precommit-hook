@@ -30,15 +30,13 @@ export function findParent(issue, jiraClient) {
       }
 
       return getEpicLinkField(jiraClient)
-        .then(linkField => {
-          console.log(issue.fields[linkField]);
-          return jiraClient.findIssue(issue.fields[linkField]);
-        });
+        .then(linkField => jiraClient.findIssue(issue.fields[linkField]));
 
     case 'Epic':
       if(issue.fields.issuelinks) {
         for(let i = 0; i < issue.fields.issuelinks.length; i++) {
           let inwardIssue = issue.fields.issuelinks[i].inwardIssue;
+
           if(inwardIssue.fields.issuetype.name === 'Initiative') {
             return jiraClient.findIssue(inwardIssue.key);
           }

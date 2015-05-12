@@ -1,5 +1,5 @@
-import {getAPIConfig, getAuthentication, validateAPIConfig, validateAuthentication, findParent} from '../src/jira-handler.js';
-import {getFilePath, readJSON} from '../src/fs-utils.js';
+import {getAPIConfig, getAuthentication, validateAPIConfig, validateAuthentication} from '../src/jira-connection.js';
+import {getFilePath} from '../src/fs-utils.js';
 import path from 'path';
 
 let jiraPath = getFilePath(path.join(process.cwd(), 'test'), '.jirarc');
@@ -34,7 +34,7 @@ let missingPassword = {
   'username' : 'UserDudeBro'
 };
 
-describe('jira-handler tests', function(){
+describe('jira-connection tests', function() {
 	describe('APIConfig', function() {
 		it('Get project URL', function(){
 			return getAPIConfig(jiraPath)
@@ -55,9 +55,10 @@ describe('jira-handler tests', function(){
       object.projectName.should.equal('test');
     });
 
-    it('Missing host', () => {
-      assert.throw( () => { validateAPIConfig(missingHost); }, '.jirarc missing host url. Please check the README for details');
-    });
+		it('Bad auth Config', function(){
+			assert.throw( () => {validateAuthentication(badAuthenticationObject); }, '.userconfig missing required field(s)');
+		});
+	});
 
   describe('Find Issue Parent', function() {
     it('Find Epic Link', done => {
