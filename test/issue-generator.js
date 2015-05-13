@@ -1,5 +1,22 @@
 import _ from 'lodash';
 
+function createIssueLinks(direction, parentKey, parentType) {
+  return {
+    'fields': {
+      'issuelinks': [{
+        [direction]: {
+          'key': parentKey,
+          'fields': {
+            'issuetype': {
+              'name': parentType
+            }
+          }
+        }
+      }]
+    }
+  };
+}
+
 export default function createTestIssue(key, type, color, parentKey, parentType) {
   let baseIssue = {
     'fields': {
@@ -17,15 +34,7 @@ export default function createTestIssue(key, type, color, parentKey, parentType)
 
   switch(type) {
     case 'Epic':
-      return _.merge(baseIssue, {
-        'fields': {
-          'issuelinks': [{
-            'inwardIssue': {
-              'key': parentKey
-            }
-          }]
-        }
-      });
+      return _.merge(baseIssue, createIssueLinks('inwardIssue', parentKey, parentType));
     case 'Story':
       if(parentType === 'Epic') {
         return _.merge(baseIssue, {
@@ -34,17 +43,16 @@ export default function createTestIssue(key, type, color, parentKey, parentType)
           }
         });
       }
+      return _.merge(baseIssue, createIssueLinks('outwardIssue', parentKey, parentType));
+    case 'Sub-task':
       return _.merge(baseIssue, {
         'fields': {
-          'issuelinks': [{
-            'outwardIssue': {
-              'key': parentKey
-            }
-          }]
+          'parent': {
+            'key': parentKey
+          }
         }
       });
     case 'Initiative':
-    case 'Sub-task':
     case 'Bug':
     case 'MT':
       return baseIssue;
