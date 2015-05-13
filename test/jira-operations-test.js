@@ -1,6 +1,4 @@
-import {findParent} from '../src/jira-operations.js';
-import {getFilePath, readJSON} from '../src/fs-utils.js';
-import path from 'path';
+import {findParent, getEpicLinkField} from '../src/jira-operations.js';
 import createTestIssue from './issue-generator.js';
 
 let issues = {
@@ -9,6 +7,14 @@ let issues = {
   'WHP-9992': createTestIssue('WHP-9992', 'Story', 'yellow', 'WHP-9990', 'Initiative'),
   'WHP-9991': createTestIssue('WHP-9991', 'Epic', 'yellow', 'WHP-9990', 'Initiative'),
   'WHP-9990': createTestIssue('WHP-9990', 'Initiative', 'yellow')
+};
+
+let fields = {
+  'epicLink': [{
+            'id': 'customfield_10805',
+            'name': 'Epic Link'
+          }],
+  'noEpicLink': []
 };
 
 describe('jira-operations tests', function() {
@@ -23,26 +29,24 @@ describe('jira-operations tests', function() {
         },
 
         listFields() {
-          return readJSON(getFilePath(path.join(__dirname, 'test-issues'), 'field.json'));
+          return Promise.resolve(fields.epicLink);
         }
       };
     });
 
-    it('Find Epic Link', done => {
-      let fieldPath = getFilePath(path.join(__dirname, 'test-issues'), 'Field.json');
-
-      readJSON(fieldPath)
-        .then(issue => {
-          for(let i = 0; i < issue.length; i++) {
-            if(issue[i].name === 'Epic Link') {
-              return issue[i].id;
-            }
-          }
-        })
-        .then(id => {
-          id.should.equal('customfield_10805');
-          done();
+    it('Find Epic Link', () => {
+      return getEpicLinkField(dummyJira)
+        .then(field => {
+          field.should.eql('customfield_10805');
         });
+    });
+
+    it('Missing Epic Link', done => {
+      dummyJira.listFields = function() {
+        return Promise.resolve(fields.noEpicLink);
+      };
+
+        getEpicLinkField(dummyJira).should.eventually.be.rejected.notify(done);
     });
 
     it('Find Parent from Sub-task', () => {
@@ -53,9 +57,12 @@ describe('jira-operations tests', function() {
     });
 
     it('Find Parent from Story by EpicLink', () => {
+      dummyJira.listFields = function() {
+        return Promise.resolve(fields.epicLink);
+      };
+
       return findParent(issues['WHP-9993'], dummyJira)
         .then(parent => {
-          console.log(parent);
           parent.fields.issuetype.name.should.eql('Epic');
         });
     });
@@ -74,9 +81,8 @@ describe('jira-operations tests', function() {
         });
     });
 
-    it('No parent found', () => {
-      let fn = function() { findParent(issues['WHP-9990'], dummyJira); };
-      expect(fn).to.throw(Error);
+    it('No parent found', done => {
+      findParent(issues['WHP-9990'], dummyJira).should.eventually.be.rejected.notify(done);
     });
   });
 });

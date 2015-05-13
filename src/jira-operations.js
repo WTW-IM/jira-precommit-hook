@@ -9,7 +9,7 @@ export function getEpicLinkField(jiraClient) {
         }
       }
 
-      throw new Error('Cannot find Epic Link Field.');
+      return Promise.reject('Cannot find Epic Link Field.');
     });
 }
 
@@ -42,11 +42,11 @@ export function findParent(issue, jiraClient) {
           }
         }
 
-        throw new Error('Cannot find parent from Epic.');
+        return Promise.reject('Cannot find parent from Epic.');
       }
       break;
 
       default:
-        throw new Error(`${issue.fields.issuetype.name} should not have a parent.`);
+        return Promise.reject(`${issue.fields.issuetype.name} should not have a parent.`);
   }
 }
