@@ -6,3 +6,6 @@ test/tmp/
 
 #Logging Output
 *.log
+
+#Jira Connection Information
+.jirarc
