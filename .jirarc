@@ -1,9 +1,0 @@
-{
-	"projectName": "OneExchange",
-	"protocol": "http",
-	"host": "jira.extendhealth.com",
-	"port": 80,
-	"version": "2",
-	"verbose": false,
-	"strictSSL": false
-}
