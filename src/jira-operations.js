@@ -42,7 +42,7 @@ export function findParent(issue, jiraClient) {
           }
         }
 
-        return Promise.reject('Cannot find parent from Epic.');
+        return Promise.reject(`Cannot find parent from Epic ${issue.key}`);
       }
       break;
 

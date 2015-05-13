@@ -19,8 +19,8 @@ function createIssueLinks(direction, parentKey, parentType) {
 
 export default function createTestIssue(key, type, color, parentKey, parentType) {
   let baseIssue = {
+    'key': key,
     'fields': {
-      'key': key,
       'status': {
         'statusCategory': {
           'colorName': color
@@ -34,44 +34,11 @@ export default function createTestIssue(key, type, color, parentKey, parentType)
 
   switch(type) {
     case 'Epic':
-      return _.merge(baseIssue, {
-        'fields': {
-          'key': key,
-          'status': {
-            'statusCategory': {
-              'colorName': color
-            }
-          },
-          'issuetype': {
-            'name': type
-          },
-        'issuelinks': [
-          {
-            'inwardIssue': {
-              'key': parentKey,
-              'fields': {
-                'issuetype': {
-                  'name': parentType
-                }
-              }
-            }
-          }
-        ]
-      }
-      });
+      return _.merge(baseIssue, createIssueLinks('inwardIssue', parentKey, parentType));
     case 'Story':
       if(parentType === 'Epic') {
         return _.merge(baseIssue, {
           'fields': {
-            'key': key,
-            'status': {
-              'statusCategory': {
-                'colorName': color
-              }
-            },
-            'issuetype': {
-              'name': type
-            },
             'customfield_10805': parentKey
           }
         });
@@ -80,16 +47,9 @@ export default function createTestIssue(key, type, color, parentKey, parentType)
     case 'Sub-task':
       return _.merge(baseIssue, {
         'fields': {
-          'issuelinks': [{
-            'outwardIssue': {
-              'key': parentKey,
-              'fields': {
-                'issuetype': {
-                  'name': parentType
-                }
-              }
-            }
-          }]
+          'parent': {
+            'key': parentKey
+          }
         }
       });
     case 'Initiative':

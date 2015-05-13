@@ -2,10 +2,11 @@ import {findParent, getEpicLinkField} from '../src/jira-operations.js';
 import createTestIssue from './issue-generator.js';
 
 let issues = {
-  'WHP-9994': createTestIssue('WHP-9994', 'Sub-task', 'yellow', 'WHP-9993', 'Story'),
-  'WHP-9993': createTestIssue('WHP-9993', 'Story', 'yellow', 'WHP-9991', 'Epic'),
-  'WHP-9992': createTestIssue('WHP-9992', 'Story', 'yellow', 'WHP-9990', 'Initiative'),
-  'WHP-9991': createTestIssue('WHP-9991', 'Epic', 'yellow', 'WHP-9990', 'Initiative'),
+  'WHP-9995': createTestIssue('WHP-9995', 'Sub-task', 'yellow', 'WHP-9994', 'Story'),
+  'WHP-9994': createTestIssue('WHP-9994', 'Story', 'yellow', 'WHP-9992', 'Epic'),
+  'WHP-9993': createTestIssue('WHP-9993', 'Story', 'yellow', 'WHP-9990', 'Initiative'),
+  'WHP-9992': createTestIssue('WHP-9992', 'Epic', 'yellow', 'WHP-9990', 'Initiative'),
+  'WHP-9991': createTestIssue('WHP-9991', 'Epic', 'yellow'),
   'WHP-9990': createTestIssue('WHP-9990', 'Initiative', 'yellow')
 };
 
@@ -50,7 +51,7 @@ describe('jira-operations tests', function() {
     });
 
     it('Find Parent from Sub-task', () => {
-      return findParent(issues['WHP-9994'], dummyJira)
+      return findParent(issues['WHP-9995'], dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Story');
         });
@@ -61,27 +62,31 @@ describe('jira-operations tests', function() {
         return Promise.resolve(fields.epicLink);
       };
 
-      return findParent(issues['WHP-9993'], dummyJira)
+      return findParent(issues['WHP-9994'], dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Epic');
         });
     });
 
     it('Find Parent from Story by IssueLink', () => {
-      return findParent(issues['WHP-9992'], dummyJira)
+      return findParent(issues['WHP-9993'], dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Initiative');
         });
     });
 
     it('Find Parent from Epic', () => {
-      return findParent(issues['WHP-9991'], dummyJira)
+      return findParent(issues['WHP-9992'], dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Initiative');
         });
     });
 
-    it('No parent found', done => {
+    it('No parent found from Epic', done => {
+      findParent(issues['WHP-9991'], dummyJira).should.eventually.be.rejected.notify(done);
+    });
+
+    it('No parent found from Initiative', done => {
       findParent(issues['WHP-9990'], dummyJira).should.eventually.be.rejected.notify(done);
     });
   });
