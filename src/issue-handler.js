@@ -1,4 +1,4 @@
-import strats from './strategies/index';
+import strats from './issue-strategies/index';
 
 function validateStrategies(issueKey) {
   let issueJSON = retrieveIssue(issueKey);
