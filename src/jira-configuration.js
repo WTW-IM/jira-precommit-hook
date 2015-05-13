@@ -1,5 +1,5 @@
 import {readJSON} from './fs-utils.js';
-import lodash from 'lodash';
+import _ from 'lodash';
 
 export function validateAPIConfig(config){
   // validate that this is a proper .jirarc file
@@ -16,7 +16,7 @@ export function validateAPIConfig(config){
     verbose: false,
     strictSSL: true
   };
-  config = lodash.defaults(config, defaults);
+  config = _.defaults(config, defaults);
   return config;
 }
 

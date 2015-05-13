@@ -19,8 +19,8 @@ function createIssueLinks(direction, parentKey, parentType) {
 
 export default function createTestIssue(key, type, color, parentKey, parentType) {
   let baseIssue = {
+    'key': key,
     'fields': {
-      'key': key,
       'status': {
         'statusCategory': {
           'colorName': color

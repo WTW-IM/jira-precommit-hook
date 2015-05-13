@@ -27,13 +27,13 @@ export function copyHookFiles(gitDirectory) {
   return new Promise((fulfill, reject) => {
     fs.createReadStream(path.resolve(path.join(__dirname, '../hooks/commit-msg')))
       .pipe(fs.createWriteStream(path.join(gitDirectory, '/hooks/commit-msg')))
-      .on('close', (error, resolve) => {
+      .on('close', (error, result) => {
         if(error) {
           console.log('REJECT: ' + error);
           reject(error);
         }
         else {
-          fulfill(resolve);
+          fulfill(result);
         }
       });
   });

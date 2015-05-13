@@ -1,4 +1,4 @@
-import {getAPIConfig, getAuthentication, validateAPIConfig, validateAuthentication} from '../src/jira-handler.js';
+import {getAPIConfig, getAuthentication, validateAPIConfig, validateAuthentication} from '../src/jira-configuration.js';
 import {getFilePath} from '../src/fs-utils.js';
 import path from 'path';
 
@@ -40,7 +40,7 @@ let missingPassword = {
   'username' : 'UserDudeBro'
 };
 
-describe('jira-handler tests', () => {
+describe('Jira Configuration tests', () => {
   describe('APIConfig', () => {
     it('Get project URL', () => {
       return getAPIConfig(jiraPath)
