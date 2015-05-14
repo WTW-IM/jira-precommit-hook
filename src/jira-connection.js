@@ -1,5 +1,6 @@
 import {getAPIConfig} from './jira-configuration.js';
 import {JiraApi} from 'jira';
+import _ from 'lodash';
 
 function promisify(func) {
   return function(...args) {
@@ -22,7 +23,7 @@ Object.keys(JiraApi.prototype).forEach(key => {
   let currentProperty = JiraApi.prototype[key];
 
   if(typeof currentProperty === 'function') {
-    JiraApi.prototype[key] = promisify(currentProperty);
+    JiraApi.prototype[key] = _.memoize(promisify(currentProperty));
   }
 });
 
