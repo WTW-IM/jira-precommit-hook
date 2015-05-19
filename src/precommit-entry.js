@@ -2,6 +2,8 @@
 import fsp from 'fs-promise';
 import _ from 'lodash';
 import * as issueHandler from './issue-handler';
+import {findProjectKey} from './jira-operations';
+import {getJiraAPI} from './jira-connection';
 
 export function getIssueReference(msgToParse, prjKey) {
   let pattern = RegExp(`${prjKey}-\\d+`, 'g');
@@ -14,14 +16,19 @@ export function getIssueReference(msgToParse, prjKey) {
 }
 
 export function getCommitMsg (path) {
-   return fsp.readFile(path, {encoding:'utf8'})
-    .then(fileContents => {
-      getIssueReference(fileContents, 'TW');
-    })
-    .then(issues => issueHandler.issueStrategizer(issues))
-    .catch(err => {
-      console.log('Welcome to getCommitMsg');
-      console.error(err);
-      process.exit(1);
+  return getJiraAPI()
+    .then(jiraAPI =>
+    {
+      return fsp.readFile(path, {encoding:'utf8'})
+        .then(fileContents =>
+          getIssueReference(fileContents, findProjectKey(jiraAPI))
+        )
+        .then(issues =>
+          issueHandler.issueStrategizer(issues)
+        )
+        .catch(err => {
+          console.error(err);
+          process.exit(1);
+        });
     });
 }

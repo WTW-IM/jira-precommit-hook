@@ -4,45 +4,48 @@ import sPromise from 'sinon-as-promised';
 import * as issueHandler from '../src/issue-handler';
 import fsp from 'fs-promise';
 import os from 'os';
+import * as connection from '../src/jira-connection';
+import * as operations from '../src/jira-operations';
+import {JiraApi} from 'jira';
 
 let eol = os.EOL;
 
 describe('precommit-entry tests', () => {
   describe('Hook Message', () => {
     beforeEach(() => {
+      let stubJson = {
+        'issueType': {
+          'name': 'Story'
+        }
+      };
       sinon.stub(issueHandler, 'issueStrategizer', issues => {
-        let jsonObjects = [
-          {
-            'issueType': {
-              'name': 'Story'
-            }
-          },
-          {
-            'issueType': {
-              'name': 'Story'
-            }
-          },
-          {
-            'issueType': {
-              'name': 'Story'
-            }
-          }
-        ];
+        let jsonObjects = [stubJson, stubJson, stubJson];
         return jsonObjects;
       });
 
       let readFileStub = sinon.stub(fsp, 'readFile');
       readFileStub.resolves('TW-5032' + eol + 'TW-2380' + eol + 'TW-2018');
+
+      sinon.stub(connection, 'getJiraAPI', () => {
+        return Promise.resolve(new JiraApi('http', 'www.jira.com', 80, 'UserDudeBro', 'SuperSecret', '2.0.0'));
+      });
+
+      sinon.stub(operations, 'findProjectKey', jiraAPI => {
+        return 'TW';
+      });
     });
 
     afterEach(() => {
       issueHandler.issueStrategizer.restore();
       fsp.readFile.restore();
+      connection.getJiraAPI.restore();
     });
 
     it('read from issue list and return JSON array', () => {
       return pce.getCommitMsg('issuesTestFile.txt')
-        .then(results => results.length.should.equal(3));
+        .then(results =>
+          results.length.should.equal(3)
+        );
     });
   });
 
