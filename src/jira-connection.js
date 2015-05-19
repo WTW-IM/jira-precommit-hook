@@ -7,8 +7,7 @@ function promisify(func) {
     return new Promise((fulfill, reject) => {
       args.push((error, result) => {
         if(error) {
-          reject(error);
-          return Promise.reject(error);
+          return reject(error);
         }
         else {
           fulfill(result);
@@ -29,12 +28,12 @@ Object.keys(JiraApi.prototype).forEach(key => {
 });
 
 //Grabs data from files and returns a JIRA connection object wrapped in promise
-//Temporary hack until resolved: https://github.com/steves/node-jira/pull/107
 export function getJiraAPI() {
   return getAPIConfig(getFilePath(process.cwd(), '.jirarc'))
     .then(({projectName, protocol, host, port, version, verbose, strictSSL}) => {
       let jiraClient = new JiraApi(protocol, host, port, '', '', version, verbose, false);
 
+      //Temporary hack until resolved: https://github.com/steves/node-jira/pull/107
       jiraClient.doRequest = function(options, callback) {
         jiraClient.request(options, callback);
       };

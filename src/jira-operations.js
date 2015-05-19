@@ -2,12 +2,8 @@ import _ from 'lodash';
 
 export function findProjectKey(jiraClient) {
   return jiraClient.listProjects()
-    .then(projects => {
-      let index = _.findIndex(projects,
-        project => project.name === jiraClient.projectName);
-
-      return index >= 0 ? projects[index].key : null;
-    });
+    .then(projects => _.find(projects,
+      project => project.name === jiraClient.projectName));
 }
 
 export function getEpicLinkField(jiraClient) {
