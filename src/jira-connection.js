@@ -4,8 +4,6 @@ import {JiraApi} from 'jira';
 
 function promisify(func) {
   return function(...args) {
-    let args = Array.prototype.slice.call();
-
     return new Promise((fulfill, reject) => {
       args.push((error, result) => {
         if(error) {
