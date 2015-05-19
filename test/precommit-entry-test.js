@@ -30,9 +30,9 @@ describe('precommit-entry tests', () => {
         return Promise.resolve(new JiraApi('http', 'www.jira.com', 80, 'UserDudeBro', 'SuperSecret', '2.0.0'));
       });
 
-      sinon.stub(operations, 'findProjectKey', jiraAPI => {
+      operations.findProjectKey = function(api) {
         return 'TW';
-      });
+      };
     });
 
     afterEach(() => {
