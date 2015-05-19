@@ -3,7 +3,7 @@ import _ from 'lodash';
 export function findProjectKey(jiraClient) {
   return jiraClient.listProjects()
     .then(projects => _.find(projects,
-      project => project.name === jiraClient.projectName));
+        project => project.name === jiraClient.projectName).key);
 }
 
 export function getEpicLinkField(jiraClient) {
