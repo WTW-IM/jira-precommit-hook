@@ -1,5 +1,15 @@
 import _ from 'lodash';
 
+export function findProjectKey(jiraClient) {
+  return jiraClient.listProjects()
+    .then(projects => {
+      let index = _.findIndex(projects,
+        project => project.name === jiraClient.projectName);
+
+      return index >= 0 ? projects[index].key : null;
+    });
+}
+
 export function getEpicLinkField(jiraClient) {
   return jiraClient.listFields()
     .then(fields => {

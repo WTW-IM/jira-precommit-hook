@@ -1,4 +1,4 @@
-import {findParent, getEpicLinkField} from '../src/jira-operations.js';
+import {findProjectKey, getEpicLinkField, findParent} from '../src/jira-operations.js';
 import createTestIssue from './issue-generator.js';
 
 let issues = {
@@ -18,10 +18,37 @@ let fields = {
   'noEpicLink': []
 };
 
-describe('jira-operations tests', function() {
-  describe('Find Issue Parent', function() {
+let projects = [
+  {
+    'key': 'ABC',
+    'name': 'First Three'
+  },
+  {
+    'key': 'XYZ',
+    'name': 'Last Three'
+  }
+];
 
-    let dummyJira = null;
+let dummyJira = null;
+
+describe('jira-operations tests', function() {
+    before(() => {
+      dummyJira = {
+        projectName: 'Last Three',
+        listProjects() {
+          return Promise.resolve(projects);
+        }
+      };
+    });
+
+  it('Find Project Keys', () => {
+    return findProjectKey(dummyJira)
+            .then(key => {
+              key.should.eql('XYZ');
+            });
+  });
+
+  describe('Find Issue Parent', function() {
 
     before(() => {
       dummyJira = {
