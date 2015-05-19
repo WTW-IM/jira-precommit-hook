@@ -1,6 +1,4 @@
 import * as pce from '../src/precommit-entry';
-import sinon from 'sinon';
-import sPromise from 'sinon-as-promised';
 import * as issueHandler from '../src/issue-handler';
 import fsp from 'fs-promise';
 import os from 'os';
