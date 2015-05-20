@@ -25,13 +25,13 @@ describe('All issues exist apply tests', () => {
     };
   });
 
-  it('All issues exist', done => {
+  it('All issues exist', () => {
     let testIssues = ['TW1', 'TW4', 'TW7'];
-    allStrat.apply(testIssues, dummyClientAPI).should.eventually.eql(true).notify(done);
+    allStrat.apply(testIssues, dummyClientAPI).should.eventually.equal(true);
   });
 
-  it('At least one issue does not exist, should error', done => {
+  it('At least one issue does not exist, should error', () => {
     let testIssues = ['TW9'];
-    allStrat.apply(testIssues, dummyClientAPI).should.eventually.be.rejected.notify(done);
+    allStrat.apply(testIssues, dummyClientAPI).should.eventually.be.rejectedWith(Error);
   });
 });

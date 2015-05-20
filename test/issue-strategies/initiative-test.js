@@ -5,18 +5,8 @@ let issues = {
   TW1: issueGenerator('TW1', 'Initiative', 'yellow')
 };
 
-let dummyClientAPI;
-
 describe('Initiative Strategy Apply Tests', () => {
-  before(() => {
-    dummyClientAPI = {
-      findIssue(issueKey) {
-        return Promise.resolve(issues[issueKey]);
-      }
-    };
-  });
-
-  it('Should not be able to commit against Initiative, should throw error', done => {
-    initStrat.apply(issues.TW1, dummyClientAPI).should.eventually.be.rejected.notify(done);
+  it('Should not be able to commit against Initiative, should throw error', () => {
+    initStrat.apply(issues.TW1).should.eventually.be.rejectedWith(Error);
   });
 });

@@ -8,30 +8,20 @@ let issues = {
   TW4: issueGenerator('TW4', 'MT', 'green')
 };
 
-let dummyClientAPI;
-
 describe('Bug and Maintenance Strategy Apply Tests', () => {
-  before(() => {
-    dummyClientAPI = {
-      findIssue(issueKey) {
-        return Promise.resolve(issues[issueKey]);
-      }
-    };
+  it('Bug open to commit against', () => {
+    bugMtStrat.apply(issues.TW1).should.eventually.eql(true);
   });
 
-  it('Bug open to commit against', done => {
-    bugMtStrat.apply(issues.TW1, dummyClientAPI).should.eventually.eql(true).notify(done);
+  it('Bug closed', () => {
+    bugMtStrat.apply(issues.TW2).should.eventually.be.rejectedWith(Error);
   });
 
-  it('Bug closed', done => {
-    bugMtStrat.apply(issues.TW2, dummyClientAPI).should.eventually.be.rejected.notify(done);
+  it('Maintenance Task open to commit against', () => {
+    bugMtStrat.apply(issues.TW3).should.eventually.eql(true);
   });
 
-  it('Maintenance Task open to commit against', done => {
-    bugMtStrat.apply(issues.TW3, dummyClientAPI).should.eventually.eql(true).notify(done);
-  });
-
-  it('Maintenance Task closed', done => {
-    bugMtStrat.apply(issues.TW4, dummyClientAPI).should.eventually.be.rejected.notify(done);
+  it('Maintenance Task closed', () => {
+    bugMtStrat.apply(issues.TW4).should.eventually.be.rejectedWith(Error);
   });
 });
