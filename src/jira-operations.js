@@ -13,6 +13,13 @@ export function getEpicLinkField(jiraClient) {
     });
 }
 
+function findIssueLinkParentKey(issue, linkDirection) {
+  let index = _.findIndex(issue.fields.issuelinks,
+    issueLink => issueLink[linkDirection].fields.issuetype.name === 'Initiative');
+
+  return index >= 0 ? issue.fields.issuelinks[index][linkDirection].key : null;
+}
+
 export function findParent(issue, jiraClient) {
   switch(issue.fields.issuetype.name) {
     case 'Sub-task':
@@ -20,12 +27,10 @@ export function findParent(issue, jiraClient) {
 
     case 'Story':
       if(issue.fields.issuelinks) {
-        for(let i = 0; i < issue.fields.issuelinks.length; i++) {
-          let outwardIssue = issue.fields.issuelinks[i].outwardIssue;
+        let parentKey = findIssueLinkParentKey(issue, 'outwardIssue');
 
-          if(outwardIssue.fields.issuetype.name === 'Initiative') {
-            return jiraClient.findIssue(outwardIssue.key);
-          }
+        if(parentKey) {
+          return jiraClient.findIssue(parentKey);
         }
       }
 
@@ -33,20 +38,11 @@ export function findParent(issue, jiraClient) {
         .then(linkField => jiraClient.findIssue(issue.fields[linkField]));
 
     case 'Epic':
-      if(issue.fields.issuelinks) {
-        for(let i = 0; i < issue.fields.issuelinks.length; i++) {
-          let inwardIssue = issue.fields.issuelinks[i].inwardIssue;
+      let parentKey = findIssueLinkParentKey(issue, 'inwardIssue');
 
-          if(inwardIssue.fields.issuetype.name === 'Initiative') {
-            return jiraClient.findIssue(inwardIssue.key);
-          }
-        }
+      return parentKey ? jiraClient.findIssue(parentKey) : Promise.reject(`Cannot find parent from Epic ${issue.key}`);
 
-        return Promise.reject(`Cannot find parent from Epic ${issue.key}`);
-      }
-      break;
-
-      default:
+    default:
         return Promise.reject(`${issue.fields.issuetype.name} should not have a parent.`);
   }
 }
