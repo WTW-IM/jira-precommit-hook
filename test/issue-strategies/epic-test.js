@@ -16,10 +16,7 @@ describe('Epic Strategy Apply Tests', () => {
     };
   });
 
-  it('Should not be able to commit against Epic, should throw error', () => {
-    return dummyClientAPI.findIssue('TW')
-      .then(issue =>
-        epicStrat.apply(issue, dummyClientAPI).should.eventually.be.rejected
-      );
+  it('Should not be able to commit against Epic, should throw error', done => {
+    epicStrat.apply(issues.TW, dummyClientAPI).should.eventually.be.rejected.notify(done);
   });
 });

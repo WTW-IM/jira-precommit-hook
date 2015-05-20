@@ -2,7 +2,6 @@ import * as storyStrat from '../../src/issue-strategies/story.js';
 import issueGenerator from '../issue-generator.js';
 
 let dummyClientAPI = null;
-let testStrat = null;
 
 let issues = {
   PM100: issueGenerator('PM100', 'Initiative', 'yellow'),
@@ -40,65 +39,49 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
         return Promise.resolve(fields.epicLink);
       }
     };
-
-    testStrat = {
-      withPass(issueKey) {
-        return dummyClientAPI.findIssue(issueKey)
-          .then(issue =>
-            storyStrat.apply(issue, dummyClientAPI).should.eventually.eql(true)
-          );
-      },
-
-      withReject(issueKey) {
-        return dummyClientAPI.findIssue(issueKey)
-          .then(issue =>
-            storyStrat.apply(issue, dummyClientAPI).should.eventually.be.rejected
-          );
-      }
-    };
   });
 
   describe('Okay to commit against', () => {
-    it('Sub-task is yellow and all the parents up to the initiative are yellow', () => {
-      return testStrat.withPass('TW102');
+    it('Sub-task is yellow and all the parents up to the initiative are yellow', done => {
+      storyStrat.apply(issues.TW102, dummyClientAPI).should.eventually.eql(true).notify(done);
     });
 
-    it('Story is yellow and all the parents up the initiative are yellow', () => {
-      return testStrat.withPass('TW101');
+    it('Story is yellow and all the parents up the initiative are yellow', done => {
+      storyStrat.apply(issues.TW101, dummyClientAPI).should.eventually.eql(true).notify(done);
     });
 
-    it('Story is yellow and parent is an initiative which is also yellow', () => {
-      return testStrat.withPass('TW103');
+    it('Story is yellow and parent is an initiative which is also yellow', done => {
+      storyStrat.apply(issues.TW103, dummyClientAPI).should.eventually.eql(true).notify(done);
     });
   });
 
   describe('Should not be able to commit against', () => {
-    it('Sub-task not yellow', () => {
-      return testStrat.withReject('TW204');
+    it('Sub-task not yellow', done => {
+      storyStrat.apply(issues.TW204, dummyClientAPI).should.eventually.be.rejected.notify(done);
     });
 
-    it('Sub-task is yellow, but the story is not', () => {
-      return testStrat.withReject('TW203');
+    it('Sub-task is yellow, but the story is not', done => {
+      storyStrat.apply(issues.TW203, dummyClientAPI).should.eventually.be.rejected.notify(done);
     });
 
-    it('Sub-task is yellow, but the epic is not', () => {
-      return testStrat.withReject('TW206');
+    it('Sub-task is yellow, but the epic is not', done => {
+      storyStrat.apply(issues.TW206, dummyClientAPI).should.eventually.be.rejected.notify(done);
     });
 
-    it('Sub-task is yellow, but the initiative is not', () => {
-      return testStrat.withReject('TW207');
+    it('Sub-task is yellow, but the initiative is not', done => {
+      storyStrat.apply(issues.TW207, dummyClientAPI).should.eventually.be.rejected.notify(done);
     });
 
-    it('Story not yellow', () => {
-      return testStrat.withReject('TW202');
+    it('Story not yellow', done => {
+      storyStrat.apply(issues.TW202, dummyClientAPI).should.eventually.be.rejected.notify(done);
     });
 
-    it('Story is yellow, but the epic is not', () => {
-      return testStrat.withReject('TW201');
+    it('Story is yellow, but the epic is not', done => {
+      storyStrat.apply(issues.TW201, dummyClientAPI).should.eventually.be.rejected.notify(done);
     });
 
-    it('Story is yellow, but the initiative is not', () => {
-      return testStrat.withReject('TW205');
+    it('Story is yellow, but the initiative is not', done => {
+      storyStrat.apply(issues.TW205, dummyClientAPI).should.eventually.be.rejected.notify(done);
     });
   });
 });

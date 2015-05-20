@@ -16,10 +16,7 @@ describe('Initiative Strategy Apply Tests', () => {
     };
   });
 
-  it('Should not be able to commit against Initiative, should throw error', () => {
-    return dummyClientAPI.findIssue('TW1')
-      .then(issue =>
-        initStrat.apply(issue, dummyClientAPI).should.eventually.be.rejected
-      );
+  it('Should not be able to commit against Initiative, should throw error', done => {
+    initStrat.apply(issues.TW1, dummyClientAPI).should.eventually.be.rejected.notify(done);
   });
 });

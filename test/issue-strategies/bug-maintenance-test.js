@@ -19,31 +19,19 @@ describe('Bug and Maintenance Strategy Apply Tests', () => {
     };
   });
 
-  it('Bug open to commit against', () => {
-    return dummyClientAPI.findIssue('TW1')
-      .then(issue =>
-        bugMtStrat.apply(issue, dummyClientAPI).should.eventually.eql(true)
-      );
+  it('Bug open to commit against', done => {
+    bugMtStrat.apply(issues.TW1, dummyClientAPI).should.eventually.eql(true).notify(done);
   });
 
-  it('Bug closed', () => {
-    return dummyClientAPI.findIssue('TW2')
-      .then(issue =>
-        bugMtStrat.apply(issue, dummyClientAPI).should.eventually.be.rejected
-      );
+  it('Bug closed', done => {
+    bugMtStrat.apply(issues.TW2, dummyClientAPI).should.eventually.be.rejected.notify(done);
   });
 
-  it('Maintenance Task open to commit against', () => {
-    return dummyClientAPI.findIssue('TW3')
-      .then(issue =>
-        bugMtStrat.apply(issue, dummyClientAPI).should.eventually.eql(true)
-      );
+  it('Maintenance Task open to commit against', done => {
+    bugMtStrat.apply(issues.TW3, dummyClientAPI).should.eventually.eql(true).notify(done);
   });
 
-  it('Maintenance Task closed', () => {
-    return dummyClientAPI.findIssue('TW4')
-      .then(issue =>
-        bugMtStrat.apply(issue, dummyClientAPI).should.eventually.be.rejected
-      );
+  it('Maintenance Task closed', done => {
+    bugMtStrat.apply(issues.TW4, dummyClientAPI).should.eventually.be.rejected.notify(done);
   });
 });
