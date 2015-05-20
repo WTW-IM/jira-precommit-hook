@@ -3,32 +3,32 @@ import os from 'os';
 
 let newLine = os.EOL;
 
-describe('precommit-entry test', () => {
-  it('Commit hook msg', done => {
+describe('Precommit-entry Test', () => {
+  it('Commit Hook Message', done => {
     let msg = getCommitMsg('test/test.txt');
     msg.should.eventually.eql(`TW-2345${newLine}${newLine}#TW-6346`)
     .notify(done);
   });
 });
 
-describe('Issue number test', () => {
-  it('Parse issue number, no issue numbers found', () => {
+describe('Issue Number Test', () => {
+  it('Parse Issue Number, No Issue Numbers Found', () => {
     getIssueReference('no issue numbers here', 'TW').should.eql([]);
   });
 
-  it('Parse issue number', () => {
+  it('Parse Issue Number', () => {
     getIssueReference('TW-5734', 'TW').should.eql(['TW-5734']);
   });
 
-  it('Parse multiple issue numbers', () => {
+  it('Parse Multiple Issue Numbers', () => {
     getIssueReference('TW-763 blah TW-856', 'TW').should.eql(['TW-763', 'TW-856']);
   });
 
-  it('Parse multiple issue numbers, ignore duplicates', () => {
+  it('Parse Multiple Issue Numbers, Ignore Duplicates', () => {
     getIssueReference('TW-123 blah blah TW-123', 'TW').should.eql(['TW-123']);
   });
 
-  it('Parse issue number, ignore issue numbers in comments', () => {
+  it('Parse Issue Number, Ignore Issue Numbers in Comments', () => {
     return getCommitMsg('test/test.txt')
       .then(content => {
         getIssueReference(content, 'TW').should.eql(['TW-2345']);
@@ -36,10 +36,10 @@ describe('Issue number test', () => {
   });
 });
 
-describe('Story test', () => {
+describe('Story Test', () => {
   it('Story does not exist');
 });
 
-describe('Initiative test', () => {
+describe('Initiative Test', () => {
   it('Find parent initiative');
 });

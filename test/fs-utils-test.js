@@ -3,20 +3,20 @@ import path from 'path';
 import fs from 'fs';
 import fsp from 'fs-promise';
 
-describe('fs-utils-test.js', () => {
-  describe('Finding directory', () => {
-    it('Finding named directory', () => {
+describe('FS-Utils Tests', () => {
+  describe('Finding Directory', () => {
+    it('Finding Named Directory', () => {
       let gitPath = findParentFolder(__dirname, '.git');
       gitPath.should.equal(path.join(__dirname, '../.git'));
     });
 
-    it('Unable to find desired directory', () => {
+    it('Unable to Find Desired Directory', () => {
       let fn = () => { findParentFolder(path.join(__dirname, '../../')); };
       expect(fn).to.throw(Error);
     });
   });
 
-  describe('Hook installation', () => {
+  describe('Hook Installation', () => {
     before(() => fsp.exists('test/tmp')
       .then(exists => {
         if(!exists) {
@@ -34,7 +34,7 @@ describe('fs-utils-test.js', () => {
         }
     }));
 
-    it('Hook creation test', (done) => {
+    it('Hook Creation Test', (done) => {
       copyHookFiles(path.join(__dirname, '/tmp/.git'))
       .then(() => {
          fs.existsSync('test/tmp/.git/hooks/commit-msg').should.equal(true);
@@ -42,7 +42,7 @@ describe('fs-utils-test.js', () => {
       });
     });
 
-    it('Validate hook file is correct', (done) => {
+    it('Validate Hook File is Correct', (done) => {
       copyHookFiles(path.join(__dirname, '/tmp/.git'))
       .then(() => {
         let newFile = fs.readFileSync('test/tmp/.git/hooks/commit-msg');
@@ -53,13 +53,13 @@ describe('fs-utils-test.js', () => {
     });
   });
 
-  describe('Finding specified file', () => {
-    it('.gitignore is found from test', () => {
+  describe('Finding Specified File', () => {
+    it('.gitignore is Found from Test', () => {
       let gitPath = getFilePath(__dirname, '.gitignore');
       gitPath.should.equal(path.join(__dirname, '../.gitignore'));
     });
 
-    it('Unable to find specified file', () => {
+    it('Unable to Find Specified File', () => {
       let fn = () => { getFilePath(path.join(__dirname, '../../')); };
       expect(fn).to.throw(Error);
     });

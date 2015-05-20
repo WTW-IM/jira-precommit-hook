@@ -40,14 +40,14 @@ let missingPassword = {
   'username' : 'UserDudeBro'
 };
 
-describe('Jira Configuration tests', () => {
-  describe('APIConfig', () => {
-    it('Get project URL', () => {
+describe('JIRA Configuration Tests', () => {
+  describe('API Config', () => {
+    it('Get Project URL', () => {
       return getAPIConfig(jiraPath)
         .then(config => config.projectName.should.equal('test'));
     });
 
-    it('Get host', () => {
+    it('Get Host', () => {
       return getAPIConfig(jiraPath)
         .then(config => config.host.should.equal('jira.com'));
     });
@@ -57,17 +57,17 @@ describe('Jira Configuration tests', () => {
       object.projectName.should.equal('test');
     });
 
-    it('Missing host', () => {
+    it('Missing Host', () => {
       assert.throw( () => { validateAPIConfig(missingHost); }, '.jirarc missing host url. Please check the README for details');
     });
 
-    it('Missing project name', () => {
+    it('Missing Project Name', () => {
       assert.throw( () => { validateAPIConfig(missingProjectName); }, '.jirarc missing project name. Please check the README for details');
     });
   });
 
-  describe('Incomplete Jira Object tests', () => {
-    it('Comparing to default values', () => {
+  describe('Incomplete JIRA Object Tests', () => {
+    it('Comparing to Default Values', () => {
       let object = validateAPIConfig(incompleteJiraObject);
       object.protocol.should.equal('http');
       object.port.should.equal(80);
@@ -83,7 +83,7 @@ describe('Jira Configuration tests', () => {
         .then(authConfig => authConfig.username.should.equal('UserDudeBro'));
     });
 
-    it('Get password', () => {
+    it('Get Password', () => {
       return getAuthentication(authPath)
         .then(authConfig => authConfig.password.should.equal('SuperSecret'));
     });

@@ -3,7 +3,7 @@ import DummyJira from './dummy-jira.js';
 
 let dummyJira = new DummyJira();
 
-describe('jira-operations tests', function() {
+describe('JIRA Operations Tests', function() {
   it('Find Project Keys', () => {
     return findProjectKey(dummyJira)
             .then(key => {
@@ -59,11 +59,11 @@ describe('jira-operations tests', function() {
         });
     });
 
-    it('No parent found from Epic', done => {
+    it('No Parent Found from Epic', done => {
       findParent(dummyJira.issues['WHP-9991'], dummyJira).should.eventually.be.rejected.notify(done);
     });
 
-    it('No parent found from Initiative', done => {
+    it('No Parent Found from Initiative', done => {
       findParent(dummyJira.issues['WHP-9990'], dummyJira).should.eventually.be.rejected.notify(done);
     });
   });

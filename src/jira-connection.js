@@ -28,8 +28,8 @@ Object.keys(JiraApi.prototype).forEach(key => {
 });
 
 //Grabs data from files and returns a JIRA connection object wrapped in promise
-export function getJiraAPI() {
-  return getAPIConfig(getFilePath(process.cwd(), '.jirarc'))
+export function getJiraAPI(configPath) {
+  return getAPIConfig(getFilePath(configPath, '.jirarc'))
     .then(({projectName, protocol, host, port, version, verbose, strictSSL}) => {
       let jiraClient = new JiraApi(protocol, host, port, '', '', version, verbose, false);
 
