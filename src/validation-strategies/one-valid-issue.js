@@ -8,6 +8,6 @@ function validateStrategies(issueKey, jiraClientAPI) {
     );
 }
 
-export function apply(issues, jiraClientAPI) {
+export default function apply(issues, jiraClientAPI) {
   return promiseUtils.anyPromise(issues.map(i => validateStrategies(i, jiraClientAPI)));
 }

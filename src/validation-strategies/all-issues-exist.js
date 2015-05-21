@@ -1,4 +1,4 @@
-export function apply(issues, jiraClientAPI) {
+export default function apply(issues, jiraClientAPI) {
   let issueMap = issues.map(issue => {
     return jiraClientAPI.findIssue(issue);
   });

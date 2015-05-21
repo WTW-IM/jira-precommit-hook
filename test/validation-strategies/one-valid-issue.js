@@ -1,4 +1,4 @@
-import * as validStrat from '../../src/validation-strategies/one-valid-issue.js';
+import validStrat from '../../src/validation-strategies/one-valid-issue.js';
 import issueGenerator from '../issue-generator.js';
 
 let issues = {
@@ -44,23 +44,23 @@ describe('One valid issue apply tests', () => {
     };
   });
 
-  it('1 good issue', () => {
+  it('1 good issue', done => {
     let testIssues = ['TW101'];
-    validStrat.apply(testIssues, dummyClientAPI).should.eventually.equal(true);
+    validStrat(testIssues, dummyClientAPI).should.eventually.equal(true).notify(done);
   });
 
-  it('1 bad issue', () => {
+  it('1 bad issue', done => {
     let testIssues = ['TW201'];
-    validStrat.apply(testIssues, dummyClientAPI).should.eventually.be.rejectedWith(Error);
+    validStrat(testIssues, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
   });
 
-  it('1 good issue, 1 bad issue', () => {
+  it('1 good issue, 1 bad issue', done => {
     let testIssues = ['TW101', 'TW201'];
-    validStrat.apply(testIssues, dummyClientAPI).should.eventually.equal(true);
+    validStrat(testIssues, dummyClientAPI).should.eventually.equal(true).notify(done);
   });
 
-  it('2 bad issues', () => {
+  it('2 bad issues', done => {
     let testIssues = ['TW201', 'TW206'];
-    validStrat.apply(testIssues, dummyClientAPI).should.eventually.be.rejectedWith(Error);
+    validStrat(testIssues, dummyClientAPI).should.eventually.be.rejectedWith([new Error(), new Error()]).notify(done);
   });
 });

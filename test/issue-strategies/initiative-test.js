@@ -6,7 +6,7 @@ let issues = {
 };
 
 describe('Initiative Strategy Apply Tests', () => {
-  it('Should not be able to commit against Initiative, should throw error', () => {
-    initStrat.apply(issues.TW1).should.eventually.be.rejectedWith(Error);
+  it('Should not be able to commit against Initiative, should throw error', done => {
+    initStrat.apply(issues.TW1).should.eventually.be.rejectedWith(Error).notify(done);
   });
 });

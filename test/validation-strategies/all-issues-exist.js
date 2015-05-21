@@ -1,4 +1,4 @@
-import * as allStrat from '../../src/validation-strategies/all-issues-exist.js';
+import allStrat from '../../src/validation-strategies/all-issues-exist.js';
 import issueGenerator from '../issue-generator.js';
 
 let issues = {
@@ -25,13 +25,13 @@ describe('All issues exist apply tests', () => {
     };
   });
 
-  it('All issues exist', () => {
+  it('All issues exist', done => {
     let testIssues = ['TW1', 'TW4', 'TW7'];
-    allStrat.apply(testIssues, dummyClientAPI).should.eventually.equal(true);
+    allStrat(testIssues, dummyClientAPI).should.eventually.equal(true).notify(done);
   });
 
-  it('At least one issue does not exist, should error', () => {
+  it('At least one issue does not exist, should error', done => {
     let testIssues = ['TW9'];
-    allStrat.apply(testIssues, dummyClientAPI).should.eventually.be.rejectedWith(Error);
+    allStrat(testIssues, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
   });
 });
