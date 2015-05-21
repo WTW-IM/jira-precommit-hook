@@ -23,9 +23,10 @@ export function getCommitMsg (path) {
         .then(fileContents =>
           getIssueReference(fileContents, findProjectKey(jiraAPI))
         )
-        .then(issues =>
-          issueHandler.issueStrategizer(issues)
-        )
+        .then(issues => {
+          issueHandler.issueStrategizer(issues);
+          process.exit(0);
+        })
         .catch(err => {
           console.error(err);
           process.exit(1);
