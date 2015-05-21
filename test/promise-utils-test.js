@@ -1,69 +1,69 @@
 import * as promiseUtils from '../src/promise-utils.js';
 
 describe('Any Promise Tests', () => {
-  it('No args', done => {
-    promiseUtils.anyPromise().should.eventually.be.rejectedWith(Error, 'No arguments provided').notify(done);
+  it('No args', () => {
+    return promiseUtils.anyPromise().should.eventually.be.rejectedWith(Error, 'No arguments provided');
   });
 
-  it('Non-array argument', done => {
+  it('Non-array argument', () => {
     let testArgs = 0;
-    promiseUtils.anyPromise(testArgs).should.eventually.be.rejectedWith(Error, 'Argument is not a non-array').notify(done);
+    return promiseUtils.anyPromise(testArgs).should.eventually.be.rejectedWith(Error, 'Argument is not a non-array');
   });
 
-  it('Empty array', done => {
+  it('Empty array', () => {
     let testArgs = [];
-    promiseUtils.anyPromise(testArgs).should.eventually.be.rejectedWith(Error, 'Argument is not a non-array').notify(done);
+    return promiseUtils.anyPromise(testArgs).should.eventually.be.rejectedWith(Error, 'Argument is not a non-array');
   });
 
-  it('Successful single promise', done => {
+  it('Successful single promise', () => {
     let testPromiseArray = [Promise.resolve(true)];
-    promiseUtils.anyPromise(testPromiseArray).should.eventually.equal(true).notify(done);
+    return promiseUtils.anyPromise(testPromiseArray).should.eventually.equal(true);
   });
 
-  it('Unsuccessful single promise', done => {
+  it('Unsuccessful single promise', () => {
     let testPromiseArray = [Promise.reject(new Error('Failed'))];
-    promiseUtils.anyPromise(testPromiseArray).should.eventually.be.rejectedWith(Error, 'Failed').notify(done);
+    return promiseUtils.anyPromise(testPromiseArray).should.eventually.be.rejectedWith(Error, 'Failed');
   });
 
-  it('1 successful and 1 incomplete promise', done => {
+  it('1 successful and 1 incomplete promise', () => {
     let testPromiseArray = [Promise.resolve(true), new Promise(() => {})];
-    promiseUtils.anyPromise(testPromiseArray).should.eventually.equal(true).notify(done);
+    return promiseUtils.anyPromise(testPromiseArray).should.eventually.equal(true);
   });
 
-  it('1 incomplete and 1 successful promise', done => {
+  it('1 incomplete and 1 successful promise', () => {
     let testPromiseArray = [new Promise(() => {}), Promise.resolve(true)];
-    promiseUtils.anyPromise(testPromiseArray).should.eventually.equal(true).notify(done);
+    return promiseUtils.anyPromise(testPromiseArray).should.eventually.equal(true);
   });
 
-  it('1 successful and 1 failure', done => {
+  it('1 successful and 1 failure', () => {
     let testPromiseArray = [Promise.resolve(true), Promise.reject(new Error('Failed'))];
-    promiseUtils.anyPromise(testPromiseArray).should.eventually.equal(true).notify(done);
+    return promiseUtils.anyPromise(testPromiseArray).should.eventually.equal(true);
   });
 
-  it('1 failure and 1 successful', done => {
+  it('1 failure and 1 successful', () => {
     let testPromiseArray = [Promise.reject(new Error('Failed')), Promise.resolve(true)];
-    promiseUtils.anyPromise(testPromiseArray).should.eventually.equal(true).notify(done);
+    return promiseUtils.anyPromise(testPromiseArray).should.eventually.equal(true);
   });
 
-  it('2 failures', done => {
+  it('2 failures', () => {
     let err1 = new Error('Error 1');
     let err2 = new Error('Error 2');
     let testPromiseArray = [Promise.reject(err1), Promise.reject(err2)];
-    promiseUtils.anyPromise(testPromiseArray).should.eventually.be.rejectedWith([err1, err2]).notify(done);
+    return promiseUtils.anyPromise(testPromiseArray).should.eventually.be.rejectedWith([err1, err2]);
   });
 
-  it('3 failures', done => {
+  it('3 failures', () => {
     let err1 = new Error('Error 1');
     let err2 = new Error('Error 2');
     let err3 = new Error('Error 3');
     let testPromiseArray = [Promise.reject(err1), Promise.reject(err2), Promise.reject(err3)];
-    promiseUtils.anyPromise(testPromiseArray).should.eventually.be.rejectedWith([err1, err2, err3]).notify(done);
+    return promiseUtils.anyPromise(testPromiseArray).should.eventually.be.rejectedWith([err1, err2, err3]);
   });
 
-  it('2 failures and 1 successful', done => {
+  it('2 failures and 1 successful', () => {
     let err1 = new Error('Error 1');
     let err2 = new Error('Error 2');
     let testPromiseArray = [Promise.reject(err1), Promise.reject(err2), Promise.resolve(true)];
-    promiseUtils.anyPromise(testPromiseArray).should.eventually.be.equal(true).notify(done);
+    return promiseUtils.anyPromise(testPromiseArray).should.eventually.be.equal(true);
   });
 });

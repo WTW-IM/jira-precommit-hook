@@ -9,19 +9,19 @@ let issues = {
 };
 
 describe('Bug and Maintenance Strategy Apply Tests', () => {
-  it('Bug open to commit against', done => {
-    bugMtStrat.apply(issues.TW1).should.eventually.eql(true).notify(done);
-  });
+  it('Bug open to commit against', () =>
+    bugMtStrat.apply(issues.TW1).should.eventually.eql(true)
+  );
 
-  it('Bug closed', done => {
-    bugMtStrat.apply(issues.TW2).should.eventually.be.rejectedWith(Error).notify(done);
-  });
+  it('Bug closed', () =>
+    bugMtStrat.apply(issues.TW2).should.eventually.be.rejectedWith(Error)
+  );
 
-  it('Maintenance Task open to commit against', done => {
-    bugMtStrat.apply(issues.TW3).should.eventually.eql(true).notify(done);
-  });
+  it('Maintenance Task open to commit against', () =>
+    bugMtStrat.apply(issues.TW3).should.eventually.eql(true)
+  );
 
-  it('Maintenance Task closed', done => {
-    bugMtStrat.apply(issues.TW4).should.eventually.be.rejectedWith(Error).notify(done);
-  });
+  it('Maintenance Task closed', () =>
+    bugMtStrat.apply(issues.TW4).should.eventually.be.rejectedWith(Error)
+  );
 });

@@ -44,23 +44,23 @@ describe('One valid issue apply tests', () => {
     };
   });
 
-  it('1 good issue', done => {
+  it('1 good issue', () => {
     let testIssues = ['TW101'];
-    validStrat(testIssues, dummyClientAPI).should.eventually.equal(true).notify(done);
+    return validStrat(testIssues, dummyClientAPI).should.eventually.equal(true);
   });
 
-  it('1 bad issue', done => {
+  it('1 bad issue', () => {
     let testIssues = ['TW201'];
-    validStrat(testIssues, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
+    return validStrat(testIssues, dummyClientAPI).should.eventually.be.rejectedWith(Error);
   });
 
-  it('1 good issue, 1 bad issue', done => {
+  it('1 good issue, 1 bad issue', () => {
     let testIssues = ['TW101', 'TW201'];
-    validStrat(testIssues, dummyClientAPI).should.eventually.equal(true).notify(done);
+    return validStrat(testIssues, dummyClientAPI).should.eventually.equal(true);
   });
 
-  it('2 bad issues', done => {
+  it('2 bad issues', () => {
     let testIssues = ['TW201', 'TW206'];
-    validStrat(testIssues, dummyClientAPI).should.eventually.be.rejectedWith([new Error(), new Error()]).notify(done);
+    return validStrat(testIssues, dummyClientAPI).should.eventually.be.rejectedWith([new Error(), new Error()]);
   });
 });

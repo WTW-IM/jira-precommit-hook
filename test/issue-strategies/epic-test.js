@@ -6,7 +6,7 @@ let issues = {
 };
 
 describe('Epic Strategy Apply Tests', () => {
-  it('Should not be able to commit against Epic, should throw error', done => {
-    epicStrat.apply(issues.TW).should.eventually.be.rejectedWith(Error).notify(done);
-  });
+  it('Should not be able to commit against Epic, should throw error', () =>
+    epicStrat.apply(issues.TW).should.eventually.be.rejectedWith(Error)
+  );
 });

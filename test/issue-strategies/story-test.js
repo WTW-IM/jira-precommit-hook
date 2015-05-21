@@ -42,46 +42,46 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
   });
 
   describe('Okay to commit against', () => {
-    it('Sub-task is yellow and all the parents up to the initiative are yellow', done => {
-      storyStrat.apply(issues.TW102, dummyClientAPI).should.eventually.equal(true).notify(done);
-    });
+    it('Sub-task is yellow and all the parents up to the initiative are yellow', () =>
+      storyStrat.apply(issues.TW102, dummyClientAPI).should.eventually.equal(true)
+    );
 
-    it('Story is yellow and all the parents up the initiative are yellow', done => {
-      storyStrat.apply(issues.TW101, dummyClientAPI).should.eventually.equal(true).notify(done);
-    });
+    it('Story is yellow and all the parents up the initiative are yellow', () =>
+      storyStrat.apply(issues.TW101, dummyClientAPI).should.eventually.equal(true)
+    );
 
-    it('Story is yellow and parent is an initiative which is also yellow', done => {
-      storyStrat.apply(issues.TW103, dummyClientAPI).should.eventually.equal(true).notify(done);
-    });
+    it('Story is yellow and parent is an initiative which is also yellow', () =>
+      storyStrat.apply(issues.TW103, dummyClientAPI).should.eventually.equal(true)
+    );
   });
 
   describe('Should not be able to commit against', () => {
-    it('Sub-task not yellow', done => {
-      storyStrat.apply(issues.TW204, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
-    });
+    it('Sub-task not yellow', () =>
+      storyStrat.apply(issues.TW204, dummyClientAPI).should.eventually.be.rejectedWith(Error)
+    );
 
-    it('Sub-task is yellow, but the story is not', done => {
-      storyStrat.apply(issues.TW203, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
-    });
+    it('Sub-task is yellow, but the story is not', () =>
+      storyStrat.apply(issues.TW203, dummyClientAPI).should.eventually.be.rejectedWith(Error)
+    );
 
-    it('Sub-task is yellow, but the epic is not', done => {
-      storyStrat.apply(issues.TW206, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
-    });
+    it('Sub-task is yellow, but the epic is not', () =>
+      storyStrat.apply(issues.TW206, dummyClientAPI).should.eventually.be.rejectedWith(Error)
+    );
 
-    it('Sub-task is yellow, but the initiative is not', done => {
-      storyStrat.apply(issues.TW207, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
-    });
+    it('Sub-task is yellow, but the initiative is not', () =>
+      storyStrat.apply(issues.TW207, dummyClientAPI).should.eventually.be.rejectedWith(Error)
+    );
 
-    it('Story not yellow', done => {
-      storyStrat.apply(issues.TW202, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
-    });
+    it('Story not yellow', () =>
+      storyStrat.apply(issues.TW202, dummyClientAPI).should.eventually.be.rejectedWith(Error)
+    );
 
-    it('Story is yellow, but the epic is not', done => {
-      storyStrat.apply(issues.TW201, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
-    });
+    it('Story is yellow, but the epic is not', () =>
+      storyStrat.apply(issues.TW201, dummyClientAPI).should.eventually.be.rejectedWith(Error)
+    );
 
-    it('Story is yellow, but the initiative is not', done => {
-      storyStrat.apply(issues.TW205, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
-    });
+    it('Story is yellow, but the initiative is not', () =>
+      storyStrat.apply(issues.TW205, dummyClientAPI).should.eventually.be.rejectedWith(Error)
+    );
   });
 });
