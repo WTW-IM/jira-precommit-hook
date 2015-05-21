@@ -26,24 +26,20 @@ let fields = {
   'noEpicLink': []
 };
 
-let dummyClientAPI = null;
+let dummyClientAPI = {
+  findIssue(issueKey) {
+    if(issues[issueKey] === undefined) {
+      return Promise.reject(new Error(`Issue ${issueKey} does not exist.`));
+    }
+    return Promise.resolve(issues[issueKey]);
+  },
+
+  listFields() {
+    return Promise.resolve(fields.epicLink);
+  }
+};
 
 describe('One valid issue apply tests', () => {
-  before(() => {
-    dummyClientAPI = {
-      findIssue(issueKey) {
-        if(issues[issueKey] === undefined) {
-          return Promise.reject(new Error(`Issue ${issueKey} does not exist.`));
-        }
-        return Promise.resolve(issues[issueKey]);
-      },
-
-      listFields() {
-        return Promise.resolve(fields.epicLink);
-      }
-    };
-  });
-
   it('1 good issue', () => {
     let testIssues = ['TW101'];
     return validStrat(testIssues, dummyClientAPI).should.eventually.equal(true);

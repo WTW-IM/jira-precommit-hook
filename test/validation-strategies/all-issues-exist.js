@@ -11,20 +11,16 @@ let issues = {
   TW7: issueGenerator('TW7', 'Sub-task', 'green')
 };
 
-let dummyClientAPI = null;
+let dummyClientAPI = {
+  findIssue(issueKey) {
+    if(issues[issueKey] === undefined) {
+      return Promise.reject(new Error(`Issue ${issueKey} does not exist.`));
+    }
+    return Promise.resolve(issues[issueKey]);
+  }
+};
 
 describe('All issues exist apply tests', () => {
-  before(() => {
-    dummyClientAPI = {
-      findIssue(issueKey) {
-        if(issues[issueKey] === undefined) {
-          return Promise.reject(new Error(`Issue ${issueKey} does not exist.`));
-        }
-        return Promise.resolve(issues[issueKey]);
-      }
-    };
-  });
-
   it('All issues exist', () => {
     let testIssues = ['TW1', 'TW4', 'TW7'];
     return allStrat(testIssues, dummyClientAPI).should.eventually.equal(true);
