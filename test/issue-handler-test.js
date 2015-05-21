@@ -1,4 +1,4 @@
-import issueHandler from '../src/issue-handler.js';
+import * as issueHandler from '../src/issue-handler.js';
 import issueGenerator from './issue-generator.js';
 
 let issues = {
@@ -46,41 +46,41 @@ describe('Issue Handler Test', () => {
 
   it('Empty issues array', done => {
     let testIssueArr = [];
-    issueHandler(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
+    issueHandler.issueStrategizer(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
   });
 
   it('1 good issue', done => {
     let testIssueArr = ['TW102'];
-    issueHandler(testIssueArr, dummyClientAPI).should.eventually.equal(true).notify(done);
+    issueHandler.issueStrategizer(testIssueArr, dummyClientAPI).should.eventually.equal(true).notify(done);
   });
 
   it('1 bad issue', done => {
     let testIssueArr = ['TW204'];
-    issueHandler(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
+    issueHandler.issueStrategizer(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
   });
 
   it('1 non-existent issue', done => {
     let testIssueArr = ['TW500'];
-    issueHandler(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
+    issueHandler.issueStrategizer(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
   });
 
   it('1 non-existent issue and 1 good issue', done => {
     let testIssueArr = ['TW102', 'TW500'];
-    issueHandler(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
+    issueHandler.issueStrategizer(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
   });
 
   it('1 good issue and 1 non-existent issue', done => {
     let testIssueArr = ['TW502', 'TW102'];
-    issueHandler(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
+    issueHandler.issueStrategizer(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith(Error).notify(done);
   });
 
   it('2 bad issues', done => {
     let testIssueArr = ['TW202', 'TW203'];
-    issueHandler(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith([new Error(), new Error()]).notify(done);
+    issueHandler.issueStrategizer(testIssueArr, dummyClientAPI).should.eventually.be.rejectedWith([new Error(), new Error()]).notify(done);
   });
 
   it('2 bad issue and 1 good issue', done => {
     let testIssueArr = ['TW202', 'TW203', 'TW101'];
-    issueHandler(testIssueArr, dummyClientAPI).should.eventually.equal(true).notify(done);
+    issueHandler.issueStrategizer(testIssueArr, dummyClientAPI).should.eventually.equal(true).notify(done);
   });
 });

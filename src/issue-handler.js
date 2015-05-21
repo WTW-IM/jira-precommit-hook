@@ -1,6 +1,6 @@
 import strats from './validation-strategies/index';
 
-export default function issueStrategizer(issues, jiraClientAPI) {
+export function issueStrategizer(issues, jiraClientAPI) {
   return Promise.all(strats.map(s => s(issues, jiraClientAPI)))
     .then(() => {
       return Promise.resolve(true);
