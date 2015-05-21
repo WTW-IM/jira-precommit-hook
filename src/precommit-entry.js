@@ -25,6 +25,8 @@ export function getCommitMsg (path) {
         )
         .then(issues => {
           issueHandler.issueStrategizer(issues);
+          // fails test, because the above cannot be returned while process.exit(0) is being called.
+          // remove the test?
           process.exit(0);
         })
         .catch(err => {

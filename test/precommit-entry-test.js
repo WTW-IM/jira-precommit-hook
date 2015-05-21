@@ -31,12 +31,15 @@ describe('precommit-entry tests', () => {
       operations.findProjectKey = function(api) {
         return 'TW';
       };
+
+      sinon.stub(process, 'exit', exit => {});
     });
 
     afterEach(() => {
       issueHandler.issueStrategizer.restore();
       fsp.readFile.restore();
       connection.getJiraAPI.restore();
+      process.exit.restore();
     });
 
     it('read from issue list and return JSON array', () => {
