@@ -1,5 +1,5 @@
 import {getFilePath} from './fs-utils.js';
-import {getAPIConfig, getAuthentication} from './jira-configuration.js';
+import {getAPIConfig} from './jira-configuration.js';
 import {JiraApi} from 'jira';
 
 function promisify(func) {
@@ -7,8 +7,7 @@ function promisify(func) {
     return new Promise((fulfill, reject) => {
       args.push((error, result) => {
         if(error) {
-          reject(error);
-          throw new Error(error);
+          return reject(error);
         }
         else {
           fulfill(result);
@@ -29,13 +28,18 @@ Object.keys(JiraApi.prototype).forEach(key => {
 });
 
 //Grabs data from files and returns a JIRA connection object wrapped in promise
-export function getJiraAPI() {
-  let homePath = process.platform === 'win32' ? process.env.HOMEPATH : process.env.HOME;
-  let apiConfigPromise = getAPIConfig(getFilePath(process.cwd(), '.jirarc'));
-  let userConfigPromise = getAuthentication(getFilePath(homePath, '.userconfig'));
+export function getJiraAPI(configPath) {
+  return getAPIConfig(getFilePath(configPath, '.jirarc'))
+    .then(({projectName, protocol, host, port, version, verbose, strictSSL}) => {
+      let jiraClient = new JiraApi(protocol, host, port, '', '', version, verbose, false);
 
-  return Promise.all([apiConfigPromise, userConfigPromise])
-    .then(([{protocol, host, port, version}, {username, password}]) => {
-      return new JiraApi(protocol, host, port, username, password, version);
-  });
+      //Temporary hack until resolved: https://github.com/steves/node-jira/pull/107
+      jiraClient.doRequest = function(options, callback) {
+        jiraClient.request(options, callback);
+      };
+
+      jiraClient.projectName = projectName;
+
+      return jiraClient;
+    });
 }
