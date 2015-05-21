@@ -1,12 +1,11 @@
-import strats from './issue-strategies/index';
+import strats from './validation-strategies/index';
 
-function validateStrategies(issueKey) {
-  let issueJSON = retrieveIssue(issueKey);
-  return strats.filter(s => s.matches(issueJSON.fields.issueType.name))
-    .reduce((acc, s) =>
-      acc.then(() => s.apply()), Promise.resolve());
-}
-
-export function issueStrategizer(issues) {
-  return issues.map(i => validateStrategies(i));
+export default function issueStrategizer(issues, jiraClientAPI) {
+  return Promise.all(strats.map(s => s(issues, jiraClientAPI)))
+    .then(() => {
+      return Promise.resolve(true);
+    })
+    .catch(err => {
+      return Promise.reject(err);
+    });
 }
