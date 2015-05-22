@@ -15,7 +15,7 @@ export function getIssueReference(msgToParse, prjKey) {
   return _.unique(references);
 }
 
-export function getCommitMsg (path) {
+export function getCommitMsg(path) {
   return getJiraAPI()
     .then(jiraAPI =>
     {
@@ -23,13 +23,17 @@ export function getCommitMsg (path) {
         .then(fileContents =>
           getIssueReference(fileContents, findProjectKey(jiraAPI))
         )
-        .then(issues => {
-          issueHandler.issueStrategizer(issues);
-          process.exit(0);
-        })
-        .catch(err => {
-          console.error(err);
-          process.exit(1);
-        });
+        .then(issues =>
+          issueHandler.issueStrategizer(issues)
+        );
+    });
+}
+
+export function precommit(path) {
+  return getCommitMsg(path)
+    .then(() => 0)
+    .catch(err => {
+      console.error(err);
+      return 1;
     });
 }
