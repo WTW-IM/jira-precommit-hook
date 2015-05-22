@@ -5,6 +5,7 @@ import os from 'os';
 import * as connection from '../src/jira-connection';
 import * as operations from '../src/jira-operations';
 import {JiraApi} from 'jira';
+import * as fileUtils from '../src/fs-utils';
 
 let eol = os.EOL;
 
@@ -31,17 +32,24 @@ describe('precommit-entry tests', () => {
       operations.findProjectKey = function(api) {
         return 'TW';
       };
+
+      sinon.stub(fileUtils, 'getFilePath', (startDir, fileName) => {
+        return './.jirarc';
+      });
     });
 
     afterEach(() => {
       issueHandler.issueStrategizer.restore();
       fsp.readFile.restore();
       connection.getJiraAPI.restore();
+      fileUtils.getFilePath.restore();
     });
 
     it('read from issue list and return JSON array', () => {
       return pce.getCommitMsg('issuesTestFile.txt')
-        .then(results => results.length.should.equal(3));
+        .then(results => {
+          results.length.should.equal(3);
+        });
     });
   });
 
