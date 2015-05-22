@@ -11,13 +11,10 @@ class DummyJira {
       TW4: issueGenerator('TW4', 'MT', 'green'),
       TW5: issueGenerator('TW5', 'Epic', 'yellow'),
       TW6: issueGenerator('TW6', 'Initiative', 'yellow'),
-      TW7: issueGenerator('TW7', 'Initiative', 'yellow'),
-      TW8: issueGenerator('TW8', 'Epic', 'green'),
-      TW9: issueGenerator('TW9', 'Story', 'green'),
-      TW10: issueGenerator('TW10', 'MT', 'yellow'),
-      TW11: issueGenerator('TW11', 'Bug', 'yellow'),
-      TW12: issueGenerator('TW12', 'Story', 'green'),
-      TW13: issueGenerator('TW13', 'Sub-task', 'green'),
+      TW7: issueGenerator('TW7', 'Epic', 'green'),
+      TW8: issueGenerator('TW8', 'Story', 'green'),
+      TW9: issueGenerator('TW9', 'MT', 'yellow'),
+      TW10: issueGenerator('TW10', 'Sub-task', 'green'),
       PM100: issueGenerator('PM100', 'Initiative', 'yellow'),
       TW100: issueGenerator('TW100', 'Epic', 'yellow', 'PM100', 'Initiative'),
       TW101: issueGenerator('TW101', 'Story', 'yellow', 'TW100', 'Epic'),
@@ -34,10 +31,9 @@ class DummyJira {
       TW207: issueGenerator('TW207', 'Sub-task', 'yellow', 'TW205'),
       'WHP-9995': issueGenerator('WHP-9995', 'Sub-task', 'yellow', 'WHP-9994', 'Story'),
       'WHP-9994': issueGenerator('WHP-9994', 'Story', 'yellow', 'WHP-9992', 'Epic'),
-      'WHP-9993': issueGenerator('WHP-9993', 'Story', 'yellow', 'WHP-9990', 'Initiative'),
-      'WHP-9992': issueGenerator('WHP-9992', 'Epic', 'yellow', 'WHP-9990', 'Initiative'),
-      'WHP-9991': issueGenerator('WHP-9991', 'Epic', 'yellow'),
-      'WHP-9990': issueGenerator('WHP-9990', 'Initiative', 'yellow')
+      'WHP-9993': issueGenerator('WHP-9993', 'Story', 'yellow', 'PM100', 'Initiative'),
+      'WHP-9992': issueGenerator('WHP-9992', 'Epic', 'yellow', 'PM100', 'Initiative'),
+      'WHP-9991': issueGenerator('WHP-9991', 'Epic', 'yellow')
     };
 
     this.fields = {
@@ -62,7 +58,7 @@ class DummyJira {
 
   findIssue(key) {
     if(this.issues[key] === undefined) {
-      return Promise.reject(new Error(`Issue ${key} does mpt exist.`));
+      return Promise.reject(new Error(`Issue ${key} does not exist.`));
     }
 
     return Promise.resolve(this.issues[key]);

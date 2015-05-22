@@ -5,7 +5,7 @@ let dummyJira = new DummyJira();
 
 describe('All issues exist apply tests', () => {
   it('All issues exist', () => {
-    let testIssues = ['TW7', 'TW10', 'TW13'];
+    let testIssues = ['TW6', 'TW9', 'TW10'];
     return allStrat(testIssues, dummyJira).should.eventually.equal(true);
   });
 

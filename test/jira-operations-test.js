@@ -64,7 +64,7 @@ describe('JIRA Operations Tests', function() {
     });
 
     it('No Parent Found from Initiative', done => {
-      findParent(dummyJira.issues['WHP-9990'], dummyJira).should.eventually.be.rejected.notify(done);
+      findParent(dummyJira.issues.PM100, dummyJira).should.eventually.be.rejected.notify(done);
     });
   });
 });
