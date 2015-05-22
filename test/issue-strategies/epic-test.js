@@ -1,12 +1,10 @@
 import * as epicStrat from '../../src/issue-strategies/epic.js';
-import issueGenerator from '../issue-generator.js';
+import DummyJira from '../dummy-jira.js';
 
-let issues = {
-  TW1: issueGenerator('TW1', 'Epic', 'yellow')
-};
+let dummyJira = new DummyJira();
 
 describe('Epic Strategy Apply Tests', () => {
   it('Should not be able to commit against Epic, should throw error', () =>
-    epicStrat.apply(issues.TW).should.eventually.be.rejectedWith(Error)
+    epicStrat.apply(dummyJira.issues.TW5).should.eventually.be.rejectedWith(Error)
   );
 });
