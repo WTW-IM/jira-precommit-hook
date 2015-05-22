@@ -24,7 +24,7 @@ export function getCommitMsg(path) {
       return Promise.all([readFilePromise, projectKeyPromise])
         .then(([fileContents, projectKey]) => getIssueReference(fileContents, findProjectKey(jiraAPI))
         )
-        .then(issues => issueHandler.issueStrategizer(issues)
+        .then(issues => issueHandler.issueStrategizer(issues, jiraAPI)
         );
     });
 }
