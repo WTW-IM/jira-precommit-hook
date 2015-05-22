@@ -18,20 +18,23 @@ export function getIssueReference(msgToParse, prjKey) {
 }
 
 export function getCommitMsg(path) {
-  let jiraConfigPath;
+  let jiraAPI, jiraConfigPath;
+
   try {
     jiraConfigPath = fsUtils.getFilePath(process.cwd(), '.jirarc');
   } catch (err) {
     return Promise.reject(new Error('.jirarc file is not found. Please refer to the readme for details about the .jirarc file'));
   }
-  return getJiraAPI(jiraConfigPath)
-    .then(jiraAPI => {
-      let readFilePromise = fsp.readFile(path, {encoding:'utf8'});
-      let projectKeyPromise = findProjectKey(jiraAPI);
 
-      return Promise.all([readFilePromise, projectKeyPromise])
-        .then(([fileContents, projectKey]) => getIssueReference(fileContents, findProjectKey(jiraAPI)))
-        .then(issues => issueHandler.issueStrategizer(issues, jiraAPI));
+  return Promise.all([
+      getJiraAPI(jiraConfigPath)
+        .then(api => jiraAPI = api)
+        .then(() => findProjectKey(jiraAPI)),
+      fsp.readFile(path, {encoding: 'utf8'})
+    ])
+    .then(([projectKey, fileContents]) => {
+       let issues = getIssueReference(fileContents, findProjectKey(jiraAPI));
+       return issueHandler.issueStrategizer(issues, jiraAPI);
     });
 }
 
