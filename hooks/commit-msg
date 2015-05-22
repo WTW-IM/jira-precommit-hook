@@ -1,4 +1,7 @@
 #!/usr/bin/env node
 
-var precommit = require('../lib/precommit-entry.js');
-precommit(process.argv[2]);
+var precommit = require('jira-precommit-hook/lib/precommit-enty');
+precommit.precommit(process.argv[2])
+  .then(function(exitCode) {
+    process.exit(exitCode);
+  });

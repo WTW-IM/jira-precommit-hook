@@ -30,15 +30,10 @@ export function getCommitMsg(path) {
 }
 
 export function precommit(path) {
-  return Promise.resolve(path)
-    .then(filePath =>
-      getCommitMsg(filePath)
-    )
-    .then(() =>
-      process.exit(0)
-    )
+  return getCommitMsg(path)
+    .then(() => 0)
     .catch(err => {
       console.error(err);
-      process.exit(1);
+      return 1;
     });
 }
