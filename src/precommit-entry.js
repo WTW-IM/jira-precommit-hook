@@ -17,14 +17,14 @@ export function getIssueReference(msgToParse, prjKey) {
 
 export function getCommitMsg(path) {
   return getJiraAPI()
-    .then(jiraAPI =>
-    {
-      return fsp.readFile(path, {encoding:'utf8'})
-        .then(fileContents =>
-          getIssueReference(fileContents, findProjectKey(jiraAPI))
+    .then(jiraAPI => {
+      let readFilePromise = fsp.readFile(path, {encoding:'utf8'});
+      let projectKeyPromise = findProjectKey(jiraAPI);
+
+      return Promise.all([readFilePromise, projectKeyPromise])
+        .then(([fileContents, projectKey]) => getIssueReference(fileContents, findProjectKey(jiraAPI))
         )
-        .then(issues =>
-          issueHandler.issueStrategizer(issues)
+        .then(issues => issueHandler.issueStrategizer(issues)
         );
     });
 }
