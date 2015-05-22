@@ -33,7 +33,11 @@ export function precommit(path) {
   return getCommitMsg(path)
     .then(() => 0)
     .catch(err => {
-      console.error(err);
+      if (process.env.NODE_ENV === 'development') {
+        console.error(err.stack);
+      } else {
+        console.error(err.toString());
+      }
       return 1;
     });
 }
