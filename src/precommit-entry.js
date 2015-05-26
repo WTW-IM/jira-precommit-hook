@@ -5,6 +5,7 @@ import * as issueHandler from './issue-handler';
 import {findProjectKey} from './jira-operations';
 import {getJiraAPI} from './jira-connection';
 import * as fsUtils from './fs-utils';
+import 'colors';
 
 export function getIssueReference(msgToParse, prjKey) {
   let pattern = RegExp(`${prjKey}-\\d+`, 'g');
@@ -17,16 +18,20 @@ export function getIssueReference(msgToParse, prjKey) {
 }
 
 export function getCommitMsg(path) {
-  return getJiraAPI(fsUtils.getFilePath(process.cwd(), '.jirarc'))
+  let jiraConfigPath;
+  try {
+    jiraConfigPath = fsUtils.getFilePath(process.cwd(), '.jirarc');
+  } catch (err) {
+    return Promise.reject(new Error('.jirarc file is not found. Please refer to the readme for details about the .jirarc file'));
+  }
+  return getJiraAPI(jiraConfigPath)
     .then(jiraAPI => {
       let readFilePromise = fsp.readFile(path, {encoding:'utf8'});
       let projectKeyPromise = findProjectKey(jiraAPI);
 
       return Promise.all([readFilePromise, projectKeyPromise])
-        .then(([fileContents, projectKey]) => getIssueReference(fileContents, findProjectKey(jiraAPI))
-        )
-        .then(issues => issueHandler.issueStrategizer(issues, jiraAPI)
-        );
+        .then(([fileContents, projectKey]) => getIssueReference(fileContents, findProjectKey(jiraAPI)))
+        .then(issues => issueHandler.issueStrategizer(issues, jiraAPI));
     });
 }
 
@@ -35,9 +40,9 @@ export function precommit(path) {
     .then(() => 0)
     .catch(err => {
       if (process.env.NODE_ENV === 'development') {
-        console.error(err.stack);
+        console.error(err.stack.red);
       } else {
-        console.error(err.toString());
+        console.error(err.message.red);
       }
       return 1;
     });
