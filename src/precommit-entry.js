@@ -33,7 +33,7 @@ export function getCommitMsg(path) {
       fsp.readFile(path, {encoding: 'utf8'})
     ])
     .then(([projectKey, fileContents]) => {
-       let issues = getIssueReference(fileContents, findProjectKey(jiraAPI));
+       let issues = getIssueReference(fileContents, projectKey);
        return issueHandler.issueStrategizer(issues, jiraAPI);
     });
 }
