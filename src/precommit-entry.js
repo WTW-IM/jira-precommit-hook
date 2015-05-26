@@ -4,6 +4,7 @@ import _ from 'lodash';
 import * as issueHandler from './issue-handler';
 import {findProjectKey} from './jira-operations';
 import {getJiraAPI} from './jira-connection';
+import * as fsUtils from './fs-utils';
 
 export function getIssueReference(msgToParse, prjKey) {
   let pattern = RegExp(`${prjKey}-\\d+`, 'g');
@@ -16,7 +17,7 @@ export function getIssueReference(msgToParse, prjKey) {
 }
 
 export function getCommitMsg(path) {
-  return getJiraAPI()
+  return getJiraAPI(fsUtils.getFilePath(process.cwd(), '.jirarc'))
     .then(jiraAPI => {
       let readFilePromise = fsp.readFile(path, {encoding:'utf8'});
       let projectKeyPromise = findProjectKey(jiraAPI);
