@@ -39,10 +39,12 @@ export function precommit(path) {
   return getCommitMsg(path)
     .then(() => 0)
     .catch(err => {
-      if (process.env.NODE_ENV === 'development') {
+      if (typeof err === 'string') {
+        console.error(err.red);
+      } else if (process.env.NODE_ENV === 'development') {
         console.error(err.stack.red);
       } else {
-        console.error(err.message.red);
+        console.error(err.toString().red);
       }
       return 1;
     });
