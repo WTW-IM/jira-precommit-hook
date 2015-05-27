@@ -19,11 +19,23 @@ export function getEpicLinkField(jiraClient) {
     });
 }
 
-function findIssueLinkParentKey(issue, linkDirection) {
-  let index = _.findIndex(issue.fields.issuelinks,
-    issueLink => issueLink[linkDirection].fields.issuetype.name === 'Initiative');
+function findIssueLinkParentKey(issue) {
+  let result = null;
+  issue.fields.issuelinks.forEach(issueLink => {
+    let linkDirection = null;
 
-  return index >= 0 ? issue.fields.issuelinks[index][linkDirection].key : null;
+    if(issueLink.inwardIssue) {
+      linkDirection = 'inwardIssue';
+    }
+    else if(issueLink.outwardIssue) {
+      linkDirection = 'outwardIssue';
+    }
+
+    if(linkDirection && issueLink[linkDirection].fields.issuetype.name === 'Initiative') {
+      result = issueLink[linkDirection].key;
+    }
+  });
+  return result;
 }
 
 export function findParent(issue, jiraClient) {
@@ -33,7 +45,7 @@ export function findParent(issue, jiraClient) {
 
     case 'Story':
       if(issue.fields.issuelinks) {
-        let parentKey = findIssueLinkParentKey(issue, 'outwardIssue');
+        let parentKey = findIssueLinkParentKey(issue);
 
         if(parentKey) {
           return jiraClient.findIssue(parentKey);
@@ -44,7 +56,7 @@ export function findParent(issue, jiraClient) {
         .then(linkField => jiraClient.findIssue(issue.fields[linkField]));
 
     case 'Epic':
-      let parentKey = findIssueLinkParentKey(issue, 'inwardIssue');
+      let parentKey = findIssueLinkParentKey(issue);
 
       return parentKey ? jiraClient.findIssue(parentKey) : Promise.reject(`Cannot find parent from Epic ${issue.key}`);
 
