@@ -1,4 +1,3 @@
-import {getFilePath} from './fs-utils.js';
 import {getAPIConfig} from './jira-configuration.js';
 import {JiraApi} from 'jira';
 
@@ -29,7 +28,7 @@ Object.keys(JiraApi.prototype).forEach(key => {
 
 //Grabs data from files and returns a JIRA connection object wrapped in promise
 export function getJiraAPI(configPath) {
-  return getAPIConfig(getFilePath(configPath, '.jirarc'))
+  return getAPIConfig(configPath)
     .then(({projectName, protocol, host, port, version, verbose, strictSSL}) => {
       let jiraClient = new JiraApi(protocol, host, port, '', '', version, verbose, false);
 

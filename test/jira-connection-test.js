@@ -3,7 +3,7 @@ import path from 'path';
 
 describe('JIRA Connection Tests', function() {
   it('JIRA Object has Correct Project Name', () => {
-    return getJiraAPI(path.join(process.cwd(), 'test'))
+    return getJiraAPI(path.join(process.cwd(), 'test', '.jirarc'))
       .then(testJira => {
         testJira.projectName.should.eql('test');
       });
