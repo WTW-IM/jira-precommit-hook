@@ -12,7 +12,7 @@ export function validateAPIConfig(config){
   let defaults = {
     protocol: 'http',
     port: 80,
-    version: '2.0.0',
+    version: 2,
     verbose: false,
     strictSSL: true
   };
