@@ -25,7 +25,7 @@ In order to communicate with your JIRA server, a .jirarc file needs to be placed
 	"host":"<URL location of JIRA project - REQUIRED>",
 	"protocol":"[default:http|https]",
 	"port": 80,
-	"version": "default:2.0.0",
+	"version": default:2,
 	"verbose": false,
 	"strictSSL": true
 }

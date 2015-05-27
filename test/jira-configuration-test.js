@@ -71,7 +71,7 @@ describe('JIRA Configuration Tests', () => {
       let object = validateAPIConfig(incompleteJiraObject);
       object.protocol.should.equal('http');
       object.port.should.equal(80);
-      object.version.should.equal('2.0.0');
+      object.version.should.equal(2);
       object.verbose.should.equal(false);
       object.strictSSL.should.equal(true);
     });
