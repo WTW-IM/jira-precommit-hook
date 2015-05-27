@@ -1,12 +1,10 @@
 import * as initStrat from '../../src/issue-strategies/initiative.js';
-import issueGenerator from '../issue-generator.js';
+import DummyJira from '../dummy-jira.js';
 
-let issues = {
-  TW1: issueGenerator('TW1', 'Initiative', 'yellow')
-};
+let dummyJira = new DummyJira();
 
 describe('Initiative Strategy Apply Tests', () => {
   it('Should not be able to commit against Initiative, should throw error', () =>
-    initStrat.apply(issues.TW1).should.eventually.be.rejectedWith(Error)
+    initStrat.apply(dummyJira.issues.TW6).should.eventually.be.rejectedWith(Error)
   );
 });
