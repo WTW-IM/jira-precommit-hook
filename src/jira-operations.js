@@ -19,9 +19,13 @@ export function getEpicLinkField(jiraClient) {
     });
 }
 
-function findIssueLinkParentKey(issue) {
+export function findIssueLinkParentKey(issue) {
   let result = null;
   issue.fields.issuelinks.forEach(issueLink => {
+    if(issueLink.type.name !== 'Relates') {
+      return;
+    }
+
     let linkDirection = null;
 
     if(issueLink.inwardIssue) {
