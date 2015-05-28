@@ -30,7 +30,7 @@ Object.keys(JiraApi.prototype).forEach(key => {
 export function getJiraAPI(configPath) {
   return getAPIConfig(configPath)
     .then(({projectName, protocol, host, port, version, verbose, strictSSL}) => {
-      let jiraClient = new JiraApi(protocol, host, port, '', '', version, verbose, false);
+      let jiraClient = new JiraApi(protocol, host, port, '', '', version, verbose, strictSSL);
 
       //Temporary hack until resolved: https://github.com/steves/node-jira/pull/107
       jiraClient.doRequest = function(options, callback) {
