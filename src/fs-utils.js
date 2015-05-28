@@ -29,7 +29,6 @@ export function copyHookFiles(gitDirectory) {
       .pipe(fs.createWriteStream(path.join(gitDirectory, '/hooks/commit-msg')))
       .on('close', (error, result) => {
         if(error) {
-          console.log('REJECT: ' + error);
           reject(error);
         }
         else {
