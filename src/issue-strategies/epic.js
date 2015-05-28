@@ -1,3 +1,3 @@
 export function apply(issue, jiraClientAPI) {
-  return Promise.reject(new Error('Cannot commit against against an epic.'));
+  return Promise.reject(new Error(`Cannot commit against ${issue.key}. It is an epic.`));
 }
