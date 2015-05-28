@@ -1,6 +1,6 @@
 import {findParentFolder, copyHookFiles} from './fs-utils.js';
 
-let currentPath = process.env.pwd;
+let currentPath = process.cwd();
 
 try{
   copyHookFiles(findParentFolder(currentPath, '.git'));
