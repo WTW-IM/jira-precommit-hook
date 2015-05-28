@@ -1,4 +1,4 @@
-import {findProjectKey, getEpicLinkField, findParent} from '../src/jira-operations.js';
+import {findProjectKey, getEpicLinkField, findParent, findIssueLinkParentKey} from '../src/jira-operations.js';
 import DummyJira from './dummy-jira.js';
 
 let dummyJira = new DummyJira();
@@ -65,6 +65,18 @@ describe('JIRA Operations Tests', function() {
 
     it('No Parent Found from Initiative', done => {
       findParent(dummyJira.issues.PM100, dummyJira).should.eventually.be.rejected.notify(done);
+    });
+  });
+
+  describe('Relates Check', () => {
+    it('Good Link', () => {
+      let result = findIssueLinkParentKey(dummyJira.issues['WHP-9993']);
+      assert.equal(result, 'PM100');
+    });
+
+    it('Bad Link', () => {
+      let result = findIssueLinkParentKey(dummyJira.issues['WHP-9999']);
+      assert.equal(result, null);
     });
   });
 });
