@@ -16,6 +16,12 @@
     "precommit-hook"
   ],
   "author": "Matthew L Smith <mtscout6@gmail.com>",
+  "contributors": [
+    "Curtis Knox",
+    "Karl Thompson",
+    "Matthew Radcliffe",
+    "Steven Tran"
+  ],
   "license": "MIT",
   "devDependencies": {
     "babel": "^5.1.11",
@@ -33,5 +39,13 @@
     "colors": "^1.1.0",
     "jira": "^0.9.2",
     "lodash": "^3.8.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TWExchangeSolutions/jira-precommit-hook.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TWExchangeSolutions/jira-precommit-hook/issues"
+  },
+  "homepage": "https://github.com/TWExchangeSolutions/jira-precommit-hook#readme"
 }
