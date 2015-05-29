@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
 var path = require('path');
-if(path.resolve(path.join(__dirname, '../')) !== process.cwd()){
+var desiredPath = path.resolve(path.join(__dirname, '../.git'));
+var actualPath = require('../lib/fs-utils').getFilePath(__dirname, '.git');
+
+if(desiredPath !== actualPath){
   require('../lib/install.js');
 }
