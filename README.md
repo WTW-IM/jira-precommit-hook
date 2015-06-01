@@ -29,3 +29,10 @@ In order to communicate with your JIRA server, a .jirarc file needs to be placed
 	"strictSSL": default:true
 }
 ```
+
+**INSTALLATION**
+
+To install, run the following with [npm](https://www.npmjs.com):
+```
+npm install jira-precommit-hook
+```
