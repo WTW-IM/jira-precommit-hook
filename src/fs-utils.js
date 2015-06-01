@@ -24,9 +24,13 @@ export function findParentFolder(startDir, parentDirName) {
 }
 
 export function copyHookFiles(gitDirectory) {
+  let source = path.join(__dirname, '../hooks/commit-msg');
+  let destination = path.join(gitDirectory, '/hooks/commit-msg');
+  let stat = fs.statSync(source);
+
   return new Promise((fulfill, reject) => {
-    fs.createReadStream(path.join(__dirname, '../hooks/commit-msg'))
-      .pipe(fs.createWriteStream(path.join(gitDirectory, '/hooks/commit-msg')))
+    fs.createReadStream(source)
+    .pipe(fs.createWriteStream(destination, { mode: stat.mode }))
       .on('close', (error, result) => {
         if(error) {
           reject(error);
