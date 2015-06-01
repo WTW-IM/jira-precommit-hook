@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
 var path = require('path');
-var desiredPath = path.resolve(path.join(__dirname, '../.git'));
-var actualPath = require('../lib/fs-utils').getFilePath(__dirname, '.git');
+var fs = require('fs');
+var exists = fs.existsSync(path.join(__dirname, '../lib'));
 
-if(desiredPath !== actualPath){
-  require('../lib/install.js');
+if(exists){
+  var desiredPath = path.resolve(path.join(__dirname, '../.git'));
+  var actualPath = require('../lib/fs-utils').getFilePath(__dirname, '.git');
+  if(desiredPath !== actualPath){
+    require('../lib/install.js');
+  }
 }
