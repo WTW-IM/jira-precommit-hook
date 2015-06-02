@@ -15,7 +15,7 @@ export function getEpicLinkField(jiraClient) {
         }
       }
 
-      return Promise.reject('Cannot find Epic Link Field.');
+      return Promise.reject('Cannot find Epic Link Field ID. Should defined in field URI.');
     });
 }
 
@@ -62,7 +62,7 @@ export function findParent(issue, jiraClient) {
     case 'Epic':
       let parentKey = findIssueLinkParentKey(issue);
 
-      return parentKey ? jiraClient.findIssue(parentKey) : Promise.reject(`Cannot find parent from Epic ${issue.key}`);
+      return parentKey ? jiraClient.findIssue(parentKey) : Promise.reject(`Cannot find initiative from Epic ${issue.key} in issue links. Initiative should be linked by 'relates to'.`);
 
     default:
         return Promise.reject(`${issue.fields.issuetype.name} should not have a parent.`);
