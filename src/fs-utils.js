@@ -23,6 +23,13 @@ export function findParentFolder(startDir, parentDirName) {
   return currentDir;
 }
 
+export function verifyHooksFolder(desiredHooksPath) {
+  if(!fs.existsSync(desiredHooksPath)) {
+    console.log('Creating hooks directory in .git');
+    fs.mkdirSync(desiredHooksPath);
+  }
+}
+
 export function copyHookFiles(gitDirectory) {
   let source = path.join(__dirname, '../hooks/commit-msg');
   let destination = path.join(gitDirectory, '/hooks/commit-msg');

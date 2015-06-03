@@ -1,7 +1,8 @@
-import {findParentFolder, getFilePath, copyHookFiles} from '../src/fs-utils.js';
+import {findParentFolder, getFilePath, copyHookFiles, verifyHooksFolder} from '../src/fs-utils.js';
 import path from 'path';
 import fs from 'fs';
 import fsp from 'fs-promise';
+import rimraf from 'rimraf';
 
 describe('FS-Utils Tests', () => {
   describe('Finding Directory', () => {
@@ -13,6 +14,21 @@ describe('FS-Utils Tests', () => {
     it('Unable to Find Desired Directory', () => {
       let fn = () => { findParentFolder(path.join(__dirname, '../../')); };
       expect(fn).to.throw(Error);
+    });
+  });
+
+  describe('Hooks folder verification', () => {
+    beforeEach(() => {
+      let pathString = path.resolve(path.join('test', 'tmp', '.git', 'hooks'));
+      let hooksExists = fsp.existsSync(pathString);
+      if(hooksExists) {
+        rimraf.sync(pathString);
+      }
+    });
+
+    it('Confirm hooks folder exists', () => {
+      verifyHooksFolder(path.join('test', 'tmp', '.git', 'hooks'));
+      assert(fs.existsSync(path.join('test', 'tmp', '.git', 'hooks')));
     });
   });
 

@@ -1,4 +1,5 @@
-import {findParentFolder, copyHookFiles} from './fs-utils.js';
+import {findParentFolder, copyHookFiles, verifyHooksFolder} from './fs-utils.js';
+import path from 'path';
 
 let currentPath = process.cwd();
 
@@ -14,6 +15,9 @@ catch(error) {
 }
 
 console.log(`Found .git directory at: ${gitPath}`);
+
+let hooksPath = path.join(gitPath, 'hooks');
+verifyHooksFolder(hooksPath);
 
 copyHookFiles(gitPath)
   .then(() => console.log('Copied commit hook.'))
