@@ -45,6 +45,7 @@ export function findIssueLinkParentKey(issue) {
 export function findParent(issue, jiraClient) {
   switch(issue.fields.issuetype.name) {
     case 'Sub-task':
+    case 'Feature Defect':
       return jiraClient.findIssue(issue.fields.parent.key);
 
     case 'Story':

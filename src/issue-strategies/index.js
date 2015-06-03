@@ -9,5 +9,7 @@ export default {
   Story: storyStrat,
   'Sub-task': storyStrat,
   'Maintenance Task': bugMtStrat,
+  'Deployment Task': bugMtStrat,
+  'Feature Defect': storyStrat,
   Bug: bugMtStrat
 };
