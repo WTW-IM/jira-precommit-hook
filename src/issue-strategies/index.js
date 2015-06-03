@@ -8,6 +8,6 @@ export default {
   Epic: epicStrat,
   Story: storyStrat,
   'Sub-task': storyStrat,
-  Maintenance: bugMtStrat,
+  'Maintenance Task': bugMtStrat,
   Bug: bugMtStrat
 };
