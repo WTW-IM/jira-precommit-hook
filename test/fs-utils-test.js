@@ -2,6 +2,7 @@ import {findParentFolder, getFilePath, copyHookFiles, verifyHooksFolder} from '.
 import path from 'path';
 import fs from 'fs';
 import fsp from 'fs-promise';
+import rimraf from 'rimraf';
 
 describe('FS-Utils Tests', () => {
   describe('Finding Directory', () => {
@@ -17,18 +18,17 @@ describe('FS-Utils Tests', () => {
   });
 
   describe('Hooks folder verification', () => {
-    beforeEach(() => fsp.exists(path.join('test', 'tmp', '.git', 'hooks'))
-      .then(exists => {
-        if(exists) {
-          fsp.rmdir(path.join('test', 'tmp', '.git', 'hooks'));
-        }
-      })
-    );
+    beforeEach(() => {
+      let pathString = path.resolve(path.join('test', 'tmp', '.git', 'hooks'));
+      let hooksExists = fsp.existsSync(pathString);
+      if(hooksExists) {
+        rimraf.sync(pathString);
+      }
+    });
 
-    it('Confirm hooks folder exists', done => {
+    it('Confirm hooks folder exists', () => {
       verifyHooksFolder(path.join('test', 'tmp', '.git', 'hooks'));
-      fs.existsSync(path.join('test', 'tmp', '.git', 'hooks')).should.equal(true);
-      done();
+      assert(fs.existsSync(path.join('test', 'tmp', '.git', 'hooks')));
     });
   });
 

@@ -26,7 +26,7 @@ export function findParentFolder(startDir, parentDirName) {
 export function verifyHooksFolder(desiredHooksPath) {
   if(!fs.existsSync(desiredHooksPath)) {
     console.log('Creating hooks directory in .git');
-    fs.mkdir(desiredHooksPath);
+    fs.mkdirSync(desiredHooksPath);
   }
 }
 
