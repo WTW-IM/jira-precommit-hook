@@ -8,6 +8,8 @@ export default {
   Epic: epicStrat,
   Story: storyStrat,
   'Sub-task': storyStrat,
-  Maintenance: bugMtStrat,
+  'Maintenance Task': bugMtStrat,
+  'Deployment Task': bugMtStrat,
+  'Feature Defect': storyStrat,
   Bug: bugMtStrat
 };

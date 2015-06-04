@@ -48,6 +48,7 @@ export default function createTestIssue(key, type, color, parentKey, parentType,
       }
       return _.merge(baseIssue, createIssueLinks('outwardIssue', parentKey, parentType, linkType));
     case 'Sub-task':
+    case 'Feature Defect':
       return _.merge(baseIssue, {
         'fields': {
           'parent': {

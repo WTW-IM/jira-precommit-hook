@@ -34,6 +34,13 @@ describe('JIRA Operations Tests', function() {
         });
     });
 
+    it('Find Parent from Feature Defect', () => {
+      return findParent(dummyJira.issues['WHP-9996'], dummyJira)
+        .then(parent => {
+          parent.fields.issuetype.name.should.eql('Story');
+        });
+    });
+
     it('Find Parent from Story by EpicLink', () => {
       dummyJira.listFields = function() {
         return Promise.resolve(dummyJira.fields.epicLink);
