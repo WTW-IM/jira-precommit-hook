@@ -17,7 +17,7 @@ export function getIssueReference(msgToParse, prjKey) {
   return _.unique(references);
 }
 
-export function getCommitMsg(path) {
+export function getCommitMsg(readPromise) {
   let jiraAPI, jiraConfigPath;
 
   try {
@@ -27,28 +27,43 @@ export function getCommitMsg(path) {
   }
 
   return Promise.all([
-      getJiraAPI(jiraConfigPath)
-        .then(api => jiraAPI = api)
-        .then(() => findProjectKey(jiraAPI)),
-      fsp.readFile(path, {encoding: 'utf8'})
-    ])
-    .then(([projectKey, fileContents]) => {
-       let issues = getIssueReference(fileContents, projectKey);
-       return issueHandler.issueStrategizer(issues, jiraAPI);
-    });
+    getJiraAPI(jiraConfigPath)
+      .then(api => jiraAPI = api)
+      .then(() => findProjectKey(jiraAPI)),
+    readPromise
+  ])
+  .then(([projectKey, fileContents]) => {
+     let issues = getIssueReference(fileContents, projectKey);
+     return issueHandler.issueStrategizer(issues, jiraAPI);
+  });
 }
 
 export function precommit(path) {
-  return getCommitMsg(path)
+  let readPromise = fsp.readFile(path, {encoding: 'utf8'});
+
+  return getCommitMsg(readPromise)
     .then(() => 0)
     .catch(err => {
-      if (typeof err === 'string') {
-        console.error(err.red);
-      } else if (process.env.NODE_ENV === 'development') {
-        console.error(err.stack.red);
-      } else {
-        console.error(err.toString().red);
-      }
-      return 1;
+      return readPromise
+        .then(contents => {
+          console.log('Commit Message:');
+          console.log(contents);
+
+          if (typeof err === 'string') {
+            console.error(err.red);
+          }
+          else if (process.env.NODE_ENV === 'development') {
+            console.error(err.stack.red);
+          }
+          else {
+            console.error(err.toString().red);
+          }
+
+          return 1;
+        })
+        .catch(err2 => {
+          console.log('Failed to read commit message file.'.red);
+          return 1;
+        });
     });
 }
