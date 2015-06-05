@@ -23,6 +23,18 @@ export let getEpicLinkField = _.memoize(
   }
 );
 
+export function findCustomField(jiraClient, customFieldId) {
+  return jiraClient.listFields()
+    .then(fields => {
+      for(let i = 0; i < fields.length; i++) {
+        if(fields[i].id === 'customfield_' + customFieldId) {
+          return fields[i];
+        }
+      }
+      return Promise.reject(new Error('Cannot find customfield_' + customFieldId));
+    });
+}
+
 export function findIssueLinkParentKey(issue) {
   let result = null;
   issue.fields.issuelinks.forEach(issueLink => {

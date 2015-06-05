@@ -1,4 +1,4 @@
-import {findProjectKey, getEpicLinkField, findParent, findIssueLinkParentKey} from '../src/jira-operations.js';
+import {findProjectKey, getEpicLinkField, findParent, findIssueLinkParentKey, findCustomField} from '../src/jira-operations.js';
 import DummyJira from './dummy-jira.js';
 
 let dummyJira = new DummyJira();
@@ -65,6 +65,17 @@ describe('JIRA Operations Tests', function() {
       return findParent(dummyJira.issues['WHP-9992'], dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Initiative');
+        });
+    });
+
+    it('Find Custom Field', () => {
+      dummyJira.listFields = function() {
+        return Promise.resolve(dummyJira.fields.customfield_10804);
+      };
+
+      return findCustomField(dummyJira, 10804)
+        .then(field => {
+          field.id.should.equal('customfield_10804');
         });
     });
 
