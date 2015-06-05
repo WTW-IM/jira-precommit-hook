@@ -5,7 +5,7 @@ let dummyJira = new DummyJira();
 
 describe('Story/Sub-task Strategy Apply Tests', () => {
   describe('Okay to commit against', () => {
-    it('Sub-task is yellow and all the parents up to the initiative are yellow', () => 
+    it('Sub-task is yellow and all the parents up to the initiative are yellow', () =>
       storyStrat.apply(dummyJira.issues.TW102, dummyJira).should.eventually.equal(true)
     );
 

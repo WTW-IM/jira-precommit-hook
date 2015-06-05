@@ -7,17 +7,17 @@ export function withinActiveSprint(issue, jiraClientAPI) {
   let commitTime = dateOperations.getDate();
   let issueKey;
 
-  return jiraClientAPI.findIssue(issue)
-    .then(contents => {
-      issueKey = contents.key;
-      return jiraOperations.findCustomField(jiraClientAPI, 10804);
-    })
+  return jiraOperations.findCustomField(jiraClientAPI, 10804)
     .then(fieldJson => {
+      console.log('got json');
       if(fieldJson !== undefined) {
         let sprintBody = String(fieldJson.name);
+        console.log(`got sprint body ${JSON.stringify(fieldJson)}`);
 
         let index = sprintBody.indexOf('[');
         sprintBody = sprintBody.substring(index + 1);
+
+        console.log(`SPRINT BODY ${sprintBody}`);
 
         index = sprintBody.indexOf(']');
         sprintBody = sprintBody.substring(0, index);
