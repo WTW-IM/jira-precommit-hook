@@ -31,7 +31,10 @@ export default function createTestIssue(key, type, color, parentKey, parentType,
       },
       'issuetype': {
         'name': type
-      }
+      },
+      'customfield_10804': [
+        'sprint1:[startDate=\'2015-05-20T09:00:57.130-06:00\',endDate=\'2015-05-27T17:00:00.000-06:00\']'
+      ]
     }
   };
 

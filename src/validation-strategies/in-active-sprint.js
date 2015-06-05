@@ -1,33 +1,46 @@
+import * as jiraOperations from '../jira-operations.js';
+import * as dateOperations from '../date-operations.js';
+import * as _ from 'lodash';
 import 'colors';
 
-function withinActiveSprint(issue, jiraClientAPI) {
-  let today = new Date();
+export function withinActiveSprint(issue, jiraClientAPI) {
+  let commitTime = dateOperations.getDate();
+  let issueKey;
 
   return jiraClientAPI.findIssue(issue)
     .then(contents => {
-      let fields = contents.fields.customfield_10804;
+      issueKey = contents.key;
+      return jiraOperations.findCustomField(jiraClientAPI, 10804);
+    })
+    .then(fieldJson => {
+      if(fieldJson !== undefined) {
+        let sprintBody = String(fieldJson.name);
 
-      if(fields !== undefined) {
-        fields = fields[0];
-        let start = fields.match(RegExp('startDate=([0-9\-]+)', 'g'));
-        let end = fields.match(RegExp('endDate=([0-9\-]+)', 'g'));
+        let index = sprintBody.indexOf('[');
+        sprintBody = sprintBody.substring(index + 1);
 
-        let startDate = new Date(start);
-        let endDate = new Date(end);
+        index = sprintBody.indexOf(']');
+        sprintBody = sprintBody.substring(0, index);
 
-        console.log(`START DATE: ${start}`);
-        console.log(`END DATE: ${end}`);
+        let sprintFields = sprintBody.split(',');
+        for(let i = 0; i < sprintFields.length; i++) {
+          sprintFields[i] = sprintFields[i].split('=');
+        }
+        let sprintDates = _.zipObject(sprintFields);
 
-        if(today < startDate || today > endDate) {
-          console.log(`Issue ${contents.key} is not in this Active Sprint.`.yellow);
+        let startDate = new Date(sprintDates.startDate);
+        let endDate = new Date(sprintDates.endDate);
+
+        let startDateComparison = dateOperations.compareDates(commitTime, startDate);
+        let endDateComparison = dateOperations.compareDates(commitTime, endDate);
+
+        if(startDateComparison < 0 || endDateComparison > 0) {
+          console.log(`Issue ${issueKey} is not inside of the active sprint`.yellow);
         }
       }
       return Promise.resolve(true);
+    })
+    .catch(() => {
+      // sprint field not in issue, prevents error from stopping commit
     });
-}
-
-export default function apply(issues, jiraClientAPI) {
-  return Promise.all(issues.map(issue =>
-    withinActiveSprint(issue, jiraClientAPI)
-  ));
 }

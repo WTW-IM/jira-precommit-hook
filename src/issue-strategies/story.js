@@ -1,4 +1,5 @@
 import * as jiraOperations from '../jira-operations.js';
+import * as inActive from '../validation-strategies/in-active-sprint';
 
 function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
   return parentIssue
@@ -16,6 +17,9 @@ export function apply(issue, jiraClientAPI) {
   if(issue === null || issue.fields.status.statusCategory.colorName !== 'yellow') {
     return Promise.reject(new Error(`Issue ${issue.key} is not open to commit against`));
   }
-
-  return areParentsValid(issue.key, jiraOperations.findParent(issue, jiraClientAPI), jiraClientAPI);
+  
+  return inActive.withinActiveSprint(issue, jiraClientAPI)
+    .then(() =>
+      areParentsValid(issue.key, jiraOperations.findParent(issue, jiraClientAPI), jiraClientAPI)
+    );
 }

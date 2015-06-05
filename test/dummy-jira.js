@@ -42,7 +42,13 @@ class DummyJira {
                 'id': 'customfield_10805',
                 'name': 'Epic Link'
               }],
-      'noEpicLink': []
+      'noEpicLink': [],
+      'customfield_10804': [{
+        'id': 'customfield_10804',
+        'name': [
+          'sprint1[startDate=2015-05-20T09:00:57.130-06:00,endDate=2015-05-27T17:00:00.000-06:00]'
+        ]
+      }]
     };
 
     this.projects = [
