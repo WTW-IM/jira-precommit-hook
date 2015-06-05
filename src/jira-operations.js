@@ -6,18 +6,22 @@ export function findProjectKey(jiraClient) {
         project => project.name === jiraClient.projectName).key);
 }
 
-export function getEpicLinkField(jiraClient) {
-  return jiraClient.listFields()
-    .then(fields => {
-      for(let i = 0; i < fields.length; i++) {
-        if(fields[i].name === 'Epic Link') {
-          return fields[i].id;
+export let getEpicLinkField = _.memoize(
+  function (jiraClient) {
+    return jiraClient.listFields()
+      .then(fields => {
+        for(let i = 0; i < fields.length; i++) {
+          if(fields[i].name === 'Epic Link') {
+            return Promise.resolve(fields[i].id);
+          }
         }
-      }
-
-      return Promise.reject('Cannot find Epic Link Field ID. Should defined in field URI.');
-    });
-}
+        return Promise.reject('Cannot find Epic Link Field.');
+      });
+  },
+  function (jiraClient) {
+    return jiraClient.host;
+  }
+);
 
 export function findIssueLinkParentKey(issue) {
   let result = null;
@@ -42,8 +46,9 @@ export function findIssueLinkParentKey(issue) {
   return result;
 }
 
-export function findParent(issue, jiraClient) {
-  switch(issue.fields.issuetype.name) {
+export let findParent = _.memoize(
+  function (issue, jiraClient) {
+      switch(issue.fields.issuetype.name) {
     case 'Sub-task':
     case 'Feature Defect':
       return jiraClient.findIssue(issue.fields.parent.key);
@@ -67,5 +72,9 @@ export function findParent(issue, jiraClient) {
 
     default:
         return Promise.reject(`${issue.fields.issuetype.name} should not have a parent.`);
+    }
+  },
+  function (issue) {
+    return JSON.stringify(issue);
   }
-}
+);

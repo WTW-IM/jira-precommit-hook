@@ -2,6 +2,7 @@ import issueGenerator from './issue-generator.js';
 
 class DummyJira {
   constructor() {
+    this.host = 'jira.host.com';
     this.projectName = 'Last Three';
 
     this.issues = {
@@ -30,6 +31,7 @@ class DummyJira {
       TW206: issueGenerator('TW206', 'Sub-task', 'yellow', 'TW201'),
       TW207: issueGenerator('TW207', 'Sub-task', 'yellow', 'TW205'),
       'WHP-9996': issueGenerator('WHP-9996', 'Feature Defect', 'yellow', 'WHP-9993', 'Story'),
+      'WHP-9997': issueGenerator('WHP-9997', 'Sub-task', 'yellow', 'WHP-9993', 'Story'),
       'WHP-9995': issueGenerator('WHP-9995', 'Sub-task', 'yellow', 'WHP-9994', 'Story'),
       'WHP-9994': issueGenerator('WHP-9994', 'Story', 'yellow', 'WHP-9992', 'Epic'),
       'WHP-9993': issueGenerator('WHP-9993', 'Story', 'yellow', 'PM100', 'Initiative', 'Relates'),
