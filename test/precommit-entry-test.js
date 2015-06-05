@@ -1,6 +1,5 @@
 import * as pce from '../src/precommit-entry';
 import * as issueHandler from '../src/issue-handler';
-import fsp from 'fs-promise';
 import os from 'os';
 import * as connection from '../src/jira-connection';
 import * as operations from '../src/jira-operations';
@@ -17,13 +16,11 @@ describe('precommit-entry tests', () => {
           'name': 'Story'
         }
       };
+
       sinon.stub(issueHandler, 'issueStrategizer', issues => {
         let jsonObjects = [stubJson, stubJson, stubJson];
         return jsonObjects;
       });
-
-      let readFileStub = sinon.stub(fsp, 'readFile');
-      readFileStub.resolves('TW-5032' + eol + 'TW-2380' + eol + 'TW-2018');
 
       sinon.stub(connection, 'getJiraAPI', () => {
         return Promise.resolve(new JiraApi('http', 'www.jira.com', 80, 'UserDudeBro', 'SuperSecret', '2.0.0'));
@@ -40,13 +37,12 @@ describe('precommit-entry tests', () => {
 
     afterEach(() => {
       issueHandler.issueStrategizer.restore();
-      fsp.readFile.restore();
       connection.getJiraAPI.restore();
       fileUtils.getFilePath.restore();
     });
 
     it('read from issue list and return JSON array', () => {
-      return pce.getCommitMsg('issuesTestFile.txt')
+      return pce.getCommitMsg(Promise.resolve(''))
         .then(results => {
           results.length.should.equal(3);
         });
