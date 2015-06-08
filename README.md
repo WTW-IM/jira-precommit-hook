@@ -36,3 +36,15 @@ To install, run the following with [npm](https://www.npmjs.com):
 ```
 npm install jira-precommit-hook
 ```
+
+# Making JIRA Commits
+
+In order to make a successful commit with the precommit hook, the issues being committed must meet the following requirements:
+
+- There must be at least one issue in the commit message
+- All committed issues must exist in the project designated in the .jirarc
+- At least one issue being committed must meet the following requirements:
+  - The issue must be assigned and open for commits
+  - The parents of the issue must also be open for commits
+    - The issue must lead up to an initiative
+  - The issue must not be an initiative, epic, nor a deployment task
