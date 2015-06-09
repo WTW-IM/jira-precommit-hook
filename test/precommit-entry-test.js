@@ -47,6 +47,20 @@ describe('precommit-entry tests', () => {
           results.length.should.equal(3);
         });
     });
+
+    it('Check for merge commit', () => {
+      return pce.getCommitMsg(Promise.resolve('Merge'))
+        .then(results => {
+          assert.equal(results, null);
+        });
+    });
+
+    it('Check for revert commit', () => {
+      return pce.getCommitMsg(Promise.resolve('Revert'))
+        .then(results => {
+          assert.equal(results, null);
+        });
+    });
   });
 
   describe('Issue number test', () => {
