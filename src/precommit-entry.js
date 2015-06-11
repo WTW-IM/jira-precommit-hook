@@ -33,6 +33,12 @@ export function getCommitMsg(readPromise) {
     readPromise
   ])
   .then(([projectKey, fileContents]) => {
+    let firstWord = fileContents.split(' ')[0];
+
+    if(firstWord === 'Merge' || firstWord === 'Revert') {
+      return null;
+    }
+
      let issues = getIssueReference(fileContents, projectKey);
      return issueHandler.issueStrategizer(issues, jiraAPI);
   });
