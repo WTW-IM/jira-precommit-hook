@@ -36,3 +36,21 @@ To install, run the following with [npm](https://www.npmjs.com):
 ```
 npm install jira-precommit-hook
 ```
+
+**SYMLINK DIRECTORY NOTICE**
+
+If the hooks directory in your .git folder is symlinked, the module will be unable to find it. To avoid this, do not symlink your hooks folder inside of your project's git directory.
+
+# Making JIRA Commits
+
+_In order to make a successful commit with the precommit hook, **ALL** issues being committed must meet the following requirements:_
+
+- There must be at least one issue in the commit message
+- All committed issues must exist in the project designated in the .jirarc
+
+
+_At **least one** issue being committed must meet the following requirements:_
+- The issue must be open for commits
+- The parents of the issue must also be open for commits
+  - The issue must lead up to an initiative
+- The issue must not be an initiative, epic, nor a deployment task
