@@ -1,6 +1,6 @@
 {
   "name": "jira-precommit-hook",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Git commit hook to verify commit messages are tagged with a JIRA issue number",
   "main": "lib/index.js",
   "scripts": {
