@@ -59,6 +59,7 @@ export default function createTestIssue(key, type, color, parentKey, parentType,
     case 'Initiative':
     case 'Bug':
     case 'MT':
+    case 'Task':
       return baseIssue;
   }
 }
