@@ -16,6 +16,7 @@ class DummyJira {
       TW8: issueGenerator('TW8', 'Story', 'green'),
       TW9: issueGenerator('TW9', 'MT', 'yellow'),
       TW10: issueGenerator('TW10', 'Sub-task', 'green'),
+      TW11: issueGenerator('TW11', 'Task', 'yellow'),
       PM100: issueGenerator('PM100', 'Initiative', 'yellow'),
       TW100: issueGenerator('TW100', 'Epic', 'yellow', 'PM100', 'Initiative', 'Relates'),
       TW101: issueGenerator('TW101', 'Story', 'yellow', 'TW100', 'Epic'),
