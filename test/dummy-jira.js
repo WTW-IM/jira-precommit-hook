@@ -9,10 +9,10 @@ class DummyJira {
       Bug1: issueGenerator('Bug1', 'Bug', 'yellow'),
       Bug2: issueGenerator('Bug2', 'Bug', 'green'),
 
-      MT1: issueGenerator('MT1', 'MT', 'yellow'),
-      MT2: issueGenerator('MT2', 'MT', 'green'),
-      MT3: issueGenerator('MT3', 'MT', 'yellow', 'Epic1'),
-      MT4: issueGenerator('MT4', 'MT', 'yellow', 'Epic4'),
+      MT1: issueGenerator('MT1', 'Maintenance Task', 'yellow'),
+      MT2: issueGenerator('MT2', 'Maintenance Task', 'green'),
+      MT3: issueGenerator('MT3', 'Maintenance Task', 'yellow', 'Epic1'),
+      MT4: issueGenerator('MT4', 'Maintenance Task', 'yellow', 'Epic4'),
 
       I1: issueGenerator('I1', 'Initiative', 'yellow'),
       I2: issueGenerator('I2', 'Initiative', 'yellow'),

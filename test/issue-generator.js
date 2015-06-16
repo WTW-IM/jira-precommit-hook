@@ -58,6 +58,8 @@ export default function createTestIssue(key, type, color, parentKey, parentType,
       });
     case 'Initiative':
     case 'Bug':
+    case 'Maintenance Task':
+    // This is old??
     case 'MT':
     case 'Task':
       return baseIssue;
