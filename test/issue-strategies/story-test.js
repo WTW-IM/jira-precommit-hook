@@ -20,23 +20,23 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
 
   describe('Should not be able to commit against', () => {
     it('Sub-task not yellow', () =>
-      storyStrat.apply(dummyJira.issues.SubTask6, dummyJira)
-        .should.eventually.be.rejectedWith(Error, /SubTask6 is not open to commit against/)
+      storyStrat.apply(dummyJira.issues.SubTask12, dummyJira)
+        .should.eventually.be.rejectedWith(Error, /SubTask12 is not open to commit against/)
     );
 
     it('Sub-task is yellow, but the story is not', () =>
-      storyStrat.apply(dummyJira.issues.SubTask5, dummyJira)
-        .should.eventually.be.rejectedWith(Error, /Cannot commit.*SubTask5.*parent issue Story6/)
+      storyStrat.apply(dummyJira.issues.SubTask9, dummyJira)
+        .should.eventually.be.rejectedWith(Error, /Cannot commit.*SubTask9.*parent issue Story6/)
     );
 
     it('Sub-task is yellow, but the epic is not', () =>
-      storyStrat.apply(dummyJira.issues.SubTask3, dummyJira)
-        .should.eventually.be.rejectedWith(Error, /Cannot commit.*SubTask3.*parent issue Epic4/)
+      storyStrat.apply(dummyJira.issues.SubTask7, dummyJira)
+        .should.eventually.be.rejectedWith(Error, /Cannot commit.*SubTask7.*parent issue Epic4/)
     );
 
     it('Sub-task is yellow, but the initiative is not', () =>
-      storyStrat.apply(dummyJira.issues.SubTask4, dummyJira)
-        .should.eventually.be.rejectedWith(Error, /Cannot commit.*SubTask4.*parent issue I3/)
+      storyStrat.apply(dummyJira.issues.SubTask8, dummyJira)
+        .should.eventually.be.rejectedWith(Error, /Cannot commit.*SubTask8.*parent issue I3/)
     );
 
     it('Story not yellow', () =>

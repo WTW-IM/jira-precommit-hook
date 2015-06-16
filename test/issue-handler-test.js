@@ -16,7 +16,7 @@ describe('Issue Handler Test', () => {
   });
 
   it('1 bad issue', done => {
-    let testIssueArr = ['SubTask4'];
+    let testIssueArr = ['SubTask8'];
     issueHandler.issueStrategizer(testIssueArr, dummyJira).should.eventually.be.rejectedWith(Error).notify(done);
   });
 
@@ -36,12 +36,12 @@ describe('Issue Handler Test', () => {
   });
 
   it('2 bad issues', done => {
-    let testIssueArr = ['Story6', 'SubTask3'];
+    let testIssueArr = ['Story6', 'SubTask7'];
     issueHandler.issueStrategizer(testIssueArr, dummyJira).should.eventually.be.rejectedWith([new Error(), new Error()]).notify(done);
   });
 
   it('2 bad issue and 1 good issue', done => {
-    let testIssueArr = ['Story6', 'SubTask3', 'Story1'];
+    let testIssueArr = ['Story6', 'SubTask7', 'Story1'];
     issueHandler.issueStrategizer(testIssueArr, dummyJira).should.eventually.equal(true).notify(done);
   });
 });

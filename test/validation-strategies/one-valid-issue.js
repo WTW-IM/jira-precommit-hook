@@ -20,7 +20,7 @@ describe('One valid issue apply tests', () => {
   });
 
   it('2 bad issues', () => {
-    let testIssues = ['TW201', 'SubTask3'];
+    let testIssues = ['TW201', 'SubTask7'];
     return validStrat(testIssues, dummyJira).should.eventually.be.rejectedWith([new Error(), new Error()]);
   });
 });

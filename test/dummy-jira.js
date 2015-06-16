@@ -11,6 +11,8 @@ class DummyJira {
 
       MT1: issueGenerator('MT1', 'MT', 'yellow'),
       MT2: issueGenerator('MT2', 'MT', 'green'),
+      MT3: issueGenerator('MT3', 'MT', 'yellow', 'Epic1'),
+      MT4: issueGenerator('MT4', 'MT', 'yellow', 'Epic4'),
 
       I1: issueGenerator('I1', 'Initiative', 'yellow'),
       I2: issueGenerator('I2', 'Initiative', 'yellow'),
@@ -39,21 +41,29 @@ class DummyJira {
       // Valid Parents
       SubTask1: issueGenerator('SubTask1', 'Sub-task', 'yellow', 'Story1'),
       SubTask2: issueGenerator('SubTask2', 'Sub-task', 'yellow', 'Story2'),
+      SubTask3: issueGenerator('SubTask3', 'Sub-task', 'yellow', 'MT1'),
+      SubTask4: issueGenerator('SubTask4', 'Sub-task', 'yellow', 'MT3'),
+      SubTask5: issueGenerator('SubTask5', 'Sub-task', 'yellow', 'MT4'),
+      SubTask6: issueGenerator('SubTask6', 'Sub-task', 'yellow', 'Bug1'),
 
       // Invalid Parents
-      SubTask3: issueGenerator('SubTask3', 'Sub-task', 'yellow', 'Story3'),
-      SubTask4: issueGenerator('SubTask4', 'Sub-task', 'yellow', 'Story4'),
-      SubTask5: issueGenerator('SubTask5', 'Sub-task', 'yellow', 'Story6'),
+      SubTask7: issueGenerator('SubTask7', 'Sub-task', 'yellow', 'Story3'),
+      SubTask8: issueGenerator('SubTask8', 'Sub-task', 'yellow', 'Story4'),
+      SubTask9: issueGenerator('SubTask9', 'Sub-task', 'yellow', 'Story6'),
+      SubTask10: issueGenerator('SubTask10', 'Sub-task', 'yellow', 'MT2'),
+      SubTask11: issueGenerator('SubTask11', 'Sub-task', 'yellow', 'Bug2'),
 
       // Invalid SubTask
-      SubTask6: issueGenerator('SubTask6', 'Sub-task', 'red', 'Story6'),
-      SubTask7: issueGenerator('SubTask7', 'Sub-task', 'green'),
+      SubTask12: issueGenerator('SubTask12', 'Sub-task', 'red', 'Story6'),
+      SubTask13: issueGenerator('SubTask13', 'Sub-task', 'green', 'MT1'),
+      SubTask14: issueGenerator('SubTask14', 'Sub-task', 'green', 'Bug1'),
+      SubTask15: issueGenerator('SubTask15', 'Sub-task', 'green'),
       //SubTask1: issueGenerator('SubTask1', 'Sub-task', 'yellow'), // Missing tests?
 
       Task1: issueGenerator('Task1', 'Task', 'yellow'),
 
-      FeatureDefect1: issueGenerator('FeatureDefect1', 'Feature Defect', 'yellow', 'Story2', 'Story'),
-      FeatureDefect2: issueGenerator('FeatureDefect2', 'Feature Defect', 'green', 'Story2', 'Story')
+      FeatureDefect1: issueGenerator('FeatureDefect1', 'Feature Defect', 'yellow', 'Story2', 'Story')
+      //FeatureDefect2: issueGenerator('FeatureDefect2', 'Feature Defect', 'green', 'Story2', 'Story') // Missing tests?
     };
 
     this.fields = {
