@@ -3,10 +3,13 @@ import * as promiseUtils from '../promise-utils.js';
 
 function validateStrategies(issueKey, jiraClientAPI) {
   return jiraClientAPI.findIssue(issueKey)
-    .then(content =>
-      issueStrats[content.fields.issuetype.name].apply(content, jiraClientAPI)
-    )
-    .catch(content => Promise.reject(new Error(`${issueKey} does not have a valid issuetype`)));
+  .then(content => {
+    if (!issueStrats[content.fields.issuetype.name]) {
+      return Promise.reject(new Error(`${issueKey} does not have a valid issuetype`));
+    }
+
+    return issueStrats[content.fields.issuetype.name].apply(content, jiraClientAPI);
+  });
 }
 
 export default function apply(issues, jiraClientAPI) {
