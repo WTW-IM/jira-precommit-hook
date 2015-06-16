@@ -11,12 +11,12 @@ describe('Issue Handler Test', () => {
   });
 
   it('1 good issue', done => {
-    let testIssueArr = ['TW102'];
+    let testIssueArr = ['SubTask1'];
     issueHandler.issueStrategizer(testIssueArr, dummyJira).should.eventually.equal(true).notify(done);
   });
 
   it('1 bad issue', done => {
-    let testIssueArr = ['TW204'];
+    let testIssueArr = ['SubTask8'];
     issueHandler.issueStrategizer(testIssueArr, dummyJira).should.eventually.be.rejectedWith(Error).notify(done);
   });
 
@@ -26,22 +26,22 @@ describe('Issue Handler Test', () => {
   });
 
   it('1 non-existent issue and 1 good issue', done => {
-    let testIssueArr = ['TW102', 'TW500'];
+    let testIssueArr = ['SubTask1', 'TW500'];
     issueHandler.issueStrategizer(testIssueArr, dummyJira).should.eventually.be.rejectedWith(Error).notify(done);
   });
 
   it('1 good issue and 1 non-existent issue', done => {
-    let testIssueArr = ['TW502', 'TW102'];
+    let testIssueArr = ['TW502', 'SubTask1'];
     issueHandler.issueStrategizer(testIssueArr, dummyJira).should.eventually.be.rejectedWith(Error).notify(done);
   });
 
   it('2 bad issues', done => {
-    let testIssueArr = ['TW202', 'TW203'];
+    let testIssueArr = ['Story6', 'SubTask7'];
     issueHandler.issueStrategizer(testIssueArr, dummyJira).should.eventually.be.rejectedWith([new Error(), new Error()]).notify(done);
   });
 
   it('2 bad issue and 1 good issue', done => {
-    let testIssueArr = ['TW202', 'TW203', 'TW101'];
+    let testIssueArr = ['Story6', 'SubTask7', 'Story1'];
     issueHandler.issueStrategizer(testIssueArr, dummyJira).should.eventually.equal(true).notify(done);
   });
 });

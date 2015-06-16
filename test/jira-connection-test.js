@@ -32,8 +32,8 @@ describe('JIRA Connection Tests', function() {
 
     it('findIssue with Same Key is Run Only Once', () => {
         return Promise.all([
-          jiraApi.findIssue('WHP-9999'),
-          jiraApi.findIssue('WHP-9999')
+          jiraApi.findIssue('Story5'),
+          jiraApi.findIssue('Story5')
         ])
         .then(([first, second]) => {
           assert.equal(spy.calledOnce, true);
@@ -43,12 +43,12 @@ describe('JIRA Connection Tests', function() {
 
     it('findIssue with Different Keys is Run Twice', () => {
       return Promise.all([
-        jiraApi.findIssue('WHP-9991'),
-        jiraApi.findIssue('WHP-9992')
+        jiraApi.findIssue('Story1'),
+        jiraApi.findIssue('Story2')
       ])
       .then(([first, second]) =>{
-        assert.equal(first.key, 'WHP-9991');
-        assert.equal(second.key, 'WHP-9992');
+        assert.equal(first.key, 'Story1');
+        assert.equal(second.key, 'Story2');
         assert.equal(spy.calledTwice, true);
       });
     });

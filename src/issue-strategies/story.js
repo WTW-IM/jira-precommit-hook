@@ -5,7 +5,9 @@ function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
     .then(content => {
       if(content === null || content.fields.status.statusCategory.colorName !== 'yellow') {
         return Promise.reject(new Error(`Cannot commit issue ${baseIssueKey} because parent issue ${content.key} is not available to commit against.`));
-      } else if(content.fields.issuetype.name === 'Initiative') {
+      } else if(content.fields.issuetype.name === 'MT' ||
+                content.fields.issuetype.name === 'Bug' ||
+                content.fields.issuetype.name === 'Initiative') {
         return Promise.resolve(true);
       }
       return areParentsValid(baseIssueKey, jiraOperations.findParent(content, jiraClientAPI), jiraClientAPI);
