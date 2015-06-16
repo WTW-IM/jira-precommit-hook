@@ -29,14 +29,14 @@ describe('JIRA Operations Tests', function() {
     });
 
     it('Find Parent from Sub-task', () => {
-      return findParent(dummyJira.issues['WHP-9995'], dummyJira)
+      return findParent(dummyJira.issues.SubTask1, dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Story');
         });
     });
 
     it('Find Parent from Feature Defect', () => {
-      return findParent(dummyJira.issues['WHP-9996'], dummyJira)
+      return findParent(dummyJira.issues.FeatureDefect1, dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Story');
         });
@@ -48,43 +48,43 @@ describe('JIRA Operations Tests', function() {
       };
       dummyJira.host = 'jira.host3.com';
 
-      return findParent(dummyJira.issues['WHP-9994'], dummyJira)
+      return findParent(dummyJira.issues.Story3, dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Epic');
         });
     });
 
     it('Find Parent from Story by IssueLink', () => {
-      return findParent(dummyJira.issues['WHP-9993'], dummyJira)
+      return findParent(dummyJira.issues.Story4, dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Initiative');
         });
     });
 
     it('Find Parent from Epic', () => {
-      return findParent(dummyJira.issues['WHP-9992'], dummyJira)
+      return findParent(dummyJira.issues.Epic3, dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Initiative');
         });
     });
 
     it('No Parent Found from Epic', done => {
-      findParent(dummyJira.issues['WHP-9991'], dummyJira).should.eventually.be.rejected.notify(done);
+      findParent(dummyJira.issues.Epic1, dummyJira).should.eventually.be.rejected.notify(done);
     });
 
     it('No Parent Found from Initiative', done => {
-      findParent(dummyJira.issues.PM100, dummyJira).should.eventually.be.rejected.notify(done);
+      findParent(dummyJira.issues.I2, dummyJira).should.eventually.be.rejected.notify(done);
     });
   });
 
   describe('Relates Check', () => {
     it('Good Link', () => {
-      let result = findIssueLinkParentKey(dummyJira.issues['WHP-9993']);
-      assert.equal(result, 'PM100');
+      let result = findIssueLinkParentKey(dummyJira.issues.Story2);
+      assert.equal(result, 'I2');
     });
 
     it('Bad Link', () => {
-      let result = findIssueLinkParentKey(dummyJira.issues['WHP-9999']);
+      let result = findIssueLinkParentKey(dummyJira.issues.Story5);
       assert.equal(result, null);
     });
   });
@@ -96,8 +96,8 @@ describe('JIRA Operations Tests', function() {
       spy = sinon.spy(dummyJira, 'findIssue');
 
       return Promise.all([
-        findParent(dummyJira.issues['WHP-9997'], dummyJira),
-        findParent(dummyJira.issues['WHP-9997'], dummyJira)
+        findParent(dummyJira.issues.SubTask2, dummyJira),
+        findParent(dummyJira.issues.SubTask2, dummyJira)
       ])
       .then(([first, second]) => {
         assert.equal(spy.calledOnce, true);

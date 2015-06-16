@@ -5,7 +5,7 @@ let dummyJira = new DummyJira();
 
 describe('One valid issue apply tests', () => {
   it('1 good issue', () => {
-    let testIssues = ['TW101'];
+    let testIssues = ['Story1'];
     return validStrat(testIssues, dummyJira).should.eventually.equal(true);
   });
 
@@ -15,12 +15,12 @@ describe('One valid issue apply tests', () => {
   });
 
   it('1 good issue, 1 bad issue', () => {
-    let testIssues = ['TW101', 'TW201'];
+    let testIssues = ['Story1', 'TW201'];
     return validStrat(testIssues, dummyJira).should.eventually.equal(true);
   });
 
   it('2 bad issues', () => {
-    let testIssues = ['TW201', 'TW206'];
+    let testIssues = ['TW201', 'SubTask3'];
     return validStrat(testIssues, dummyJira).should.eventually.be.rejectedWith([new Error(), new Error()]);
   });
 });
