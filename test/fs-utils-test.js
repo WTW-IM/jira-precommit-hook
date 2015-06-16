@@ -4,7 +4,22 @@ import fs from 'fs';
 import fsp from 'fs-promise';
 import rimraf from 'rimraf';
 
+const tmpDir = path.join(__dirname, 'tmp');
+const tmpGitDir = path.join(tmpDir, '.git');
+const hooksDir = path.join(tmpGitDir, 'hooks');
+const commitMsgPath = path.join(hooksDir, 'commit-msg');
+
 describe('FS-Utils Tests', () => {
+  before(() =>
+    fsp.exists(tmpDir)
+      .then(exists => {
+        if(!exists) {
+          return fsp.mkdir(tmpDir)
+            .then(() => fsp.mkdir('test/tmp/.git'));
+        }
+      })
+  );
+
   describe('Finding Directory', () => {
     it('Finding Named Directory', () => {
       let gitPath = findParentFolder(__dirname, '.git');
@@ -19,49 +34,50 @@ describe('FS-Utils Tests', () => {
 
   describe('Hooks folder verification', () => {
     beforeEach(() => {
-      let pathString = path.resolve(path.join('test', 'tmp', '.git', 'hooks'));
-      let hooksExists = fsp.existsSync(pathString);
+      let pathString = path.resolve(hooksDir);
+      let hooksExists = fs.existsSync(pathString);
       if(hooksExists) {
         rimraf.sync(pathString);
       }
     });
 
     it('Confirm hooks folder exists', () => {
-      verifyHooksFolder(path.join('test', 'tmp', '.git', 'hooks'));
-      assert(fs.existsSync(path.join('test', 'tmp', '.git', 'hooks')));
+      verifyHooksFolder(hooksDir);
+      assert(fs.existsSync(hooksDir));
     });
   });
 
   describe('Hook Installation', () => {
-    before(() => fsp.exists('test/tmp')
-      .then(exists => {
-        if(!exists) {
-          fsp.mkdir('test/tmp')
-          .then(() => fsp.mkdir('test/tmp/.git'))
-          .then(() => fsp.mkdir('test/tmp/.git/hooks'));
+    before(() =>
+      fsp.exists(hooksDir)
+        .then(exists => {
+          if(!exists) {
+            return fsp.mkdir(hooksDir);
           }
-        }
-      ));
+        })
+    );
 
-    beforeEach(() => fsp.exists('test/tmp/.git/hooks/commit-msg')
-      .then(exists => {
-        if(exists) {
-          return fsp.unlink('test/tmp/.git/hooks/commit-msg');
-        }
-    }));
+    beforeEach(() =>
+      fsp.exists(commitMsgPath)
+        .then(exists => {
+          if(exists) {
+            return fsp.unlink(commitMsgPath);
+          }
+        })
+    );
 
     it('Hook Creation Test', (done) => {
-      copyHookFiles(path.join(__dirname, '/tmp/.git'))
+      copyHookFiles(tmpGitDir)
       .then(() => {
-         fs.existsSync('test/tmp/.git/hooks/commit-msg').should.equal(true);
+         fs.existsSync(commitMsgPath).should.equal(true);
          done();
       });
     });
 
     it('Validate Hook File is Correct', (done) => {
-      copyHookFiles(path.join(__dirname, '/tmp/.git'))
+      copyHookFiles(tmpGitDir)
       .then(() => {
-        let newFile = fs.readFileSync('test/tmp/.git/hooks/commit-msg');
+        let newFile = fs.readFileSync(commitMsgPath);
         let oldFile = fs.readFileSync('hooks/commit-msg');
         newFile.should.eql(oldFile);
         done();
