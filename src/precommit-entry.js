@@ -48,7 +48,10 @@ export function precommit(path) {
   let readPromise = fsp.readFile(path, {encoding: 'utf8'});
 
   return getCommitMsg(readPromise)
-    .then(() => 0)
+    .then(() => {
+      console.log('[jira-precommit-hook] '.grey + 'Commit message successfully verified.'.cyan);
+      return 0;
+    })
     .catch(err => {
       return readPromise
         .then(contents => {
