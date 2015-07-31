@@ -5,6 +5,7 @@ import * as issueHandler from './issue-handler';
 import {findProjectKey} from './jira-operations';
 import {getJiraAPI} from './jira-connection';
 import * as fsUtils from './fs-utils';
+import checkOutdated from './outdated-check';
 import 'colors';
 
 export function getIssueReference(msgToParse, prjKey) {
@@ -45,34 +46,37 @@ export function getCommitMsg(readPromise) {
 }
 
 export function precommit(path) {
-  let readPromise = fsp.readFile(path, {encoding: 'utf8'});
-
-  return getCommitMsg(readPromise)
+  return checkOutdated()
     .then(() => {
-      console.log('[jira-precommit-hook] '.grey + 'Commit message successfully verified.'.cyan);
-      return 0;
-    })
-    .catch(err => {
-      return readPromise
-        .then(contents => {
-          console.log('Commit Message:');
-          console.log(contents);
+      let readPromise = fsp.readFile(path, {encoding: 'utf8'});
 
-          if (typeof err === 'string') {
-            console.error(err.red);
-          }
-          else if (process.env.NODE_ENV === 'development') {
-            console.error(err.stack.red);
-          }
-          else {
-            console.error(err.toString().red);
-          }
-
-          return 1;
+      return getCommitMsg(readPromise)
+        .then(() => {
+          console.log('[jira-precommit-hook] '.grey + 'Commit message successfully verified.'.cyan);
+          return 0;
         })
-        .catch(err2 => {
-          console.log('Failed to read commit message file.'.red);
-          return 1;
+        .catch(err => {
+          return readPromise
+            .then(contents => {
+              console.log('Commit Message:');
+              console.log(contents);
+
+              if (typeof err === 'string') {
+                console.error(err.red);
+              }
+              else if (process.env.NODE_ENV === 'development') {
+                console.error(err.stack.red);
+              }
+              else {
+                console.error(err.toString().red);
+              }
+
+              return 1;
+            })
+            .catch(err2 => {
+              console.log('Failed to read commit message file.'.red);
+              return 1;
+            });
         });
     });
 }
