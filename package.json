@@ -32,14 +32,14 @@
   "license": "MIT",
   "devDependencies": {
     "babel": "^5.1.11",
-    "babel-eslint": "^3.0.1",
-    "chai": "^2.2.0",
+    "babel-eslint": "^4.0.5",
+    "chai": "^3.2.0",
     "chai-as-promised": "^5.0.0",
-    "eslint": "^0.20.0",
+    "eslint": "^0.24.1",
     "mocha": "^2.2.4",
     "rimraf": "^2.3.4",
     "sinon": "^1.14.1",
-    "sinon-as-promised": "^3.0.0",
+    "sinon-as-promised": "^4.0.0",
     "sinon-chai": "^2.7.0"
   },
   "dependencies": {
