@@ -1,6 +1,11 @@
 import {findParentFolder, copyHookFiles, verifyHooksFolder} from './fs-utils.js';
 import path from 'path';
 
+if (process.env.TEAMCITY_VERSION) {
+  console.log('TeamCity Detected not installing the commit hook');
+  process.exit(0);
+}
+
 let currentPath = process.cwd();
 
 let gitPath;
