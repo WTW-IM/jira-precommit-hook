@@ -3,7 +3,7 @@ import path from 'path';
 
 if (process.env.TEAMCITY_VERSION) {
   console.log('TeamCity Detected not installing the commit hook');
-  process.exit(0);
+  process.exit(0); // eslint-disable-line no-process-exit
 }
 
 let currentPath = process.cwd();
