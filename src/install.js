@@ -1,10 +1,10 @@
-import {findParentFolder, copyHookFiles, verifyHooksFolder} from './fs-utils.js';
-import path from 'path';
-
 if (process.env.TEAMCITY_VERSION) {
   console.log('TeamCity Detected not installing the commit hook');
   process.exit(0); // eslint-disable-line no-process-exit
 }
+
+import {findParentFolder, copyHookFiles, verifyHooksFolder} from './fs-utils.js';
+import path from 'path';
 
 let currentPath = process.cwd();
 
