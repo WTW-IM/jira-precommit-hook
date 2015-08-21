@@ -1,13 +1,22 @@
 #!/usr/bin/env node
 
+/* eslint no-var: 0 */
+
+if (process.env.TEAMCITY_VERSION) {
+  console.log('TeamCity Detected not installing the commit hook');
+  process.exit(0); // eslint-disable-line no-process-exit
+}
+
 var path = require('path');
 var fs = require('fs');
 var exists = fs.existsSync(path.join(__dirname, '../lib'));
 
-if(exists){
-  var desiredPath = path.resolve(path.join(__dirname, '../.git'));
-  var actualPath = require('../lib/fs-utils').getFilePath(__dirname, '.git');
-  if(desiredPath !== actualPath){
-    require('../lib/install.js');
-  }
+if (exists) {
+  var install = require('../lib/install.js');
+
+  install()
+    .catch(function(err) {
+      console.error(err);
+      process.exit(1);
+    });
 }

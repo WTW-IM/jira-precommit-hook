@@ -1,9 +1,9 @@
 import {getAPIConfig, getAuthentication, validateAPIConfig, validateAuthentication} from '../src/jira-configuration.js';
-import {getFilePath} from '../src/fs-utils.js';
+import {findParentFolder} from '../src/fs-utils.js';
 import path from 'path';
 
-let jiraPath = getFilePath(path.join(process.cwd(), 'test'), '.jirarc');
-let authPath = getFilePath(path.join(process.cwd(), 'test'), '.userconfig');
+let jiraPath = findParentFolder(path.join(process.cwd(), 'test'), '.jirarc');
+let authPath = findParentFolder(path.join(process.cwd(), 'test'), '.userconfig');
 
 let goodJiraObject = {
   'projectName': 'test',

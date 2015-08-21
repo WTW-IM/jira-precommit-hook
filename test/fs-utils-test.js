@@ -1,4 +1,4 @@
-import {findParentFolder, getFilePath, copyHookFiles, verifyHooksFolder} from '../src/fs-utils.js';
+import {findParentFolder, copyHookFiles, verifyHooksFolder} from '../src/fs-utils.js';
 import path from 'path';
 import fs from 'fs';
 import fsp from 'fs-promise';
@@ -82,18 +82,6 @@ describe('FS-Utils Tests', () => {
         newFile.should.eql(oldFile);
         done();
       });
-    });
-  });
-
-  describe('Finding Specified File', () => {
-    it('.gitignore is Found from Test', () => {
-      let gitPath = getFilePath(__dirname, '.gitignore');
-      gitPath.should.equal(path.join(__dirname, '../.gitignore'));
-    });
-
-    it('Unable to Find Specified File', () => {
-      let fn = () => { getFilePath(path.join(__dirname, '../../')); };
-      expect(fn).to.throw(Error);
     });
   });
 });

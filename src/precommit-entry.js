@@ -22,7 +22,7 @@ export function getCommitMsg(readPromise) {
   let jiraAPI, jiraConfigPath;
 
   try {
-    jiraConfigPath = fsUtils.getFilePath(process.cwd(), '.jirarc');
+    jiraConfigPath = fsUtils.findParentFolder(process.cwd(), '.jirarc');
   } catch (err) {
     return Promise.reject(new Error('.jirarc file is not found. Please refer to the readme for details about the .jirarc file'));
   }

@@ -30,7 +30,7 @@ describe('precommit-entry tests', () => {
         return 'TW';
       };
 
-      sinon.stub(fileUtils, 'getFilePath', (startDir, fileName) => {
+      sinon.stub(fileUtils, 'findParentFolder', (startDir, fileName) => {
         return './.jirarc';
       });
     });
@@ -38,7 +38,7 @@ describe('precommit-entry tests', () => {
     afterEach(() => {
       issueHandler.issueStrategizer.restore();
       connection.getJiraAPI.restore();
-      fileUtils.getFilePath.restore();
+      fileUtils.findParentFolder.restore();
     });
 
     it('read from issue list and return JSON array', () => {

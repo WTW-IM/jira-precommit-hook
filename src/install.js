@@ -1,29 +1,28 @@
-if (process.env.TEAMCITY_VERSION) {
-  console.log('TeamCity Detected not installing the commit hook');
-  process.exit(0); // eslint-disable-line no-process-exit
-}
-
 import {findParentFolder, copyHookFiles, verifyHooksFolder} from './fs-utils.js';
 import path from 'path';
 
-let currentPath = process.cwd();
+export default function install(){
+  let thisProjectsGitFolder = path.resolve(path.join(__dirname, '../.git'));
+  let gitPath = findParentFolder(__dirname, '.git');
 
-let gitPath;
+  if(thisProjectsGitFolder === gitPath){
+    return Promise.resolve(0);
+  }
 
-console.log('Installing JIRA pre-commit hook....');
+  console.log('Installing JIRA pre-commit hook....');
 
-try {
-  gitPath = findParentFolder(currentPath, '.git');
+  try {
+    gitPath = findParentFolder(__dirname, '.git');
+  }
+  catch(error) {
+    return Promise.reject('Your project needs a git repository to install the hook.');
+  }
+
+  console.log(`Found .git directory at: ${gitPath}`);
+
+  let hooksPath = path.join(gitPath, 'hooks');
+  verifyHooksFolder(hooksPath);
+
+  return copyHookFiles(gitPath)
+    .then(() => console.log('Copied commit hook.'));
 }
-catch(error) {
-  console.error('Your project needs a git repository to install the hook.');
-}
-
-console.log(`Found .git directory at: ${gitPath}`);
-
-let hooksPath = path.join(gitPath, 'hooks');
-verifyHooksFolder(hooksPath);
-
-copyHookFiles(gitPath)
-  .then(() => console.log('Copied commit hook.'))
-  .catch(error => console.error(error));
