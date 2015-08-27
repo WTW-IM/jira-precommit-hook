@@ -58,9 +58,20 @@ class DummyJira {
       SubTask13: issueGenerator('SubTask13', 'Sub-task', 'green', 'MT1'),
       SubTask14: issueGenerator('SubTask14', 'Sub-task', 'green', 'Bug1'),
       SubTask15: issueGenerator('SubTask15', 'Sub-task', 'green'),
+
+      //test to see if the code cares about broken children
+      //SubTask16: issueGenerator('SubTask16', 'Sub-task', 'red','Story1'),
       //SubTask1: issueGenerator('SubTask1', 'Sub-task', 'yellow'), // Missing tests?
 
       Task1: issueGenerator('Task1', 'Task', 'yellow'),
+
+      //new code
+      Dispatcher1: issueGenerator("Dispatcher1", "Dispatcher", "yellow"),
+      LinkedStory1 : issueGenerator("LinkedStory1", 'Story', 'yellow', 'I1','Initiative','Relates'),
+      DispatcherSubTask1: issueGenerator('DispatcherSubTask1', 'Sub-task', 'yellow', 'Dispatcher1'),
+      DispatcherSubTask2: issueGenerator('DispatcherSubTask2', 'Sub-task', 'red', 'Dispatcher2'),
+      DispatcherLinkedSubTask1 : issueGenerator('DispatcherLinkedSubTask1','Sub-task','yellow','LinkedStory1','Story','Relates'),
+      //DispatcherSubTask1: issueGenerator('DispatcherSubTask1', 'Sub-task', 'yellow', 'Dispatcher1'),
 
       FeatureDefect1: issueGenerator('FeatureDefect1', 'Feature Defect', 'yellow', 'Story2', 'Story')
       //FeatureDefect2: issueGenerator('FeatureDefect2', 'Feature Defect', 'green', 'Story2', 'Story') // Missing tests?

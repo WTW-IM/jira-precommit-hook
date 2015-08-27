@@ -16,6 +16,10 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
     it('Story is yellow and parent is an initiative which is also yellow', () =>
       storyStrat.apply(dummyJira.issues.Story2, dummyJira).should.eventually.equal(true)
     );
+
+    it('Sub-task has a parent dispatcher, is linked to a story, and all parents are yellow', ()=>
+      storyStrat.apply(dummyJira.issues.Story2, dummyJira).should.eventually.equal(true));
+
   });
 
   describe('Should not be able to commit against', () => {
