@@ -1,5 +1,6 @@
-import issueGenerator from './issue-generator.js';
-
+import issueGenerator , {createIssueWithMutipleLinks}from './issue-generator.js';
+import CardLink from './util/card-link.js'; 
+ console.log("Checking Generator".cyan + issueGenerator);
 class DummyJira {
   constructor() {
     this.host = 'jira.host.com';
@@ -67,10 +68,16 @@ class DummyJira {
 
       //new code
       Dispatcher1: issueGenerator("Dispatcher1", "Dispatcher", "yellow"),
-      LinkedStory1 : issueGenerator("LinkedStory1", 'Story', 'yellow', 'I1','Initiative','Relates'),
+      DispatcherLinkedSubTask1 : issueGenerator('DispatcherLinkedSubTask1','Sub-task','yellow', 'Dispatcher1','Dispatcher'),
+
+      LinkedStory1 : createIssueWithMutipleLinks("LinkedStory1", 'Story', 'yellow', [
+        new CardLink('I1', 'Initiative', 'Relates'),
+        new CardLink('Epic3', 'Epic'),
+        new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
+      ]),//'I1','Initiative','Relates'),*/
       DispatcherSubTask1: issueGenerator('DispatcherSubTask1', 'Sub-task', 'yellow', 'Dispatcher1'),
       DispatcherSubTask2: issueGenerator('DispatcherSubTask2', 'Sub-task', 'red', 'Dispatcher2'),
-      DispatcherLinkedSubTask1 : issueGenerator('DispatcherLinkedSubTask1','Sub-task','yellow','LinkedStory1','Story','Relates'),
+    
       //DispatcherSubTask1: issueGenerator('DispatcherSubTask1', 'Sub-task', 'yellow', 'Dispatcher1'),
 
       FeatureDefect1: issueGenerator('FeatureDefect1', 'Feature Defect', 'yellow', 'Story2', 'Story')

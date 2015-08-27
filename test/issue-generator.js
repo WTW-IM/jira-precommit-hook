@@ -22,14 +22,18 @@ function createIssueLinks(direction, parentKey, parentType, linkType) {
 
 export function createIssueWithMutipleLinks(key, type, color, parents)
 {
+  console.log('Made it to multi links');
   let baseIssue = createBaseIssue(key,type,color);
   _.forEach(parents, function(n)
   {
     baseIssue = resolveIssue(baseIssue,type,n.key,n.type,n.linkType);
   });
-
+  console.log(baseIssue.key);
+  _.forEach(baseIssue.fields.issuelinks, function(n){console.log(n)})
   return baseIssue;
 }
+
+export {createIssueWithMutipleLinks as createIssueWithMutipleLinks};
 
 export default function createTestIssue(key, type, color, parentKey, parentType, linkType) {
 
