@@ -1,10 +1,14 @@
 import * as dispatcherStrat from '../../src/issue-strategies/dispatcher.js';
 import DummyJira from '../dummy-jira.js';
 
-let dummyJira = new DummyJira();
 
 describe("Dispatcher/Subtask Strategy Apply Tests", () =>
 {
+	let dummyJira;
+
+  	beforeEach(function() {
+    	dummyJira = new DummyJira();
+  	});
 	describe("Not ok to commit against", () =>
 	{
 		it("should fail because you can't commit against dispatcher",()=>

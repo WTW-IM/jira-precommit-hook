@@ -1,9 +1,13 @@
 import * as storyStrat from '../../src/issue-strategies/story.js';
 import DummyJira from '../dummy-jira.js';
 
-let dummyJira = new DummyJira();
 
 describe('Story/Sub-task Strategy Apply Tests', () => {
+  let dummyJira;
+
+  beforeEach(function() {
+    dummyJira = new DummyJira();
+  });
   describe('Okay to commit against', () => {
     it('Sub-task is yellow and all the parents up to the initiative are yellow', () =>
       storyStrat.apply(dummyJira.issues.SubTask1, dummyJira).should.eventually.equal(true)
@@ -15,6 +19,10 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
 
     it('Story is yellow and parent is an initiative which is also yellow', () =>
       storyStrat.apply(dummyJira.issues.Story2, dummyJira).should.eventually.equal(true)
+    );
+
+    it('Story is a child of a Sub-task from the dispatcher and all parents are yellow', ()=>
+      storyStrat.apply(dummyJira.issues.LinkedStory1,dummyJira).should.eventually.equal(true)
     );
 
     it('Sub-task has a parent dispatcher, is linked to a story, and all parents are yellow', ()=>

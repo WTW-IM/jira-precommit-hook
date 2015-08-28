@@ -1,6 +1,6 @@
 import issueGenerator , {createIssueWithMutipleLinks}from './issue-generator.js';
 import CardLink from './util/card-link.js'; 
- console.log("Checking Generator".cyan + issueGenerator);
+
 class DummyJira {
   constructor() {
     this.host = 'jira.host.com';
@@ -71,12 +71,22 @@ class DummyJira {
       DispatcherLinkedSubTask1 : issueGenerator('DispatcherLinkedSubTask1','Sub-task','yellow', 'Dispatcher1','Dispatcher'),
 
       LinkedStory1 : createIssueWithMutipleLinks("LinkedStory1", 'Story', 'yellow', [
+        //new CardLink('I1', 'Initiative', 'Relates'),
+        //new CardLink('Epic3', 'Epic'),
+        new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
+      ]),//'I1','Initiative','Relates'),*/
+      
+      LinkedStory2 : createIssueWithMutipleLinks("LinkedStory2", 'Story', 'yellow', [
         new CardLink('I1', 'Initiative', 'Relates'),
         new CardLink('Epic3', 'Epic'),
         new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
-      ]),//'I1','Initiative','Relates'),*/
-      DispatcherSubTask1: issueGenerator('DispatcherSubTask1', 'Sub-task', 'yellow', 'Dispatcher1'),
-      DispatcherSubTask2: issueGenerator('DispatcherSubTask2', 'Sub-task', 'red', 'Dispatcher2'),
+      ]),
+
+      LinkedStory3 : createIssueWithMutipleLinks("LinkedStory3", 'Story', 'yellow', [
+        new CardLink('Epic1', 'Epic'),
+        new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
+      ]),
+      
     
       //DispatcherSubTask1: issueGenerator('DispatcherSubTask1', 'Sub-task', 'yellow', 'Dispatcher1'),
 

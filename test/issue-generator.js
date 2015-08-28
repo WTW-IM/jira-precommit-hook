@@ -22,14 +22,11 @@ function createIssueLinks(direction, parentKey, parentType, linkType) {
 
 export function createIssueWithMutipleLinks(key, type, color, parents)
 {
-  console.log('Made it to multi links');
   let baseIssue = createBaseIssue(key,type,color);
   _.forEach(parents, function(n)
   {
     baseIssue = resolveIssue(baseIssue,type,n.key,n.type,n.linkType);
   });
-  console.log(baseIssue.key);
-  _.forEach(baseIssue.fields.issuelinks, function(n){console.log(n)})
   return baseIssue;
 }
 
@@ -78,6 +75,7 @@ function resolveIssue(baseIssue,type,parentKey,parentType,linkType)
       return fullMerge(baseIssue, createIssueLinks('inwardIssue', parentKey, parentType, linkType));
     case 'Story':
       if(parentType === 'Epic') {
+        
         return fullMerge(baseIssue, {
           'fields': {
             'customfield_10805': parentKey

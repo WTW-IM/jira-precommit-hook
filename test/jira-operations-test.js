@@ -1,9 +1,13 @@
 import {findProjectKey, getEpicLinkField, findParent, findIssueLinkParentKey} from '../src/jira-operations.js';
 import DummyJira from './dummy-jira.js';
 
-let dummyJira = new DummyJira();
-
 describe('JIRA Operations Tests', function() {
+  let dummyJira;
+
+  beforeEach(function() {
+    dummyJira = new DummyJira();
+  });
+
   describe('Find Issue Parent', function() {
     it('Find Project Keys', () => {
       return findProjectKey(dummyJira)
@@ -34,6 +38,34 @@ describe('JIRA Operations Tests', function() {
           parent.fields.issuetype.name.should.eql('Story');
         });
     });
+    
+    it('Find parent from story with Sub-task parent', () => {
+
+      return findParent(dummyJira.issues.LinkedStory1, dummyJira)
+        .then(parent => {
+
+          parent.fields.issuetype.name.should.eql('Sub-task');
+        });
+    });
+
+    it('Find parent from story with Initiative, Epic, and Sub-task parents', () =>
+    {
+
+      return findParent(dummyJira.issues.LinkedStory2, dummyJira).then( parent =>{
+          parent.fields.issuetype.name.should.eql('Initiative');
+      });
+      
+    });
+
+    it('Find parent from story with Epic and Sub-task parents', () => {
+
+      return findParent(dummyJira.issues.LinkedStory3, dummyJira)
+        .then(parent => {
+
+          parent.fields.issuetype.name.should.eql('Epic');
+        });
+    });
+
 
     it('Find Parent from Feature Defect', () => {
       return findParent(dummyJira.issues.FeatureDefect1, dummyJira)
@@ -108,6 +140,7 @@ describe('JIRA Operations Tests', function() {
     it('getEpicLinkField with Same JIRA Host is Called Only Once', () => {
       spy = sinon.spy(dummyJira, 'listFields');
       dummyJira.host = 'jira.host4.com';
+      
 
       return Promise.all([
         getEpicLinkField(dummyJira),

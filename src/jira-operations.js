@@ -10,6 +10,7 @@ export let getEpicLinkField = _.memoize(
   function (jiraClient) {
     return jiraClient.listFields()
       .then(fields => {
+
         for(let i = 0; i < fields.length; i++) {
           if(fields[i].name === 'Epic Link') {
             return Promise.resolve(fields[i].id);
@@ -23,7 +24,14 @@ export let getEpicLinkField = _.memoize(
   }
 );
 
-export function findIssueLinkParentKey(issue) {
+export function findIssueLinkParentKey(issue)  {
+
+
+  return findIssueLinkParentKeyByType(issue, 'Initiative');
+}
+
+export function findIssueLinkParentKeyByType(issue, type)
+{
   let result = null;
   issue.fields.issuelinks.forEach(issueLink => {
     if(issueLink.type.name !== 'Relates') {
@@ -39,7 +47,7 @@ export function findIssueLinkParentKey(issue) {
       linkDirection = 'outwardIssue';
     }
 
-    if(linkDirection && issueLink[linkDirection].fields.issuetype.name === 'Initiative') {
+    if(linkDirection && (issueLink[linkDirection].fields.issuetype.name === type)) {
       result = issueLink[linkDirection].key;
     }
   });
@@ -61,10 +69,15 @@ export let findParent = _.memoize(
           return jiraClient.findIssue(parentKey);
         }
       }
-
+      
       return getEpicLinkField(jiraClient)
-        .then(linkField => jiraClient.findIssue(issue.fields[linkField]));
-
+        .then(linkField => 
+          {
+              return jiraClient.findIssue(issue.fields[linkField]).catch(function(){
+                    let subtaskParentKey = findIssueLinkParentKeyByType(issue,'Sub-task');
+                    return (subtaskParentKey === undefined) ? Promise.reject("No links found") : jiraClient.findIssue(subtaskParentKey);
+              });
+          });
     case 'Epic':
       let parentKey = findIssueLinkParentKey(issue);
 

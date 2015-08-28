@@ -2,9 +2,13 @@ import * as bugMtStrat from '../../src/issue-strategies/bug-maintenance.js';
 import * as storySubTaskStrat from '../../src/issue-strategies/story.js';
 import DummyJira from '../dummy-jira.js';
 
-let dummyJira = new DummyJira();
-
 describe('Bug and Maintenance Strategy Apply Tests', () => {
+  let dummyJira;
+
+  beforeEach(function() {
+    dummyJira = new DummyJira();
+  });
+
   it('Bug open to commit against', () =>
     bugMtStrat.apply(dummyJira.issues.Bug1).should.eventually.eql(true)
   );
