@@ -87,6 +87,7 @@ class DummyJira {
         new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
       ]),
       
+      LinkedSubtask1 : issueGenerator('LinkedSubtask1','Sub-task', 'yellow','LinkedStory1', 'Story'),
     
       //DispatcherSubTask1: issueGenerator('DispatcherSubTask1', 'Sub-task', 'yellow', 'Dispatcher1'),
 

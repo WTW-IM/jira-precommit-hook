@@ -43,7 +43,6 @@ describe('JIRA Operations Tests', function() {
 
       return findParent(dummyJira.issues.LinkedStory1, dummyJira)
         .then(parent => {
-
           parent.fields.issuetype.name.should.eql('Sub-task');
         });
     });
@@ -61,10 +60,26 @@ describe('JIRA Operations Tests', function() {
 
       return findParent(dummyJira.issues.LinkedStory3, dummyJira)
         .then(parent => {
-
           parent.fields.issuetype.name.should.eql('Epic');
         });
     });
+
+    it('Find parent\'s parent of a Sub-task that is under a story with a link to a Dispatcher Sub-task', ()=>
+      {
+        return findParent(dummyJira.issues.LinkedSubtask1, dummyJira)
+        .then( subtaskParent =>
+            {
+                return findParent(subtaskParent,dummyJira).then(storyParent=>
+                {
+                    storyParent.fields.issuetype.name.should.eql('Sub-task');
+                    return findParent(storyParent,dummyJira).then(linkedSubtaskParent=>
+                    {
+                        linkedSubtaskParent.fields.issuetype.name.should.eql('Dispatcher');
+                    });
+                });
+            }
+          );
+      });
 
 
     it('Find Parent from Feature Defect', () => {
