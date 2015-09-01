@@ -3,7 +3,7 @@ import * as initStrat from './initiative.js';
 import * as epicStrat from './epic.js';
 import * as storyStrat from './story.js';
 import * as taskStrat from './task.js';
-import * as dispatcherStrat from './dispatcher.js'
+import * as dispatcherStrat from './dispatcher.js';
 
 export default {
   Initiative: initStrat,

@@ -9,7 +9,7 @@ function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
                 content.fields.issuetype.name === 'Maintenance Task' ||
                 content.fields.issuetype.name === 'Bug' ||
                 content.fields.issuetype.name === 'Initiative' ||
-                content.fields.issuetype.name === 'Dispatcher')// || content.fields.issuetype.name === 'Dispatcher') 
+                content.fields.issuetype.name === 'Dispatcher')
       {
 
         return Promise.resolve(true);

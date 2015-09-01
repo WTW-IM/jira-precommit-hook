@@ -1,4 +1,4 @@
-import * as jiraOperations from '../jira-operations.js';
+
 
 export function apply(issue, jiraClientAPI)
 {

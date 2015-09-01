@@ -20,26 +20,7 @@ function createIssueLinks(direction, parentKey, parentType, linkType) {
   };
 }
 
-export function createIssueWithMutipleLinks(key, type, color, parents)
-{
-  let baseIssue = createBaseIssue(key,type,color);
-  _.forEach(parents, function(n)
-  {
-    baseIssue = resolveIssue(baseIssue,type,n.key,n.type,n.linkType);
-  });
-  return baseIssue;
-}
-
-export {createIssueWithMutipleLinks as createIssueWithMutipleLinks};
-
-export default function createTestIssue(key, type, color, parentKey, parentType, linkType) {
-
-  let baseIssue = createBaseIssue(key,type,color);
-  return resolveIssue(baseIssue, type, parentKey,parentType,linkType);
-  
-}
-
-function createBaseIssue(key,type,color)
+function createBaseIssue(key, type, color)
 {
     let baseIssue = {
     'key': key,
@@ -57,9 +38,11 @@ function createBaseIssue(key,type,color)
   return baseIssue;
 }
 
+
+
 function fullMerge(leftObject, rightObject)
 {
-  return _.merge(leftObject,rightObject,function(lhs,rhs)
+  return _.merge(leftObject, rightObject, function(lhs, rhs)
   {
     if(_.isArray(lhs))
     {
@@ -68,14 +51,13 @@ function fullMerge(leftObject, rightObject)
   });
 }
 
-function resolveIssue(baseIssue,type,parentKey,parentType,linkType)
+function resolveIssue(baseIssue, type, parentKey, parentType, linkType)
 {
   switch(type) {
     case 'Epic':
       return fullMerge(baseIssue, createIssueLinks('inwardIssue', parentKey, parentType, linkType));
     case 'Story':
-      if(parentType === 'Epic') {
-        
+      if(parentType === 'Epic') { 
         return fullMerge(baseIssue, {
           'fields': {
             'customfield_10805': parentKey
@@ -112,3 +94,19 @@ function resolveIssue(baseIssue,type,parentKey,parentType,linkType)
 
 }
 
+export function createIssueWithMutipleLinks(key, type, color, parents)
+{
+  let baseIssue = createBaseIssue(key, type, color);
+  _.forEach(parents, function(n)
+  {
+    baseIssue = resolveIssue(baseIssue, type, n.key, n.type, n.linkType);
+  });
+  return baseIssue;
+}
+
+export {createIssueWithMutipleLinks as createIssueWithMutipleLinks};
+
+export default function createTestIssue(key, type, color, parentKey, parentType, linkType) {
+  let baseIssue = createBaseIssue(key, type, color);
+  return resolveIssue(baseIssue, type, parentKey , parentType, linkType);
+}

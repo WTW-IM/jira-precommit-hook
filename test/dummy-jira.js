@@ -1,5 +1,5 @@
-import issueGenerator , {createIssueWithMutipleLinks}from './issue-generator.js';
-import CardLink from './util/card-link.js'; 
+import issueGenerator, {createIssueWithMutipleLinks} from './issue-generator.js';
+import CardLink from './util/card-link.js';
 
 class DummyJira {
   constructor() {
@@ -67,30 +67,22 @@ class DummyJira {
       Task1: issueGenerator('Task1', 'Task', 'yellow'),
 
       //new code
-      Dispatcher1: issueGenerator("Dispatcher1", "Dispatcher", "yellow"),
-      DispatcherLinkedSubTask1 : issueGenerator('DispatcherLinkedSubTask1','Sub-task','yellow', 'Dispatcher1','Dispatcher'),
+      Dispatcher1: issueGenerator('Dispatcher1', 'Dispatcher', 'yellow'),
+      DispatcherLinkedSubTask1 : issueGenerator('DispatcherLinkedSubTask1', 'Sub-task', 'yellow', 'Dispatcher1', 'Dispatcher'),
 
-      LinkedStory1 : createIssueWithMutipleLinks("LinkedStory1", 'Story', 'yellow', [
-        //new CardLink('I1', 'Initiative', 'Relates'),
-        //new CardLink('Epic3', 'Epic'),
+      LinkedStory1 : createIssueWithMutipleLinks('LinkedStory1', 'Story', 'yellow', [
         new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
-      ]),//'I1','Initiative','Relates'),*/
-      
-      LinkedStory2 : createIssueWithMutipleLinks("LinkedStory2", 'Story', 'yellow', [
+      ]),
+      LinkedStory2 : createIssueWithMutipleLinks('LinkedStory2', 'Story', 'yellow', [
         new CardLink('I1', 'Initiative', 'Relates'),
         new CardLink('Epic3', 'Epic'),
         new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
       ]),
-
-      LinkedStory3 : createIssueWithMutipleLinks("LinkedStory3", 'Story', 'yellow', [
+      LinkedStory3 : createIssueWithMutipleLinks('LinkedStory3', 'Story', 'yellow', [
         new CardLink('Epic1', 'Epic'),
         new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
       ]),
-      
-      LinkedSubtask1 : issueGenerator('LinkedSubtask1','Sub-task', 'yellow','LinkedStory1', 'Story'),
-    
-      //DispatcherSubTask1: issueGenerator('DispatcherSubTask1', 'Sub-task', 'yellow', 'Dispatcher1'),
-
+      LinkedSubtask1 : issueGenerator('LinkedSubtask1', 'Sub-task', 'yellow', 'LinkedStory1', 'Story'),
       FeatureDefect1: issueGenerator('FeatureDefect1', 'Feature Defect', 'yellow', 'Story2', 'Story')
       //FeatureDefect2: issueGenerator('FeatureDefect2', 'Feature Defect', 'green', 'Story2', 'Story') // Missing tests?
     };

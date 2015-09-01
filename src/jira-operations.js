@@ -24,12 +24,6 @@ export let getEpicLinkField = _.memoize(
   }
 );
 
-export function findIssueLinkParentKey(issue)  {
-
-
-  return findIssueLinkParentKeyByType(issue, 'Initiative');
-}
-
 export function findIssueLinkParentKeyByType(issue, type)
 {
   let result = null;
@@ -54,6 +48,10 @@ export function findIssueLinkParentKeyByType(issue, type)
   return result;
 }
 
+export function findIssueLinkParentKey(issue){
+  return findIssueLinkParentKeyByType(issue, 'Initiative');
+}
+
 export let findParent = _.memoize(
   function (issue, jiraClient) {
       switch(issue.fields.issuetype.name) {
@@ -69,13 +67,12 @@ export let findParent = _.memoize(
           return jiraClient.findIssue(parentKey);
         }
       }
-      
       return getEpicLinkField(jiraClient)
-        .then(linkField => 
+        .then(linkField =>
           {
               return jiraClient.findIssue(issue.fields[linkField]).catch(function(){
-                    let subtaskParentKey = findIssueLinkParentKeyByType(issue,'Sub-task');
-                    return (subtaskParentKey === undefined) ? Promise.reject("No links found") : jiraClient.findIssue(subtaskParentKey);
+                    let subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
+                    return (subtaskParentKey === undefined) ? Promise.reject('No links found') : jiraClient.findIssue(subtaskParentKey);
               });
           });
     case 'Epic':
