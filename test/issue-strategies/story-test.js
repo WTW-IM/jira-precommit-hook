@@ -22,7 +22,7 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
     );
 
     it('Story is a child of a Sub-task from the dispatcher and all parents are yellow', ()=>
-      storyStrat.apply(dummyJira.issues.LinkedStory1,dummyJira).should.eventually.equal(true)
+      storyStrat.apply(dummyJira.issues.LinkedStory1, dummyJira).should.eventually.equal(true)
     );
 
     it('Sub-task has a parent dispatcher, is linked to a story, and all parents are yellow', ()=>
