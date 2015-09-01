@@ -38,7 +38,6 @@ describe('JIRA Operations Tests', function() {
           parent.fields.issuetype.name.should.eql('Story');
         });
     });
-    
     it('Find parent from story with Sub-task parent', () => {
 
       return findParent(dummyJira.issues.LinkedStory1, dummyJira)
@@ -53,7 +52,6 @@ describe('JIRA Operations Tests', function() {
       return findParent(dummyJira.issues.LinkedStory2, dummyJira).then( parent =>{
           parent.fields.issuetype.name.should.eql('Initiative');
       });
-      
     });
 
     it('Find parent from story with Epic and Sub-task parents', () => {
@@ -69,10 +67,10 @@ describe('JIRA Operations Tests', function() {
         return findParent(dummyJira.issues.LinkedSubtask1, dummyJira)
         .then( subtaskParent =>
             {
-                return findParent(subtaskParent,dummyJira).then(storyParent=>
+                return findParent(subtaskParent, dummyJira).then(storyParent=>
                 {
                     storyParent.fields.issuetype.name.should.eql('Sub-task');
-                    return findParent(storyParent,dummyJira).then(linkedSubtaskParent=>
+                    return findParent(storyParent, dummyJira).then(linkedSubtaskParent=>
                     {
                         linkedSubtaskParent.fields.issuetype.name.should.eql('Dispatcher');
                     });
@@ -155,7 +153,6 @@ describe('JIRA Operations Tests', function() {
     it('getEpicLinkField with Same JIRA Host is Called Only Once', () => {
       spy = sinon.spy(dummyJira, 'listFields');
       dummyJira.host = 'jira.host4.com';
-      
 
       return Promise.all([
         getEpicLinkField(dummyJira),
