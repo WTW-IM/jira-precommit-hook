@@ -57,7 +57,7 @@ function resolveIssue(baseIssue, type, parentKey, parentType, linkType)
     case 'Epic':
       return fullMerge(baseIssue, createIssueLinks('inwardIssue', parentKey, parentType, linkType));
     case 'Story':
-      if(parentType === 'Epic') { 
+      if(parentType === 'Epic') {
         return fullMerge(baseIssue, {
           'fields': {
             'customfield_10805': parentKey
@@ -108,5 +108,5 @@ export {createIssueWithMutipleLinks as createIssueWithMutipleLinks};
 
 export default function createTestIssue(key, type, color, parentKey, parentType, linkType) {
   let baseIssue = createBaseIssue(key, type, color);
-  return resolveIssue(baseIssue, type, parentKey , parentType, linkType);
+  return resolveIssue(baseIssue, type, parentKey, parentType, linkType);
 }
