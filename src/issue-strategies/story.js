@@ -11,7 +11,13 @@ function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
                 content.fields.issuetype.name === 'Initiative' ||
                 content.fields.issuetype.name === 'Dispatcher')
       {
-
+        if(content.fields.issuetype.name === 'Maintenance Task' && content.fields.issuelinks !== undefined)
+        {
+          return jiraOperations.findParent(content, jiraClientAPI).then((parent)=>
+          {
+            return parent.fields.status.statusCategory.colorName === 'yellow' ? Promise.resolve(true) :Promise.reject(new Error(`Cannot commit issue ${content.key} because parent issue ${parent.key} is not available to commit against.`));
+          });
+        }
         return Promise.resolve(true);
       }
       return areParentsValid(baseIssueKey, jiraOperations.findParent(content, jiraClientAPI), jiraClientAPI);

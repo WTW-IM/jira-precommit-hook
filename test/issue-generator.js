@@ -66,13 +66,6 @@ function resolveIssue(baseIssue, type, parentKey, parentType, linkType)
       }
       return fullMerge(baseIssue, createIssueLinks('outwardIssue', parentKey, parentType, linkType));
     case 'Sub-task':
-    return fullMerge(baseIssue, {
-        'fields': {
-          'parent': {
-            'key': parentKey
-          }
-        }
-      });
     case 'Feature Defect':
       return fullMerge(baseIssue, {
         'fields': {
@@ -81,11 +74,16 @@ function resolveIssue(baseIssue, type, parentKey, parentType, linkType)
           }
         }
       });
-
+    case 'Maintenance Task':
+      if(parentType === 'Sub-task' && linkType === 'Relates')
+      {
+        return fullMerge(baseIssue, createIssueLinks('outwardIssue', parentKey, parentType, linkType));
+      }
+      return baseIssue;
     case 'Dispatcher':
     case 'Initiative':
     case 'Bug':
-    case 'Maintenance Task':
+
     // This is old??
     case 'MT':
     case 'Task':

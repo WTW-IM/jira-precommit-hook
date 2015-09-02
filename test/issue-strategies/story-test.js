@@ -26,7 +26,9 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
     );
 
     it('Sub-task has a parent dispatcher, is linked to a story, and all parents are yellow', ()=>
-      storyStrat.apply(dummyJira.issues.Story2, dummyJira).should.eventually.equal(true));
+      storyStrat.apply(dummyJira.issues.LinkedSubtask1, dummyJira).should.eventually.equal(true));
+    it('Sub-task has a parent Maintainance task, and all parents are yellow', ()=>
+      storyStrat.apply(dummyJira.issues.LinkedSubtask2, dummyJira).should.eventually.equal(true));
 
   });
 
@@ -35,6 +37,10 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
       storyStrat.apply(dummyJira.issues.SubTask12, dummyJira)
         .should.eventually.be.rejectedWith(Error, /SubTask12 is not open to commit against/)
     );
+    it('Subtask Task is yellow, but the Maintainance Subtask is not', () =>
+      storyStrat.apply(dummyJira.issues.MaintenanceSubtask1, dummyJira)
+        .should.eventually.be.rejectedWith(Error, /Cannot commit.*MT5.*parent issue DispatcherLinkedSubTask2.*/)
+      );
 
     it('Sub-task is yellow, but the story is not', () =>
       storyStrat.apply(dummyJira.issues.SubTask9, dummyJira)

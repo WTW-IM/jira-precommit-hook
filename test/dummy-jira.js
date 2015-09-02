@@ -7,6 +7,8 @@ class DummyJira {
     this.projectName = 'Last Three';
 
     this.issues = {
+      Dispatcher1: issueGenerator('Dispatcher1', 'Dispatcher', 'yellow'),
+
       Bug1: issueGenerator('Bug1', 'Bug', 'yellow'),
       Bug2: issueGenerator('Bug2', 'Bug', 'green'),
 
@@ -66,10 +68,9 @@ class DummyJira {
 
       Task1: issueGenerator('Task1', 'Task', 'yellow'),
 
-      //new code
-      Dispatcher1: issueGenerator('Dispatcher1', 'Dispatcher', 'yellow'),
+      // valid linked cards
       DispatcherLinkedSubTask1 : issueGenerator('DispatcherLinkedSubTask1', 'Sub-task', 'yellow', 'Dispatcher1', 'Dispatcher'),
-
+      DispatcherLinkedSubTask3 : issueGenerator('DispatcherLinkedSubTask3', 'Sub-task', 'yellow', 'Dispatcher1', 'Dispatcher'),
       LinkedStory1 : createIssueWithMutipleLinks('LinkedStory1', 'Story', 'yellow', [
         new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
       ]),
@@ -82,7 +83,16 @@ class DummyJira {
         new CardLink('Epic1', 'Epic'),
         new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
       ]),
+      MT6 : issueGenerator('MT6', 'Maintenance Task', 'yellow', 'DispatcherLinkedSubTask3','Sub-task','Relates'),
+     
       LinkedSubtask1 : issueGenerator('LinkedSubtask1', 'Sub-task', 'yellow', 'LinkedStory1', 'Story'),
+      LinkedSubtask2 : issueGenerator('LinkedSubtask2', 'Sub-task', 'yellow', 'LinkedStory1', 'Maintenance Task'),
+
+      //invalid linked cards
+      DispatcherLinkedSubTask2 : issueGenerator('DispatcherLinkedSubTask2', 'Sub-task', 'red', 'Dispatcher1', 'Dispatcher'),
+      MT5 : issueGenerator('MT5', 'Maintenance Task', 'yellow', 'DispatcherLinkedSubTask2','Sub-task','Relates'),
+      MaintenanceSubtask1 : issueGenerator('MaintenanceSubtask1', 'Sub-task', 'yellow','MT5', 'Maintenance Task'),
+
       FeatureDefect1: issueGenerator('FeatureDefect1', 'Feature Defect', 'yellow', 'Story2', 'Story')
       //FeatureDefect2: issueGenerator('FeatureDefect2', 'Feature Defect', 'green', 'Story2', 'Story') // Missing tests?
     };
