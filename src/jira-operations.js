@@ -76,6 +76,7 @@ export let findParent = _.memoize(
               });
           });
     case 'Maintenance Task':
+    case 'Bug':
       let subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
       return (subtaskParentKey === undefined) ? Promise.reject('No links found') : jiraClient.findIssue(subtaskParentKey);
     case 'Epic':

@@ -75,6 +75,7 @@ function resolveIssue(baseIssue, type, parentKey, parentType, linkType)
         }
       });
     case 'Maintenance Task':
+    case 'Bug':
       if(parentType === 'Sub-task' && linkType === 'Relates')
       {
         return fullMerge(baseIssue, createIssueLinks('outwardIssue', parentKey, parentType, linkType));
@@ -82,8 +83,6 @@ function resolveIssue(baseIssue, type, parentKey, parentType, linkType)
       return baseIssue;
     case 'Dispatcher':
     case 'Initiative':
-    case 'Bug':
-
     // This is old??
     case 'MT':
     case 'Task':

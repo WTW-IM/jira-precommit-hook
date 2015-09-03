@@ -11,7 +11,7 @@ function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
                 content.fields.issuetype.name === 'Initiative' ||
                 content.fields.issuetype.name === 'Dispatcher')
       {
-        if(content.fields.issuetype.name === 'Maintenance Task' && content.fields.issuelinks !== undefined)
+        if((content.fields.issuetype.name === 'Maintenance Task' || content.fields.issuetype.name === 'Bug') && content.fields.issuelinks !== undefined)
         {
           return jiraOperations.findParent(content, jiraClientAPI).then((parent)=>
           {
