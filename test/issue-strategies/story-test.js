@@ -5,7 +5,7 @@ import DummyJira from '../dummy-jira.js';
 describe('Story/Sub-task Strategy Apply Tests', () => {
   let dummyJira;
 
-  beforeEach(function() {
+  beforeEach(() => {
     dummyJira = new DummyJira();
   });
   describe('Okay to commit against', () => {

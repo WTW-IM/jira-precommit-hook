@@ -4,16 +4,16 @@ import DummyJira from './dummy-jira.js';
 describe('JIRA Operations Tests', function() {
   let dummyJira;
 
-  beforeEach(function() {
+  beforeEach(() => {
     dummyJira = new DummyJira();
   });
 
   describe('Find Issue Parent', function() {
     it('Find Project Keys', () => {
       return findProjectKey(dummyJira)
-              .then(key => {
-                key.should.eql('XYZ');
-              });
+        .then(key => {
+          key.should.eql('XYZ');
+        });
     });
 
     it('Find Epic Link', () => {
@@ -39,46 +39,34 @@ describe('JIRA Operations Tests', function() {
         });
     });
     it('Find parent from story with Sub-task parent', () => {
-
       return findParent(dummyJira.issues.LinkedStory1, dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Sub-task');
         });
     });
 
-    it('Find parent from story with Initiative, Epic, and Sub-task parents', () =>
-    {
-
-      return findParent(dummyJira.issues.LinkedStory2, dummyJira).then( parent =>{
-          parent.fields.issuetype.name.should.eql('Initiative');
+    it('Find parent from story with Initiative, Epic, and Sub-task parents', () => {
+      return findParent(dummyJira.issues.LinkedStory2, dummyJira).then( parent => {
+        parent.fields.issuetype.name.should.eql('Initiative');
       });
     });
 
     it('Find parent from story with Epic and Sub-task parents', () => {
-
       return findParent(dummyJira.issues.LinkedStory3, dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Epic');
         });
     });
 
-    it('Find parent\'s parent of a Sub-task that is under a story with a link to a Dispatcher Sub-task', ()=>
-      {
-        return findParent(dummyJira.issues.LinkedSubtask1, dummyJira)
-        .then( subtaskParent =>
-            {
-                return findParent(subtaskParent, dummyJira).then(storyParent=>
-                {
-                    storyParent.fields.issuetype.name.should.eql('Sub-task');
-                    return findParent(storyParent, dummyJira).then(linkedSubtaskParent=>
-                    {
-                        linkedSubtaskParent.fields.issuetype.name.should.eql('Dispatcher');
-                    });
-                });
-            }
-          );
-      });
-
+    it('Find parent\'s parent of a Sub-task that is under a story with a link to a Dispatcher Sub-task', ()=> {
+      return findParent(dummyJira.issues.LinkedSubtask1, dummyJira)
+        .then( subtaskParent => {
+            return findParent(subtaskParent, dummyJira).then(storyParent => {
+              return findParent(storyParent, dummyJira).should.eventually.have.deep.property('fields.issuetype.name', 'Dispatcher');
+            });
+          }
+        );
+    });
 
     it('Find Parent from Feature Defect', () => {
       return findParent(dummyJira.issues.FeatureDefect1, dummyJira)

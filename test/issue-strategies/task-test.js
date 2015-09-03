@@ -4,7 +4,7 @@ import DummyJira from '../dummy-jira.js';
 describe('Task Strategy Apply Tests', () => {
   let dummyJira;
 
-  beforeEach(function() {
+  beforeEach(() => {
     dummyJira = new DummyJira();
   });
 

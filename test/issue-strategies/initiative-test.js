@@ -4,7 +4,7 @@ import DummyJira from '../dummy-jira.js';
 describe('Initiative Strategy Apply Tests', () => {
   let dummyJira;
 
-  beforeEach(function() {
+  beforeEach(() => {
     dummyJira = new DummyJira();
   });
   it('Should not be able to commit against Initiative, should throw error', () =>

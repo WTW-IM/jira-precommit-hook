@@ -5,7 +5,7 @@ import DummyJira from '../dummy-jira.js';
 describe('Bug and Maintenance Strategy Apply Tests', () => {
   let dummyJira;
 
-  beforeEach(function() {
+  beforeEach(() => {
     dummyJira = new DummyJira();
   });
 

@@ -10,10 +10,8 @@ function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
                 content.fields.issuetype.name === 'Maintenance Task' ||
                 content.fields.issuetype.name === 'Bug' ||
                 content.fields.issuetype.name === 'Initiative' ||
-                content.fields.issuetype.name === 'Dispatcher')
-      {
-        if((content.fields.issuetype.name === 'Maintenance Task' || content.fields.issuetype.name === 'Bug') && content.fields.issuelinks !== undefined)
-        {
+                content.fields.issuetype.name === 'Dispatcher'){
+        if((content.fields.issuetype.name === 'Maintenance Task' || content.fields.issuetype.name === 'Bug') && content.fields.issuelinks){
           return bugMtStrat.apply(content, jiraClientAPI);
         }
         return Promise.resolve(true);

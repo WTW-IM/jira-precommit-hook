@@ -62,8 +62,6 @@ class DummyJira {
       SubTask14: issueGenerator('SubTask14', 'Sub-task', 'green', 'Bug1'),
       SubTask15: issueGenerator('SubTask15', 'Sub-task', 'green'),
 
-      //test to see if the code cares about broken children
-      //SubTask16: issueGenerator('SubTask16', 'Sub-task', 'red','Story1'),
       //SubTask1: issueGenerator('SubTask1', 'Sub-task', 'yellow'), // Missing tests?
 
       Task1: issueGenerator('Task1', 'Task', 'yellow'),
