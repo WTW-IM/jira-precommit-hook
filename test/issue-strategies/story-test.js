@@ -12,7 +12,6 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
     it('Sub-task is yellow and all the parents up to the initiative are yellow', () =>
       storyStrat.apply(dummyJira.issues.SubTask1, dummyJira).should.eventually.equal(true)
     );
-
     it('Story is yellow and all the parents up the initiative are yellow', () =>
       storyStrat.apply(dummyJira.issues.Story1, dummyJira).should.eventually.equal(true)
     );
@@ -29,8 +28,12 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
       storyStrat.apply(dummyJira.issues.LinkedSubtask1, dummyJira).should.eventually.equal(true));
     it('Sub-task has a parent Maintainance task, and all parents are yellow', ()=>
       storyStrat.apply(dummyJira.issues.LinkedSubtask2, dummyJira).should.eventually.equal(true));
-    it('Sub-task has a parent Bug,ß and all parents are yellow', ()=>
+    it('Sub-task has a parent Bug, and all parents are yellow', ()=>
       storyStrat.apply(dummyJira.issues.LinkedSubtask3, dummyJira).should.eventually.equal(true));
+    it('Sub-task has a parent Bug, with an epic link', ()=>
+      storyStrat.apply(dummyJira.issues.BugSubtask2,dummyJira).should.eventually.equal(true));
+    it('Sub-task has a parent Bug, with an epic link', ()=>
+      storyStrat.apply(dummyJira.issues.BugSubtask2,dummyJira).should.eventually.equal(true));
   });
 
   describe('Should not be able to commit against', () => {

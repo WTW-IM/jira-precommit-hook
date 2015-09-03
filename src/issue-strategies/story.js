@@ -1,4 +1,5 @@
 import * as jiraOperations from '../jira-operations.js';
+import * as bugMtStrat from '../../src/issue-strategies/bug-maintenance.js';
 
 function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
   return parentIssue
@@ -13,10 +14,7 @@ function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
       {
         if((content.fields.issuetype.name === 'Maintenance Task' || content.fields.issuetype.name === 'Bug') && content.fields.issuelinks !== undefined)
         {
-          return jiraOperations.findParent(content, jiraClientAPI).then((parent)=>
-          {
-            return parent.fields.status.statusCategory.colorName === 'yellow' ? Promise.resolve(true) :Promise.reject(new Error(`Cannot commit issue ${content.key} because parent issue ${parent.key} is not available to commit against.`));
-          });
+          return bugMtStrat.apply(content, jiraClientAPI);
         }
         return Promise.resolve(true);
       }

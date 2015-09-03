@@ -72,13 +72,13 @@ export let findParent = _.memoize(
           {
               return jiraClient.findIssue(issue.fields[linkField]).catch(function(){
                     let subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
-                    return (subtaskParentKey === undefined) ? Promise.reject('No links found') : jiraClient.findIssue(subtaskParentKey);
+                    return (subtaskParentKey === undefined) ? Promise.resolve(undefined) : jiraClient.findIssue(subtaskParentKey);
               });
           });
     case 'Maintenance Task':
     case 'Bug':
       let subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
-      return (subtaskParentKey === undefined) ? Promise.reject('No links found') : jiraClient.findIssue(subtaskParentKey);
+      return (subtaskParentKey === null) ?  Promise.resolve(undefined)  : jiraClient.findIssue(subtaskParentKey);
     case 'Epic':
       let parentKey = findIssueLinkParentKey(issue);
 
