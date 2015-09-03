@@ -72,7 +72,7 @@ export let findParent = _.memoize(
           {
               return jiraClient.findIssue(issue.fields[linkField]).catch(function(){
                     let subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
-                    return (subtaskParentKey === undefined) ? Promise.resolve(undefined) : jiraClient.findIssue(subtaskParentKey);
+                    return subtaskParentKey ? jiraClient.findIssue(subtaskParentKey) : Promise.resolve(undefined);
               });
           });
     case 'Maintenance Task':
