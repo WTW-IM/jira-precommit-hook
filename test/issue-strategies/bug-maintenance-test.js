@@ -33,6 +33,16 @@ describe('Bug and Maintenance Strategy Apply Tests', () => {
       .should.eventually.eql(true)
   );
 
+  it('Bug Linked Sub-Task, Sub-Task valid, BugValid', ()=>
+      bugMtStrat.apply(dummyJira.issues.Bug3, dummyJira)
+        .should.eventually.eql(true)
+    );
+
+  it('Bug Linked Sub-Task, Sub-Task invalid, BugValid', ()=>
+      bugMtStrat.apply(dummyJira.issues.Bug4, dummyJira)
+        .should.eventually.be.rejectedWith(Error,/Cannot commit.*Bug4.*parent issue DispatcherLinkedSubTask5/)
+    );
+
   it('Maintenance Task open to commit against', () =>
     bugMtStrat.apply(dummyJira.issues.MT1).should.eventually.eql(true)
   );
