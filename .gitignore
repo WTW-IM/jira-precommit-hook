@@ -8,4 +8,7 @@ test/tmp/
 *.log
 
 #Jira Connection Information
-.jirarc
+.jirarcTo 
+
+#DS_ Store
+.DS_Store

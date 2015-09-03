@@ -31,9 +31,9 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
     it('Sub-task has a parent Bug, and all parents are yellow', ()=>
       storyStrat.apply(dummyJira.issues.LinkedSubtask3, dummyJira).should.eventually.equal(true));
     it('Sub-task has a parent Bug, with an epic link', ()=>
-      storyStrat.apply(dummyJira.issues.BugSubtask2,dummyJira).should.eventually.equal(true));
+      storyStrat.apply(dummyJira.issues.BugSubtask2, dummyJira).should.eventually.equal(true));
     it('Sub-task has a parent Bug, with an epic link', ()=>
-      storyStrat.apply(dummyJira.issues.BugSubtask2,dummyJira).should.eventually.equal(true));
+      storyStrat.apply(dummyJira.issues.BugSubtask2, dummyJira).should.eventually.equal(true));
   });
 
   describe('Should not be able to commit against', () => {

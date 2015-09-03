@@ -39,12 +39,12 @@ describe('Bug and Maintenance Strategy Apply Tests', () => {
     );
 
   it('Bug Linked Epic, Bug Valid', ()=>
-      bugMtStrat.apply(dummyJira.issues.Bug5,dummyJira)
+      bugMtStrat.apply(dummyJira.issues.Bug5, dummyJira)
         .should.eventually.eql(true)
     );
   it('Bug Linked Sub-Task, Sub-Task invalid, BugValid', ()=>
       bugMtStrat.apply(dummyJira.issues.Bug4, dummyJira)
-        .should.eventually.be.rejectedWith(Error,/Cannot commit.*Bug4.*parent issue DispatcherLinkedSubTask5/)
+        .should.eventually.be.rejectedWith(Error, /Cannot commit.*Bug4.*parent issue DispatcherLinkedSubTask5/)
     );
   it('Maintenance Task Linked Epic, Maintenance Task valid', ()=>
       bugMtStrat.apply(dummyJira.issues.MT7)
