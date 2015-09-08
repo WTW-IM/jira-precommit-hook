@@ -21,7 +21,7 @@ function createIssueLinks(direction, parentKey, parentType, linkType) {
 }
 
 function createBaseIssue(key, type, color){
-    return {
+  return {
     'key': key,
     'fields': {
       'status': {
