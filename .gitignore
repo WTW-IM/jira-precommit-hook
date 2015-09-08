@@ -8,4 +8,4 @@ test/tmp/
 *.log
 
 #Jira Connection Information
-.jirarcTo
+.jirarc
