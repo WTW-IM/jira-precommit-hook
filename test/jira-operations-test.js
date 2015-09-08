@@ -38,6 +38,7 @@ describe('JIRA Operations Tests', function() {
           parent.fields.issuetype.name.should.eql('Story');
         });
     });
+
     it('Find parent from story with Sub-task parent', () => {
       return findParent(dummyJira.issues.LinkedStory1, dummyJira)
         .then(parent => {
@@ -52,7 +53,7 @@ describe('JIRA Operations Tests', function() {
     });
 
     it('Find parent from story with Epic and Sub-task parents', () => {
-      findParent(dummyJira.issues.LinkedStory3, dummyJira)
+      return findParent(dummyJira.issues.LinkedStory3, dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Epic');
         });
@@ -60,12 +61,7 @@ describe('JIRA Operations Tests', function() {
 
     it('Find parent\'s parent of a Sub-task that is under a story with a link to a Dispatcher Sub-task', ()=> {
       findParent(dummyJira.issues.LinkedSubtask1, dummyJira)
-        .then( subtaskParent => {
-            findParent(subtaskParent, dummyJira).then(storyParent => {
-              findParent(storyParent, dummyJira).should.eventually.have.deep.property('fields.issuetype.name', 'Dispatcher');
-            });
-          }
-        );
+        .then(subtaskParent => findParent(subtaskParent, dummyJira).then(storyParent => findParent(storyParent, dummyJira).should.eventually.have.deep.property('fields.issuetype.name', 'Dispatcher')));
     });
 
     it('Find Parent from Feature Defect', () => {

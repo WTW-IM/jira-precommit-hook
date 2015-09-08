@@ -10,30 +10,39 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
   });
   describe('Okay to commit against', () => {
     it('Sub-task is yellow and all the parents up to the initiative are yellow', () =>
-      storyStrat.apply(dummyJira.issues.SubTask1, dummyJira).should.eventually.equal(true)
+      storyStrat.apply(dummyJira.issues.SubTask1, dummyJira).should.eventually.be.true
     );
     it('Story is yellow and all the parents up the initiative are yellow', () =>
-      storyStrat.apply(dummyJira.issues.Story1, dummyJira).should.eventually.equal(true)
+      storyStrat.apply(dummyJira.issues.Story1, dummyJira).should.eventually.be.true
     );
 
     it('Story is yellow and parent is an initiative which is also yellow', () =>
-      storyStrat.apply(dummyJira.issues.Story2, dummyJira).should.eventually.equal(true)
+      storyStrat.apply(dummyJira.issues.Story2, dummyJira).should.eventually.be.true
     );
 
     it('Story is a child of a Sub-task from the dispatcher and all parents are yellow', ()=>
-      storyStrat.apply(dummyJira.issues.LinkedStory1, dummyJira).should.eventually.equal(true)
+      storyStrat.apply(dummyJira.issues.LinkedStory1, dummyJira).should.eventually.be.true
     );
 
     it('Sub-task has a parent dispatcher, is linked to a story, and all parents are yellow', ()=>
-      storyStrat.apply(dummyJira.issues.LinkedSubtask1, dummyJira).should.eventually.equal(true));
+      storyStrat.apply(dummyJira.issues.LinkedSubtask1, dummyJira).should.eventually.be.true
+      );
+
     it('Sub-task has a parent Maintainance task, and all parents are yellow', ()=>
-      storyStrat.apply(dummyJira.issues.LinkedSubtask2, dummyJira).should.eventually.equal(true));
+      storyStrat.apply(dummyJira.issues.LinkedSubtask2, dummyJira).should.eventually.be.true
+      );
+
     it('Sub-task has a parent Bug, and all parents are yellow', ()=>
-      storyStrat.apply(dummyJira.issues.LinkedSubtask3, dummyJira).should.eventually.equal(true));
+      storyStrat.apply(dummyJira.issues.LinkedSubtask3, dummyJira).should.eventually.be.true
+      );
+
     it('Sub-task has a parent Bug, with an epic link', ()=>
-      storyStrat.apply(dummyJira.issues.BugSubtask2, dummyJira).should.eventually.equal(true));
+      storyStrat.apply(dummyJira.issues.BugSubtask2, dummyJira).should.eventually.be.true
+      );
+
     it('Sub-task has a parent Bug, with an epic link', ()=>
-      storyStrat.apply(dummyJira.issues.BugSubtask2, dummyJira).should.eventually.equal(true));
+      storyStrat.apply(dummyJira.issues.BugSubtask2, dummyJira).should.eventually.be.true
+      );
   });
 
   describe('Should not be able to commit against', () => {

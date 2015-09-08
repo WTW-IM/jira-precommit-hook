@@ -10,7 +10,7 @@ describe('Bug and Maintenance Strategy Apply Tests', () => {
   });
 
   it('Bug open to commit against', () =>
-    bugMtStrat.apply(dummyJira.issues.Bug1).should.eventually.eql(true)
+    bugMtStrat.apply(dummyJira.issues.Bug1).should.eventually.be.true
   );
 
   it('Bug closed', () =>
@@ -30,17 +30,17 @@ describe('Bug and Maintenance Strategy Apply Tests', () => {
 
   it('Bug Sub-Task, Sub-Task valid, Bug Valid', () =>
     storySubTaskStrat.apply(dummyJira.issues.SubTask6, dummyJira)
-      .should.eventually.eql(true)
+      .should.eventually.be.true
   );
 
   it('Bug Linked Sub-Task, Sub-Task valid, BugValid', ()=>
       bugMtStrat.apply(dummyJira.issues.Bug3, dummyJira)
-        .should.eventually.eql(true)
+        .should.eventually.be.true
     );
 
   it('Bug Linked Epic, Bug Valid', ()=>
       bugMtStrat.apply(dummyJira.issues.Bug5, dummyJira)
-        .should.eventually.eql(true)
+        .should.eventually.be.true
     );
   it('Bug Linked Sub-Task, Sub-Task invalid, BugValid', ()=>
       bugMtStrat.apply(dummyJira.issues.Bug4, dummyJira)
@@ -48,10 +48,10 @@ describe('Bug and Maintenance Strategy Apply Tests', () => {
     );
   it('Maintenance Task Linked Epic, Maintenance Task valid', ()=>
       bugMtStrat.apply(dummyJira.issues.MT7)
-        .should.eventually.eql(true)
+        .should.eventually.be.true
     );
   it('Maintenance Task open to commit against', () =>
-    bugMtStrat.apply(dummyJira.issues.MT1).should.eventually.eql(true)
+    bugMtStrat.apply(dummyJira.issues.MT1).should.eventually.be.true
   );
 
   it('Maintenance Task closed', () =>
@@ -71,16 +71,16 @@ describe('Bug and Maintenance Strategy Apply Tests', () => {
 
   it('Maintenance Sub-Task, Sub-Task valid, Maintenance Valid', () =>
     storySubTaskStrat.apply(dummyJira.issues.SubTask3, dummyJira)
-      .should.eventually.eql(true)
+      .should.eventually.be.true
   );
 
   it('Maintenance Sub-Task, Sub-Task valid, Maintenance Valid, With Valid Epic', () =>
     storySubTaskStrat.apply(dummyJira.issues.SubTask4, dummyJira)
-      .should.eventually.eql(true)
+      .should.eventually.be.true
   );
 
   it('Maintenance Sub-Task, Sub-Task valid, Maintenance Valid, With Invalid Epic', () =>
     storySubTaskStrat.apply(dummyJira.issues.SubTask5, dummyJira)
-      .should.eventually.eql(true)
+      .should.eventually.be.true
   );
 });
