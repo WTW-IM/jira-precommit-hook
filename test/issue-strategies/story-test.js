@@ -26,23 +26,23 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
 
     it('Sub-task has a parent dispatcher, is linked to a story, and all parents are yellow', ()=>
       storyStrat.apply(dummyJira.issues.LinkedSubtask1, dummyJira).should.eventually.be.true
-      );
+    );
 
     it('Sub-task has a parent Maintainance task, and all parents are yellow', ()=>
       storyStrat.apply(dummyJira.issues.LinkedSubtask2, dummyJira).should.eventually.be.true
-      );
+    );
 
     it('Sub-task has a parent Bug, and all parents are yellow', ()=>
       storyStrat.apply(dummyJira.issues.LinkedSubtask3, dummyJira).should.eventually.be.true
-      );
+    );
 
     it('Sub-task has a parent Bug, with an epic link', ()=>
       storyStrat.apply(dummyJira.issues.BugSubtask2, dummyJira).should.eventually.be.true
-      );
+    );
 
     it('Sub-task has a parent Bug, with an epic link', ()=>
       storyStrat.apply(dummyJira.issues.BugSubtask2, dummyJira).should.eventually.be.true
-      );
+    );
   });
 
   describe('Should not be able to commit against', () => {
