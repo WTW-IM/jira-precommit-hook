@@ -52,17 +52,17 @@ describe('JIRA Operations Tests', function() {
     });
 
     it('Find parent from story with Epic and Sub-task parents', () => {
-      return findParent(dummyJira.issues.LinkedStory3, dummyJira)
+      findParent(dummyJira.issues.LinkedStory3, dummyJira)
         .then(parent => {
           parent.fields.issuetype.name.should.eql('Epic');
         });
     });
 
     it('Find parent\'s parent of a Sub-task that is under a story with a link to a Dispatcher Sub-task', ()=> {
-      return findParent(dummyJira.issues.LinkedSubtask1, dummyJira)
+      findParent(dummyJira.issues.LinkedSubtask1, dummyJira)
         .then( subtaskParent => {
-            return findParent(subtaskParent, dummyJira).then(storyParent => {
-              return findParent(storyParent, dummyJira).should.eventually.have.deep.property('fields.issuetype.name', 'Dispatcher');
+            findParent(subtaskParent, dummyJira).then(storyParent => {
+              findParent(storyParent, dummyJira).should.eventually.have.deep.property('fields.issuetype.name', 'Dispatcher');
             });
           }
         );
