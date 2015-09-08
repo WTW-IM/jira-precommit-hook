@@ -1,4 +1,4 @@
-import * as jiraOperations from '../jira-operations.js';
+import {findParent} from '../jira-operations';
 
 export function apply(issue, jiraClientAPI) {
   if(issue === null || issue.fields.status.statusCategory.colorName !== 'yellow') {
@@ -6,7 +6,7 @@ export function apply(issue, jiraClientAPI) {
   }
 
   if(issue.fields.issuelinks){
-    return jiraOperations.findParent(issue, jiraClientAPI).then((parent)=>{
+    return findParent(issue, jiraClientAPI).then((parent)=>{
       if(!parent){
         return Promise.resolve(true);
       }
