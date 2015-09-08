@@ -69,12 +69,12 @@ export let findParent = _.memoize(
       }
       return getEpicLinkField(jiraClient)
         .then(linkField =>
-          {
-              return jiraClient.findIssue(issue.fields[linkField]).catch(function(){
-                    let subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
-                    return subtaskParentKey ? jiraClient.findIssue(subtaskParentKey) : Promise.resolve(undefined);
-              });
-          });
+          jiraClient.findIssue(issue.fields[linkField])
+            .catch(function(){
+                const subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
+                return subtaskParentKey ? jiraClient.findIssue(subtaskParentKey) : Promise.resolve(undefined);
+            })
+        );
     case 'Maintenance Task':
     case 'Bug':
       let subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
