@@ -1,4 +1,5 @@
-import issueGenerator from './issue-generator.js';
+import issueGenerator, {createIssueWithMutipleLinks} from './issue-generator.js';
+import CardLink from './util/card-link.js';
 
 class DummyJira {
   constructor() {
@@ -6,6 +7,8 @@ class DummyJira {
     this.projectName = 'Last Three';
 
     this.issues = {
+      Dispatcher1: issueGenerator('Dispatcher1', 'Dispatcher', 'yellow'),
+
       Bug1: issueGenerator('Bug1', 'Bug', 'yellow'),
       Bug2: issueGenerator('Bug2', 'Bug', 'green'),
 
@@ -58,9 +61,43 @@ class DummyJira {
       SubTask13: issueGenerator('SubTask13', 'Sub-task', 'green', 'MT1'),
       SubTask14: issueGenerator('SubTask14', 'Sub-task', 'green', 'Bug1'),
       SubTask15: issueGenerator('SubTask15', 'Sub-task', 'green'),
+
       //SubTask1: issueGenerator('SubTask1', 'Sub-task', 'yellow'), // Missing tests?
 
       Task1: issueGenerator('Task1', 'Task', 'yellow'),
+
+      // valid linked cards
+      DispatcherLinkedSubTask1 : issueGenerator('DispatcherLinkedSubTask1', 'Sub-task', 'yellow', 'Dispatcher1', 'Dispatcher'),
+      LinkedStory1 : createIssueWithMutipleLinks('LinkedStory1', 'Story', 'yellow', [
+        new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
+      ]),
+      LinkedStory2 : createIssueWithMutipleLinks('LinkedStory2', 'Story', 'yellow', [
+        new CardLink('I1', 'Initiative', 'Relates'),
+        new CardLink('Epic3', 'Epic'),
+        new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
+      ]),
+      LinkedStory3 : createIssueWithMutipleLinks('LinkedStory3', 'Story', 'yellow', [
+        new CardLink('Epic1', 'Epic'),
+        new CardLink('DispatcherLinkedSubTask1', 'Sub-task', 'Relates')
+      ]),
+      MT6 : issueGenerator('MT6', 'Maintenance Task', 'yellow', 'DispatcherLinkedSubTask1', 'Sub-task', 'Relates'),
+      Bug3 : issueGenerator('Bug3', 'Bug', 'yellow', 'DispatcherLinkedSubTask1', 'Sub-task', 'Relates'),
+      LinkedSubtask1 : issueGenerator('LinkedSubtask1', 'Sub-task', 'yellow', 'LinkedStory1', 'Story'),
+      LinkedSubtask2 : issueGenerator('LinkedSubtask2', 'Sub-task', 'yellow', 'MT6', 'Maintenance Task'),
+      LinkedSubtask3 : issueGenerator('LinkedSubtask3', 'Sub-task', 'yellow', 'Bug3', 'Bug'),
+      LinkedEpic1 : issueGenerator('LinkedEpic1', 'Sub-task', 'yellow'),
+      Bug5 : issueGenerator('Bug5', 'Bug', 'yellow', 'LinkedEpic1', 'Epic', 'Relates'),
+      MT7 : issueGenerator('MT7', 'Maintenance Task', 'yellow', 'LinkedEpic1', 'Epic', 'Relates'),
+      BugSubtask2 : issueGenerator('BugSubtask2', 'Sub-task', 'yellow', 'Bug5', 'Bug'),
+      MaintenanceSubtask2 : issueGenerator('MaintenanceSubtask2', 'Maintenance Task', 'yellow', 'MT7', 'Maintenance Task'),
+
+      //invalid linked cards
+      DispatcherLinkedSubTask4 : issueGenerator('DispatcherLinkedSubTask4', 'Sub-task', 'red', 'Dispatcher1', 'Dispatcher'),
+      MT5 : issueGenerator('MT5', 'Maintenance Task', 'yellow', 'DispatcherLinkedSubTask4', 'Sub-task', 'Relates'),
+      MaintenanceSubtask1 : issueGenerator('MaintenanceSubtask1', 'Sub-task', 'yellow', 'MT5', 'Maintenance Task'),
+      DispatcherLinkedSubTask5:  issueGenerator('DispatcherLinkedSubTask5', 'Sub-task', 'red', 'Dispatcher1', 'Dispatcher'),
+      Bug4 : issueGenerator('Bug4', 'Bug', 'yellow', 'DispatcherLinkedSubTask5', 'Sub-task', 'Relates'),
+      BugSubtask1 : issueGenerator('BugSubtask1', 'Sub-task', 'yellow', 'Bug4', 'Bug'),
 
       FeatureDefect1: issueGenerator('FeatureDefect1', 'Feature Defect', 'yellow', 'Story2', 'Story')
       //FeatureDefect2: issueGenerator('FeatureDefect2', 'Feature Defect', 'green', 'Story2', 'Story') // Missing tests?

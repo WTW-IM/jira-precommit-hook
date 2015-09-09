@@ -20,8 +20,8 @@ function createIssueLinks(direction, parentKey, parentType, linkType) {
   };
 }
 
-export default function createTestIssue(key, type, color, parentKey, parentType, linkType) {
-  let baseIssue = {
+function createBaseIssue(key, type, color){
+  return {
     'key': key,
     'fields': {
       'status': {
@@ -34,34 +34,63 @@ export default function createTestIssue(key, type, color, parentKey, parentType,
       }
     }
   };
+}
 
+function fullMerge(leftObject, rightObject){
+  return _.merge(leftObject, rightObject, function(lhs, rhs){
+    if(_.isArray(lhs)){
+      return lhs.concat(rhs);
+    }
+  });
+}
+
+function resolveIssue(baseIssue, type, parentKey, parentType, linkType){
   switch(type) {
     case 'Epic':
-      return _.merge(baseIssue, createIssueLinks('inwardIssue', parentKey, parentType, linkType));
+      return fullMerge(baseIssue, createIssueLinks('inwardIssue', parentKey, parentType, linkType));
     case 'Story':
       if(parentType === 'Epic') {
-        return _.merge(baseIssue, {
+        return fullMerge(baseIssue, {
           'fields': {
             'customfield_10805': parentKey
           }
         });
       }
-      return _.merge(baseIssue, createIssueLinks('outwardIssue', parentKey, parentType, linkType));
+      return fullMerge(baseIssue, createIssueLinks('outwardIssue', parentKey, parentType, linkType));
     case 'Sub-task':
     case 'Feature Defect':
-      return _.merge(baseIssue, {
+      return fullMerge(baseIssue, {
         'fields': {
           'parent': {
             'key': parentKey
           }
         }
       });
-    case 'Initiative':
-    case 'Bug':
     case 'Maintenance Task':
+    case 'Bug':
+      if((parentType === 'Sub-task' || parentType === 'Epic') && linkType === 'Relates'){
+        return fullMerge(baseIssue, createIssueLinks('outwardIssue', parentKey, parentType, linkType));
+      }
+      return baseIssue;
+    case 'Dispatcher':
+    case 'Initiative':
     // This is old??
     case 'MT':
     case 'Task':
       return baseIssue;
   }
+
+}
+
+export function createIssueWithMutipleLinks(key, type, color, parents){
+  let baseIssue = createBaseIssue(key, type, color);
+  _.forEach(parents, function(n){
+    baseIssue = resolveIssue(baseIssue, type, n.key, n.issueType, n.linkType);
+  });
+  return baseIssue;
+}
+
+export default function createTestIssue(key, type, color, parentKey, parentType, linkType) {
+  let baseIssue = createBaseIssue(key, type, color);
+  return resolveIssue(baseIssue, type, parentKey, parentType, linkType);
 }

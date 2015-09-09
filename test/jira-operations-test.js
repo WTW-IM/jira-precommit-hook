@@ -1,22 +1,22 @@
 import {findProjectKey, getEpicLinkField, findParent, findIssueLinkParentKey} from '../src/jira-operations.js';
 import DummyJira from './dummy-jira.js';
 
-let dummyJira = new DummyJira();
-
 describe('JIRA Operations Tests', function() {
+  let dummyJira;
+
+  beforeEach(() => {
+    dummyJira = new DummyJira();
+  });
+
   describe('Find Issue Parent', function() {
     it('Find Project Keys', () => {
       return findProjectKey(dummyJira)
-              .then(key => {
-                key.should.eql('XYZ');
-              });
+        .should.eventually.eql('XYZ');
     });
 
     it('Find Epic Link', () => {
       return getEpicLinkField(dummyJira)
-        .then(field => {
-          field.should.eql('customfield_10805');
-        });
+        .should.eventually.eql('customfield_10805');
     });
 
     it('Missing Epic Link', done => {
@@ -30,9 +30,34 @@ describe('JIRA Operations Tests', function() {
 
     it('Find Parent from Sub-task', () => {
       return findParent(dummyJira.issues.SubTask1, dummyJira)
+        .should.eventually.have.deep.property('fields.issuetype.name', 'Story');
+    });
+
+    it('Find parent from story with Sub-task parent', () => {
+      return findParent(dummyJira.issues.LinkedStory1, dummyJira)
         .then(parent => {
-          parent.fields.issuetype.name.should.eql('Story');
+          parent.fields.issuetype.name.should.eql('Sub-task');
         });
+    });
+
+    it('Find parent from story with Initiative, Epic, and Sub-task parents', () => {
+      return findParent(dummyJira.issues.LinkedStory2, dummyJira).then( parent => {
+        parent.fields.issuetype.name.should.eql('Initiative');
+      });
+    });
+
+    it('Find parent from story with Epic and Sub-task parents', () => {
+      return findParent(dummyJira.issues.LinkedStory3, dummyJira)
+        .then(parent => {
+          parent.fields.issuetype.name.should.eql('Epic');
+        });
+    });
+
+    it('Find parent\'s parent of a Sub-task that is under a story with a link to a Dispatcher Sub-task', ()=> {
+      findParent(dummyJira.issues.LinkedSubtask1, dummyJira)
+        .then(subtaskParent => findParent(subtaskParent, dummyJira).
+          then(storyParent => findParent(storyParent, dummyJira).
+            should.eventually.have.deep.property('fields.issuetype.name', 'Dispatcher')));
     });
 
     it('Find Parent from Feature Defect', () => {

@@ -1,20 +1,47 @@
 import * as storyStrat from '../../src/issue-strategies/story.js';
 import DummyJira from '../dummy-jira.js';
 
-let dummyJira = new DummyJira();
 
 describe('Story/Sub-task Strategy Apply Tests', () => {
+  let dummyJira;
+
+  beforeEach(() => {
+    dummyJira = new DummyJira();
+  });
   describe('Okay to commit against', () => {
     it('Sub-task is yellow and all the parents up to the initiative are yellow', () =>
-      storyStrat.apply(dummyJira.issues.SubTask1, dummyJira).should.eventually.equal(true)
+      storyStrat.apply(dummyJira.issues.SubTask1, dummyJira).should.eventually.be.true
     );
-
     it('Story is yellow and all the parents up the initiative are yellow', () =>
-      storyStrat.apply(dummyJira.issues.Story1, dummyJira).should.eventually.equal(true)
+      storyStrat.apply(dummyJira.issues.Story1, dummyJira).should.eventually.be.true
     );
 
     it('Story is yellow and parent is an initiative which is also yellow', () =>
-      storyStrat.apply(dummyJira.issues.Story2, dummyJira).should.eventually.equal(true)
+      storyStrat.apply(dummyJira.issues.Story2, dummyJira).should.eventually.be.true
+    );
+
+    it('Story is a child of a Sub-task from the dispatcher and all parents are yellow', ()=>
+      storyStrat.apply(dummyJira.issues.LinkedStory1, dummyJira).should.eventually.be.true
+    );
+
+    it('Sub-task has a parent dispatcher, is linked to a story, and all parents are yellow', ()=>
+      storyStrat.apply(dummyJira.issues.LinkedSubtask1, dummyJira).should.eventually.be.true
+    );
+
+    it('Sub-task has a parent Maintainance task, and all parents are yellow', ()=>
+      storyStrat.apply(dummyJira.issues.LinkedSubtask2, dummyJira).should.eventually.be.true
+    );
+
+    it('Sub-task has a parent Bug, and all parents are yellow', ()=>
+      storyStrat.apply(dummyJira.issues.LinkedSubtask3, dummyJira).should.eventually.be.true
+    );
+
+    it('Sub-task has a parent Bug, with an epic link', ()=>
+      storyStrat.apply(dummyJira.issues.BugSubtask2, dummyJira).should.eventually.be.true
+    );
+
+    it('Sub-task has a parent Bug, with an epic link', ()=>
+      storyStrat.apply(dummyJira.issues.BugSubtask2, dummyJira).should.eventually.be.true
     );
   });
 
@@ -22,6 +49,15 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
     it('Sub-task not yellow', () =>
       storyStrat.apply(dummyJira.issues.SubTask12, dummyJira)
         .should.eventually.be.rejectedWith(Error, /SubTask12 is not open to commit against/)
+    );
+    it('Subtask Task is yellow, but the Maintainance task parent is not', () =>
+      storyStrat.apply(dummyJira.issues.MaintenanceSubtask1, dummyJira)
+        .should.eventually.be.rejectedWith(Error, /Cannot commit.*MT5.*parent issue DispatcherLinkedSubTask4.*/)
+      );
+
+    it('Subtask Task is yellow, but the Bug task parent is not', () =>
+      storyStrat.apply(dummyJira.issues.BugSubtask1, dummyJira)
+        .should.eventually.be.rejectedWith(Error, /Cannot commit.*Bug4.*parent issue DispatcherLinkedSubTask5.*/)
     );
 
     it('Sub-task is yellow, but the story is not', () =>

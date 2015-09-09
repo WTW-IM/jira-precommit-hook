@@ -23,8 +23,14 @@ export let getEpicLinkField = _.memoize(
   }
 );
 
-export function findIssueLinkParentKey(issue) {
+export function findIssueLinkParentKeyByType(issue, type)
+{
   let result = null;
+
+  if(!issue.fields.issuelinks){
+    return result;
+  }
+
   issue.fields.issuelinks.forEach(issueLink => {
     if(issueLink.type.name !== 'Relates') {
       return;
@@ -39,11 +45,15 @@ export function findIssueLinkParentKey(issue) {
       linkDirection = 'outwardIssue';
     }
 
-    if(linkDirection && issueLink[linkDirection].fields.issuetype.name === 'Initiative') {
+    if(linkDirection && (issueLink[linkDirection].fields.issuetype.name === type)) {
       result = issueLink[linkDirection].key;
     }
   });
   return result;
+}
+
+export function findIssueLinkParentKey(issue){
+  return findIssueLinkParentKeyByType(issue, 'Initiative');
 }
 
 export let findParent = _.memoize(
@@ -61,15 +71,24 @@ export let findParent = _.memoize(
           return jiraClient.findIssue(parentKey);
         }
       }
-
       return getEpicLinkField(jiraClient)
-        .then(linkField => jiraClient.findIssue(issue.fields[linkField]));
-
+        .then(linkField => {
+            if(issue.fields[linkField]){
+              return jiraClient.findIssue(issue.fields[linkField]);
+            }
+            else{
+              const subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
+              return subtaskParentKey ? jiraClient.findIssue(subtaskParentKey) : Promise.resolve(undefined);
+            }
+          }
+        );
+    case 'Maintenance Task':
+    case 'Bug':
+      let subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
+      return (subtaskParentKey === null) ? Promise.resolve(undefined) : jiraClient.findIssue(subtaskParentKey);
     case 'Epic':
       let parentKey = findIssueLinkParentKey(issue);
-
       return parentKey ? jiraClient.findIssue(parentKey) : Promise.reject(`Cannot find initiative from Epic ${issue.key} in issue links. Initiative should be linked by 'relates to'.`);
-
     default:
         return Promise.reject(`${issue.fields.issuetype.name} should not have a parent.`);
     }
