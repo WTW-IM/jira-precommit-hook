@@ -6,8 +6,7 @@ export function apply(issue, jiraClientAPI) {
   }
 
   return findParent(issue, jiraClientAPI).then((parent)=>{
-    if(!parent || parent.fields.status.statusCategory.colorName === 'yellow')
-    {
+    if(!parent || parent.fields.status.statusCategory.colorName === 'yellow'){
       return Promise.resolve(true);
     }
 

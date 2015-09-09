@@ -26,8 +26,11 @@ export let getEpicLinkField = _.memoize(
 export function findIssueLinkParentKeyByType(issue, type)
 {
   let result = null;
-  if(!issue.fields.issuelinks)
+
+  if(!issue.fields.issuelinks){
     return result;
+  }
+
   issue.fields.issuelinks.forEach(issueLink => {
     if(issueLink.type.name !== 'Relates') {
       return;
