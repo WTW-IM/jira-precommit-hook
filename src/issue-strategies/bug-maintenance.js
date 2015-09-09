@@ -5,11 +5,6 @@ export function apply(issue, jiraClientAPI) {
     return Promise.reject(new Error(`Issue ${issue.key} is not open to commit against`));
   }
 
-  if(!issue.fields.issuelinks)
-  {
-    return Promise.resolve(true);
-  }
-
   return findParent(issue, jiraClientAPI).then((parent)=>{
     if(!parent || parent.fields.status.statusCategory.colorName === 'yellow')
     {

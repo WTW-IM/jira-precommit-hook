@@ -10,7 +10,6 @@ export let getEpicLinkField = _.memoize(
   function (jiraClient) {
     return jiraClient.listFields()
       .then(fields => {
-
         for(let i = 0; i < fields.length; i++) {
           if(fields[i].name === 'Epic Link') {
             return Promise.resolve(fields[i].id);
@@ -27,6 +26,8 @@ export let getEpicLinkField = _.memoize(
 export function findIssueLinkParentKeyByType(issue, type)
 {
   let result = null;
+  if(!issue.fields.issuelinks)
+    return result;
   issue.fields.issuelinks.forEach(issueLink => {
     if(issueLink.type.name !== 'Relates') {
       return;
@@ -81,9 +82,7 @@ export let findParent = _.memoize(
       return (subtaskParentKey === null) ? Promise.resolve(undefined) : jiraClient.findIssue(subtaskParentKey);
     case 'Epic':
       let parentKey = findIssueLinkParentKey(issue);
-
       return parentKey ? jiraClient.findIssue(parentKey) : Promise.reject(`Cannot find initiative from Epic ${issue.key} in issue links. Initiative should be linked by 'relates to'.`);
-
     default:
         return Promise.reject(`${issue.fields.issuetype.name} should not have a parent.`);
     }
