@@ -1,5 +1,5 @@
 import * as jiraOperations from '../jira-operations.js';
-import * as bugMtStrat from '../../src/issue-strategies/bug-maintenance.js';
+import * as bugMtStrat from './bug-maintenance.js';
 
 function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
   return parentIssue
