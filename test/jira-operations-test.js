@@ -16,7 +16,7 @@ describe('JIRA Operations Tests', function() {
 
     it('Find Epic Link', () => {
       return getEpicLinkField(dummyJira)
-        .should.eventually.eql('customfield_10805')
+        .should.eventually.eql('customfield_10805');
     });
 
     it('Missing Epic Link', done => {
@@ -30,7 +30,7 @@ describe('JIRA Operations Tests', function() {
 
     it('Find Parent from Sub-task', () => {
       return findParent(dummyJira.issues.SubTask1, dummyJira)
-        .should.eventually.have.deep.property('fields.issuetype.name','Story')
+        .should.eventually.have.deep.property('fields.issuetype.name', 'Story');
     });
 
     it('Find parent from story with Sub-task parent', () => {

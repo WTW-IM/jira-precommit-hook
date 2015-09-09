@@ -6,8 +6,8 @@ function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
     .then(content => {
       if(content === null || content.fields.status.statusCategory.colorName !== 'yellow') {
         return Promise.reject(new Error(`Cannot commit issue ${baseIssueKey} because parent issue ${content.key} is not available to commit against.`));
-      } 
-      
+      }
+
       if(content.fields.issuetype.name === 'Maintenance Task' || content.fields.issuetype.name === 'Bug'){
         return bugMtStrat.apply(content, jiraClientAPI);
       }
@@ -17,7 +17,7 @@ function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
         content.fields.issuetype.name === 'Dispatcher'){
         return Promise.resolve(true);
       }
-      
+
       return areParentsValid(baseIssueKey, jiraOperations.findParent(content, jiraClientAPI), jiraClientAPI);
     });
 }
