@@ -85,7 +85,7 @@ function resolveIssue(baseIssue, type, parentKey, parentType, linkType){
 export function createIssueWithMutipleLinks(key, type, color, parents){
   let baseIssue = createBaseIssue(key, type, color);
   _.forEach(parents, function(n){
-    baseIssue = resolveIssue(baseIssue, type, n.key, n.type, n.linkType);
+    baseIssue = resolveIssue(baseIssue, type, n.key, n.issueType, n.linkType);
   });
   return baseIssue;
 }

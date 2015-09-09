@@ -1,7 +1,7 @@
 export default class CardLink{
-  constructor(key, type, linkType){
+  constructor(key, issueType, linkType){
     this.key = key;
-    this.type = type;
+    this.issueType = issueType;
     this.linkType = linkType;
   }
 }
