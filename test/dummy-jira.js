@@ -41,6 +41,10 @@ class DummyJira {
       //Story7: issueGenerator('Story7', 'Story', 'green'), // Missing tests?
       //Story8: issueGenerator('Story8', 'Story', 'yellow'), // Missing tests?
 
+      // No Parent
+      Story9: issueGenerator('Story9', 'Story', 'yellow'),
+
+
       // Valid Parents
       SubTask1: issueGenerator('SubTask1', 'Sub-task', 'yellow', 'Story1'),
       SubTask2: issueGenerator('SubTask2', 'Sub-task', 'yellow', 'Story2'),

@@ -89,5 +89,10 @@ describe('Story/Sub-task Strategy Apply Tests', () => {
       storyStrat.apply(dummyJira.issues.Story4, dummyJira)
         .should.eventually.be.rejectedWith(Error, /Cannot commit.*Story4.*parent issue I3/)
     );
+
+    it('Story does not have a parent', () =>
+      storyStrat.apply(dummyJira.issues.Story9, dummyJira)
+        .should.eventually.be.rejectedWith(Error, /Cannot commit.*Story9.*no parent issue can be found/)
+    );
   });
 });

@@ -36,12 +36,11 @@ export function findIssueLinkParentKeyByType(issue, type)
       return;
     }
 
-    let linkDirection = null;
+    let linkDirection;
 
     if(issueLink.inwardIssue) {
       linkDirection = 'inwardIssue';
-    }
-    else if(issueLink.outwardIssue) {
+    } else if(issueLink.outwardIssue) {
       linkDirection = 'outwardIssue';
     }
 
@@ -73,15 +72,13 @@ export let findParent = _.memoize(
       }
       return getEpicLinkField(jiraClient)
         .then(linkField => {
-            if(issue.fields[linkField]){
-              return jiraClient.findIssue(issue.fields[linkField]);
-            }
-            else{
-              const subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
-              return subtaskParentKey ? jiraClient.findIssue(subtaskParentKey) : Promise.resolve(undefined);
-            }
+          if(issue.fields[linkField]){
+            return jiraClient.findIssue(issue.fields[linkField]);
+          } else {
+            const subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');
+            return subtaskParentKey ? jiraClient.findIssue(subtaskParentKey) : Promise.resolve(undefined);
           }
-        );
+        });
     case 'Maintenance Task':
     case 'Bug':
       let subtaskParentKey = findIssueLinkParentKeyByType(issue, 'Sub-task');

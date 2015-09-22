@@ -4,7 +4,11 @@ import * as bugMtStrat from './bug-maintenance.js';
 function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
   return parentIssue
     .then(content => {
-      if(content === null || content.fields.status.statusCategory.colorName !== 'yellow') {
+      if(!content) {
+        return Promise.reject(new Error(`Cannot commit issue ${baseIssueKey} because no parent issue can be found. (You may not have the required permissions to see the parent issue)`));
+      }
+
+      if(content.fields.status.statusCategory.colorName !== 'yellow') {
         return Promise.reject(new Error(`Cannot commit issue ${baseIssueKey} because parent issue ${content.key} is not available to commit against.`));
       }
 
