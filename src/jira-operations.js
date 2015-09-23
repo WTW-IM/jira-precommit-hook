@@ -24,13 +24,14 @@ export let getEpicLinkField = _.memoize(
 );
 
 export function findIssueLinkParentKey(issue) {
-  let result = null;
+  let result;
+
   issue.fields.issuelinks.forEach(issueLink => {
     if(issueLink.type.name !== 'Relates') {
       return;
     }
 
-    let linkDirection = null;
+    let linkDirection;
 
     if(issueLink.inwardIssue) {
       linkDirection = 'inwardIssue';
@@ -43,6 +44,7 @@ export function findIssueLinkParentKey(issue) {
       result = issueLink[linkDirection].key;
     }
   });
+
   return result;
 }
 
@@ -68,7 +70,7 @@ export let findParent = _.memoize(
     case 'Epic':
       let parentKey = findIssueLinkParentKey(issue);
 
-      return parentKey ? jiraClient.findIssue(parentKey) : Promise.reject(`Cannot find initiative from Epic ${issue.key} in issue links. Initiative should be linked by 'relates to'.`);
+      return parentKey ? jiraClient.findIssue(parentKey) : Promise.reject(`Cannot find an Initiative from Epic ${issue.key}. Initiative must be linked with a 'relates to' link type.`);
 
     default:
         return Promise.reject(`${issue.fields.issuetype.name} should not have a parent.`);
