@@ -18,6 +18,8 @@ class DummyJira {
       I2: issueGenerator('I2', 'Initiative', 'yellow'),
       I3: issueGenerator('I3', 'Initiative', 'red'),
 
+      DeploymentTask1:issueGenerator('DeploymentTask1', 'Deployment Task', 'yellow'),
+
       Epic1: issueGenerator('Epic1', 'Epic', 'yellow'),
       //Epic2: issueGenerator('Epic2', 'Epic', 'green'), // Missing tests?
       Epic3: issueGenerator('Epic3', 'Epic', 'yellow', 'I2', 'Initiative', 'Relates'),
