@@ -11,5 +11,6 @@ export default {
   'Deployment Task': notAllowedStrat,
   'Feature Defect': storyStrat,
   Bug: bugMtStrat,
-  Task: notAllowedStrat
+  Task: notAllowedStrat,
+  Unknown: notAllowedStrat
 };

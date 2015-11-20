@@ -23,4 +23,9 @@ describe('One valid issue apply tests', () => {
     let testIssues = ['TW201', 'SubTask7'];
     return validStrat(testIssues, dummyJira).should.eventually.be.rejectedWith([new Error(), new Error()]);
   });
+
+  it('Unknow issue type', () => {
+    let testIssues = ['Unkown1'];
+    return validStrat(testIssues, dummyJira).should.eventually.be.rejectedWith(/Cannot commit against Unknown1. It is of type Unknown./);
+  });
 });
