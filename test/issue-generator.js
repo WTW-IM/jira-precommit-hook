@@ -56,14 +56,7 @@ export default function createTestIssue(key, type, color, parentKey, parentType,
           }
         }
       });
-    case 'Deployment Task':
-    case 'Initiative':
-    case 'Bug':
-    case 'Unknown':
-    case 'Maintenance Task':
-    // This is old??
-    case 'MT':
-    case 'Task':
+    default:
       return baseIssue;
   }
 }
