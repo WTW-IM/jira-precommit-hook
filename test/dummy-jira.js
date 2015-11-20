@@ -20,7 +20,7 @@ class DummyJira {
 
       DeploymentTask1:issueGenerator('DeploymentTask1', 'Deployment Task', 'yellow'),
 
-      Unkown1:issueGenerator('Unknown1', 'Unknown', 'yellow'),
+      Unknown1:issueGenerator('Unknown1', 'Unknown', 'yellow'),
 
       Epic1: issueGenerator('Epic1', 'Epic', 'yellow'),
       //Epic2: issueGenerator('Epic2', 'Epic', 'green'), // Missing tests?
