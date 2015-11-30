@@ -5,7 +5,7 @@ function validateStrategies(issueKey, jiraClientAPI) {
   return jiraClientAPI.findIssue(issueKey)
   .then(content => {
     if (!issueStrats[content.fields.issuetype.name]) {
-      return Promise.reject(new Error(`${issueKey} does not have a valid issuetype`));
+      return issueStrats.Unknown.apply(content, jiraClientAPI);
     }
 
     return issueStrats[content.fields.issuetype.name].apply(content, jiraClientAPI);
