@@ -5,7 +5,7 @@ function validateStrategies(issueKey, jiraClientAPI) {
   return jiraClientAPI.findIssue(issueKey)
   .then(content => {
     if (!issueStrats[content.fields.issuetype.name]) {
-      return issueStrats[Unknown].apply(content, jiraClientAPI);
+      return issueStrats.Unknown.apply(content, jiraClientAPI);
     }
 
     return issueStrats[content.fields.issuetype.name].apply(content, jiraClientAPI);
