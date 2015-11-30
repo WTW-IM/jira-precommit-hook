@@ -58,7 +58,7 @@ describe('precommit-entry tests', () => {
     it('Check for revert commit', () => {
       return pce.getCommitMsg(Promise.resolve('Revert'))
         .then(results => {
-          assert.equal(results, null);
+          results.length.should.equal(3);
         });
     });
   });

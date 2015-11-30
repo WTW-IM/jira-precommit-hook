@@ -36,7 +36,7 @@ export function getCommitMsg(readPromise) {
   .then(([projectKey, fileContents]) => {
     let firstWord = fileContents.split(' ')[0];
 
-    if(firstWord === 'Merge' || firstWord === 'Revert') {
+    if(firstWord === 'Merge') {
       return null;
     }
 
