@@ -43,34 +43,43 @@ export function findIssueLinkParentKey(issue) {
       result = issueLink[linkDirection].key;
     }
   });
+
   return result;
 }
 
 export let findParent = _.memoize(
   function (issue, jiraClient) {
-      switch(issue.fields.issuetype.name) {
-    case 'Sub-task':
-    case 'Feature Defect':
-      return jiraClient.findIssue(issue.fields.parent.key);
+    switch(issue.fields.issuetype.name) {
+      case 'Sub-task':
+      case 'Feature Defect':
+        return jiraClient.findIssue(issue.fields.parent.key);
 
-    case 'Story':
-      if(issue.fields.issuelinks) {
+      case 'Story':
+        if(issue.fields.issuelinks) {
+          let parentKey = findIssueLinkParentKey(issue);
+
+          if(parentKey) {
+            return jiraClient.findIssue(parentKey);
+          }
+        }
+
+        return getEpicLinkField(jiraClient)
+          .then(linkField => {
+            const epicIssueNumber = issue.fields[linkField];
+
+            if (!epicIssueNumber) {
+              return Promise.reject(`${issue.key} does not have an associated parent Initiative or Epic.`);
+            }
+
+            return jiraClient.findIssue(issue.fields[linkField]);
+          });
+
+      case 'Epic':
         let parentKey = findIssueLinkParentKey(issue);
 
-        if(parentKey) {
-          return jiraClient.findIssue(parentKey);
-        }
-      }
+        return parentKey ? jiraClient.findIssue(parentKey) : Promise.reject(`Cannot find initiative from Epic ${issue.key} in issue links. Initiative should be linked by 'relates to'.`);
 
-      return getEpicLinkField(jiraClient)
-        .then(linkField => jiraClient.findIssue(issue.fields[linkField]));
-
-    case 'Epic':
-      let parentKey = findIssueLinkParentKey(issue);
-
-      return parentKey ? jiraClient.findIssue(parentKey) : Promise.reject(`Cannot find initiative from Epic ${issue.key} in issue links. Initiative should be linked by 'relates to'.`);
-
-    default:
+      default:
         return Promise.reject(`${issue.fields.issuetype.name} should not have a parent.`);
     }
   },

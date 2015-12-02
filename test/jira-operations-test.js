@@ -61,6 +61,12 @@ describe('JIRA Operations Tests', function() {
         });
     });
 
+    it('Find Parent from Story with no Epic or Initiative', (done) => {
+      return findParent(dummyJira.issues.Story9, dummyJira)
+        .should.eventually.be.rejectedWith(/Story9 does not have an associated parent Initiative or Epic./)
+        .notify(done);
+    });
+
     it('Find Parent from Epic', () => {
       return findParent(dummyJira.issues.Epic3, dummyJira)
         .then(parent => {
