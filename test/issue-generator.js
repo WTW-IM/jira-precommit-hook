@@ -21,7 +21,7 @@ function createIssueLinks(direction, parentKey, parentType, linkType) {
 }
 
 export default function createTestIssue(key, type, color, parentKey, parentType, linkType) {
-  let baseIssue = {
+  const baseIssue = {
     'key': key,
     'fields': {
       'status': {
@@ -35,28 +35,28 @@ export default function createTestIssue(key, type, color, parentKey, parentType,
     }
   };
 
-  switch(type) {
-    case 'Epic':
-      return _.merge(baseIssue, createIssueLinks('inwardIssue', parentKey, parentType, linkType));
-    case 'Story':
-      if(parentType === 'Epic') {
-        return _.merge(baseIssue, {
-          'fields': {
-            'customfield_10805': parentKey
-          }
-        });
-      }
-      return _.merge(baseIssue, createIssueLinks('outwardIssue', parentKey, parentType, linkType));
-    case 'Sub-task':
-    case 'Feature Defect':
+  switch (type) {
+  case 'Epic':
+    return _.merge(baseIssue, createIssueLinks('inwardIssue', parentKey, parentType, linkType));
+  case 'Story':
+    if (parentType === 'Epic') {
       return _.merge(baseIssue, {
         'fields': {
-          'parent': {
-            'key': parentKey
-          }
+          'customfield_10805': parentKey
         }
       });
-    default:
-      return baseIssue;
+    }
+    return _.merge(baseIssue, createIssueLinks('outwardIssue', parentKey, parentType, linkType));
+  case 'Sub-task':
+  case 'Feature Defect':
+    return _.merge(baseIssue, {
+      'fields': {
+        'parent': {
+          'key': parentKey
+        }
+      }
+    });
+  default:
+    return baseIssue;
   }
 }

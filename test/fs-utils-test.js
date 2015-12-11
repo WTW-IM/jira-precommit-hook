@@ -1,6 +1,6 @@
 import {findParentFolder, copyHookFiles, verifyHooksFolder} from '../src/fs-utils.js';
 import path from 'path';
-import fs from 'fs';
+import fsys from 'fs';
 import fsp from 'fs-promise';
 import rimraf from 'rimraf';
 
@@ -13,7 +13,7 @@ describe('FS-Utils Tests', () => {
   before(() =>
     fsp.exists(tmpDir)
       .then(exists => {
-        if(!exists) {
+        if (!exists) {
           return fsp.mkdir(tmpDir)
             .then(() => fsp.mkdir('test/tmp/.git'));
         }
@@ -22,28 +22,28 @@ describe('FS-Utils Tests', () => {
 
   describe('Finding Directory', () => {
     it('Finding Named Directory', () => {
-      let gitPath = findParentFolder(__dirname, '.git');
+      const gitPath = findParentFolder(__dirname, '.git');
       gitPath.should.equal(path.join(__dirname, '../.git'));
     });
 
     it('Unable to Find Desired Directory', () => {
-      let fn = () => { findParentFolder(path.join(__dirname, '../../')); };
-      expect(fn).to.throw(Error);
+      const funct = () => { findParentFolder(path.join(__dirname, '../../')); };
+      expect(funct).to.throw(Error);
     });
   });
 
   describe('Hooks folder verification', () => {
     beforeEach(() => {
-      let pathString = path.resolve(hooksDir);
-      let hooksExists = fs.existsSync(pathString);
-      if(hooksExists) {
+      const pathString = path.resolve(hooksDir);
+      const hooksExists = fsys.existsSync(pathString);
+      if (hooksExists) {
         rimraf.sync(pathString);
       }
     });
 
     it('Confirm hooks folder exists', () => {
       verifyHooksFolder(hooksDir);
-      assert(fs.existsSync(hooksDir));
+      assert(fsys.existsSync(hooksDir));
     });
   });
 
@@ -51,7 +51,7 @@ describe('FS-Utils Tests', () => {
     before(() =>
       fsp.exists(hooksDir)
         .then(exists => {
-          if(!exists) {
+          if (!exists) {
             return fsp.mkdir(hooksDir);
           }
         })
@@ -60,7 +60,7 @@ describe('FS-Utils Tests', () => {
     beforeEach(() =>
       fsp.exists(commitMsgPath)
         .then(exists => {
-          if(exists) {
+          if (exists) {
             return fsp.unlink(commitMsgPath);
           }
         })
@@ -69,16 +69,18 @@ describe('FS-Utils Tests', () => {
     it('Hook Creation Test', (done) => {
       copyHookFiles(tmpGitDir)
       .then(() => {
-         fs.existsSync(commitMsgPath).should.equal(true);
-         done();
+        fsys.existsSync(commitMsgPath).should.equal(true);
+        done();
       });
     });
 
     it('Validate Hook File is Correct', (done) => {
+      let newFile;
+      let oldFile;
       copyHookFiles(tmpGitDir)
       .then(() => {
-        let newFile = fs.readFileSync(commitMsgPath);
-        let oldFile = fs.readFileSync('hooks/commit-msg');
+        newFile = fsys.readFileSync(commitMsgPath);
+        oldFile = fsys.readFileSync('hooks/commit-msg');
         newFile.should.eql(oldFile);
         done();
       });

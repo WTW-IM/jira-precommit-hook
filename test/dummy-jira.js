@@ -23,10 +23,10 @@ class DummyJira {
       Unknown1:issueGenerator('Unknown1', 'Unknown', 'yellow'),
 
       Epic1: issueGenerator('Epic1', 'Epic', 'yellow'),
-      //Epic2: issueGenerator('Epic2', 'Epic', 'green'), // Missing tests?
+      // Epic2: issueGenerator('Epic2', 'Epic', 'green'), // Missing tests?
       Epic3: issueGenerator('Epic3', 'Epic', 'yellow', 'I2', 'Initiative', 'Relates'),
       Epic4: issueGenerator('Epic4', 'Epic', 'red', 'I2', 'Initiative', 'Relates'),
-      //Epic5: issueGenerator('Epic5', 'Epic', 'yellow', 'I3', 'Initiative', 'Relates'), // Missing tests?
+      // Epic5: issueGenerator('Epic5', 'Epic', 'yellow', 'I3', 'Initiative', 'Relates'), // Missing tests?
 
       // Valid Parents
       Story1: issueGenerator('Story1', 'Story', 'yellow', 'Epic3', 'Epic'),
@@ -39,8 +39,8 @@ class DummyJira {
 
       // Invalid Story
       Story6: issueGenerator('Story6', 'Story', 'red', 'Epic4', 'Epic'),
-      //Story7: issueGenerator('Story7', 'Story', 'green'), // Missing tests?
-      //Story8: issueGenerator('Story8', 'Story', 'yellow'), // Missing tests?
+      // Story7: issueGenerator('Story7', 'Story', 'green'), // Missing tests?
+      // Story8: issueGenerator('Story8', 'Story', 'yellow'), // Missing tests?
       Story9: issueGenerator('Story9', 'Story', 'yellow', null, 'Epic'),
 
       // Valid Parents
@@ -63,12 +63,12 @@ class DummyJira {
       SubTask13: issueGenerator('SubTask13', 'Sub-task', 'green', 'MT1'),
       SubTask14: issueGenerator('SubTask14', 'Sub-task', 'green', 'Bug1'),
       SubTask15: issueGenerator('SubTask15', 'Sub-task', 'green'),
-      //SubTask1: issueGenerator('SubTask1', 'Sub-task', 'yellow'), // Missing tests?
+      // SubTask1: issueGenerator('SubTask1', 'Sub-task', 'yellow'), // Missing tests?
 
       Task1: issueGenerator('Task1', 'Task', 'yellow'),
 
       FeatureDefect1: issueGenerator('FeatureDefect1', 'Feature Defect', 'yellow', 'Story2', 'Story')
-      //FeatureDefect2: issueGenerator('FeatureDefect2', 'Feature Defect', 'green', 'Story2', 'Story') // Missing tests?
+      // FeatureDefect2: issueGenerator('FeatureDefect2', 'Feature Defect', 'green', 'Story2', 'Story') // Missing tests?
     };
 
     this.fields = {
@@ -92,7 +92,7 @@ class DummyJira {
   }
 
   findIssue(key) {
-    if(this.issues[key] === undefined) {
+    if (this.issues[key] === undefined) {
       return Promise.reject(new Error(`Issue ${key} does not exist.`));
     }
 

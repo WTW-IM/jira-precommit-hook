@@ -2,7 +2,7 @@ import {getJiraAPI} from '../src/jira-connection.js';
 import path from 'path';
 import DummyJira from './dummy-jira.js';
 
-describe('JIRA Connection Tests', function() {
+describe('JIRA Connection Tests', () => {
   it('JIRA Object has Correct Project Name', () => {
     return getJiraAPI(path.join(process.cwd(), 'test', '.jirarc'))
       .then(testJira => {
@@ -14,15 +14,15 @@ describe('JIRA Connection Tests', function() {
     let jiraApi;
     let spy;
 
-    let dummyJira = new DummyJira();
+    const dummyJira = new DummyJira();
 
     beforeEach(() => {
       return getJiraAPI(path.join(process.cwd(), 'test', '.jirarc'))
         .then(testJira => {
           jiraApi = testJira;
 
-          jiraApi.request = sinon.stub(jiraApi, 'request', function(options, callback) {
-            let issueNumber = options.uri.split('/').pop().toString();
+          jiraApi.request = sinon.stub(jiraApi, 'request', (options, callback) => {
+            const issueNumber = options.uri.split('/').pop().toString();
             callback('', {statusCode: 200}, JSON.stringify(dummyJira.issues[issueNumber]));
           });
 
@@ -31,14 +31,14 @@ describe('JIRA Connection Tests', function() {
     });
 
     it('findIssue with Same Key is Run Only Once', () => {
-        return Promise.all([
-          jiraApi.findIssue('Story5'),
-          jiraApi.findIssue('Story5')
-        ])
-        .then(([first, second]) => {
-          assert.equal(spy.calledOnce, true);
-          assert.equal(first, second);
-        });
+      return Promise.all([
+        jiraApi.findIssue('Story5'),
+        jiraApi.findIssue('Story5')
+      ])
+      .then(([first, second]) => {
+        assert.equal(spy.calledOnce, true);
+        assert.equal(first, second);
+      });
     });
 
     it('findIssue with Different Keys is Run Twice', () => {

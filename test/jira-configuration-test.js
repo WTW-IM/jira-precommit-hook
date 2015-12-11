@@ -2,10 +2,10 @@ import {getAPIConfig, getAuthentication, validateAPIConfig, validateAuthenticati
 import {findParentFolder} from '../src/fs-utils.js';
 import path from 'path';
 
-let jiraPath = findParentFolder(path.join(process.cwd(), 'test'), '.jirarc');
-let authPath = findParentFolder(path.join(process.cwd(), 'test'), '.userconfig');
+const jiraPath = findParentFolder(path.join(process.cwd(), 'test'), '.jirarc');
+const authPath = findParentFolder(path.join(process.cwd(), 'test'), '.userconfig');
 
-let goodJiraObject = {
+const goodJiraObject = {
   'projectName': 'test',
   'protocol':'https',
   'host':'jira.com',
@@ -14,29 +14,29 @@ let goodJiraObject = {
   'verbose': true,
   'strictSSL': true
 };
-let missingHost = {
+const missingHost = {
   'projectName': 'test',
   'port': 8080,
   'version': '2.1.0',
   'verbose': true,
   'strictSSL': true
 };
-let missingProjectName = {
+const missingProjectName = {
   'host': 'jira.com'
 };
-let incompleteJiraObject = {
+const incompleteJiraObject = {
   'projectName': 'test',
   'host': 'jira.com'
 };
 
-let goodAuthenticationObject = {
+const goodAuthenticationObject = {
   'username': 'UserDudeBro',
   'password': 'SuperSecret'
 };
-let missingUsername = {
+const missingUsername = {
   'password': 'SuperSecret'
 };
-let missingPassword = {
+const missingPassword = {
   'username' : 'UserDudeBro'
 };
 
@@ -53,7 +53,7 @@ describe('JIRA Configuration Tests', () => {
     });
 
     it('Validation', () => {
-      let object = validateAPIConfig(goodJiraObject);
+      const object = validateAPIConfig(goodJiraObject);
       object.projectName.should.equal('test');
     });
 
@@ -66,9 +66,9 @@ describe('JIRA Configuration Tests', () => {
     });
   });
 
-  describe('Incomplete JIRA Object Tests', () => {
+  describe('Incompconste JIRA Object Tests', () => {
     it('Comparing to Default Values', () => {
-      let object = validateAPIConfig(incompleteJiraObject);
+      const object = validateAPIConfig(incompleteJiraObject);
       object.protocol.should.equal('http');
       object.port.should.equal(80);
       object.version.should.equal(2);
@@ -89,7 +89,7 @@ describe('JIRA Configuration Tests', () => {
     });
 
     it('Validation', () => {
-      let object = validateAuthentication(goodAuthenticationObject);
+      const object = validateAuthentication(goodAuthenticationObject);
       object.username.should.equal('UserDudeBro');
     });
 

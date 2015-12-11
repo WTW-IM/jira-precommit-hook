@@ -1,20 +1,19 @@
-import fs from 'fs';
+import fsys from 'fs';
 import fsp from 'fs-promise';
 import path from 'path';
 
 export function findParentFolder(startDir, parentDirName) {
   let currentDir = startDir;
 
-  while(fs.existsSync(currentDir)) {
-    if(fs.existsSync(path.join(currentDir, parentDirName))) {
+  while (fsys.existsSync(currentDir)) {
+    if (fsys.existsSync(path.join(currentDir, parentDirName))) {
       currentDir = path.join(currentDir, parentDirName);
       break;
-    }
-    else {
-      let tempPath = currentDir;
+    } else {
+      const tempPath = currentDir;
       currentDir = path.normalize(path.join(currentDir, '/..'));
 
-      if(currentDir === tempPath) {
+      if (currentDir === tempPath) {
         throw new Error(`Cannot find ${parentDirName}`);
       }
     }
@@ -24,32 +23,31 @@ export function findParentFolder(startDir, parentDirName) {
 }
 
 export function verifyHooksFolder(desiredHooksPath) {
-  if(!fs.existsSync(desiredHooksPath)) {
+  if (!fsys.existsSync(desiredHooksPath)) {
     console.log('Creating hooks directory in .git');
-    fs.mkdirSync(desiredHooksPath);
+    fsys.mkdirSync(desiredHooksPath);
   }
 }
 
 export function copyHookFiles(gitDirectory) {
-  let source = path.join(__dirname, '../hooks/commit-msg');
-  let destination = path.join(gitDirectory, '/hooks/commit-msg');
-  let stat = fs.statSync(source);
+  const source = path.join(__dirname, '../hooks/commit-msg');
+  const destination = path.join(gitDirectory, '/hooks/commit-msg');
+  const stat = fsys.statSync(source);
 
   return new Promise((fulfill, reject) => {
-    fs.createReadStream(source)
-    .pipe(fs.createWriteStream(destination, { mode: stat.mode }))
+    fsys.createReadStream(source)
+    .pipe(fsys.createWriteStream(destination, { mode: stat.mode }))
       .on('close', (error, result) => {
-        if(error) {
+        if (error) {
           reject(error);
-        }
-        else {
+        } else {
           fulfill(result);
         }
       });
   });
 }
 
-export function readJSON(filePath){
+export function readJSON(filePath) {
   return fsp.readFile(filePath)
     .then(content => JSON.parse(content));
 }

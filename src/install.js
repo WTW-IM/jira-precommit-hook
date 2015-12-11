@@ -1,11 +1,11 @@
 import {findParentFolder, copyHookFiles, verifyHooksFolder} from './fs-utils.js';
 import path from 'path';
 
-export default function install(){
-  let thisProjectsGitFolder = path.resolve(path.join(__dirname, '../.git'));
+export default function install() {
+  const thisProjectsGitFolder = path.resolve(path.join(__dirname, '../.git'));
   let gitPath = findParentFolder(__dirname, '.git');
 
-  if(thisProjectsGitFolder === gitPath){
+  if (thisProjectsGitFolder === gitPath) {
     return Promise.resolve(0);
   }
 
@@ -13,14 +13,13 @@ export default function install(){
 
   try {
     gitPath = findParentFolder(__dirname, '.git');
-  }
-  catch(error) {
+  } catch (error) {
     return Promise.reject('Your project needs a git repository to install the hook.');
   }
 
   console.log(`Found .git directory at: ${gitPath}`);
 
-  let hooksPath = path.join(gitPath, 'hooks');
+  const hooksPath = path.join(gitPath, 'hooks');
   verifyHooksFolder(hooksPath);
 
   return copyHookFiles(gitPath)
