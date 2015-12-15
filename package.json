@@ -8,7 +8,9 @@
     "lint": "eslint ./",
     "prepublish": "npm run test && npm run build",
     "test": "mocha && npm run lint",
-    "install": "node bin/install"
+    "install": "node bin/install",
+    "enable-chuck": "touch ~/.chuckNorris",
+    "diable-chuck": "rm ~/.chuckNorris"
   },
   "keywords": [
     "jira",
@@ -20,7 +22,9 @@
     "Curtis Knox",
     "Karl Thompson",
     "Matthew Radcliffe",
-    "Steven Tran"
+    "Steven Tran",
+    "Devin Wall",
+    "Trevor Martz"
   ],
   "files": [
     "bin",

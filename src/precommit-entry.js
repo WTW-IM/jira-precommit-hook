@@ -7,6 +7,7 @@ import {getJiraAPI} from './jira-connection';
 import * as fsUtils from './fs-utils';
 import checkOutdated from './outdated-check';
 import 'colors';
+import ChuckClient from './chuck-client';
 
 export function getIssueReference(msgToParse, prjKey) {
   let pattern = RegExp(`${prjKey}-\\d+`, 'g');
@@ -53,6 +54,19 @@ export function precommit(path) {
       return getCommitMsg(readPromise)
         .then(() => {
           console.log('[jira-precommit-hook] '.grey + 'Commit message successfully verified.'.cyan);
+          let client = new ChuckClient();
+
+          if (client.isChuckEnabled()) {
+            return client.getRandomJoke()
+              .then(joke => {
+                console.log(`Good work now enjoy this joke. You deserve it!\n\n${joke}\n`);
+                return 0;
+              })
+              .catch(fail => {
+                return 0;
+              });
+          }
+
           return 0;
         })
         .catch(err => {
