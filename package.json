@@ -8,9 +8,7 @@
     "lint": "eslint ./",
     "prepublish": "npm run test && npm run build",
     "test": "mocha && npm run lint",
-    "install": "node bin/install",
-    "enable-chuck": "touch ~/.chuckNorris",
-    "diable-chuck": "rm ~/.chuckNorris"
+    "install": "node bin/install"
   },
   "keywords": [
     "jira",

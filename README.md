@@ -54,3 +54,19 @@ _At **least one** issue being committed must meet the following requirements:_
 - The parents of the issue must also be open for commits
   - The issue must lead up to an initiative
 - The issue must not be an initiative, epic, nor a deployment task
+
+**Chuck Norris**
+
+If you have been working hard and want some comic relief enable the Chuck Norris joke feature.
+
+***To enable from bash/zsh***
+```
+touch ~/.chuckNorris
+```
+
+***To enable from Windows command line***
+```
+echo .> %HOMEPATH%/.chuckNorris
+```
+***To disable***
+To disable the joke feature simply delete the .chuckNorris file from your home directory.
