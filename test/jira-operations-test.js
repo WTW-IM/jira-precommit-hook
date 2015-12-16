@@ -1,10 +1,10 @@
 import {findProjectKey, getEpicLinkField, findParent, findIssueLinkParentKey} from '../src/jira-operations.js';
 import DummyJira from './dummy-jira.js';
 
-let dummyJira = new DummyJira();
+const dummyJira = new DummyJira();
 
-describe('JIRA Operations Tests', function() {
-  describe('Find Issue Parent', function() {
+describe('JIRA Operations Tests', () => {
+  describe('Find Issue Parent', () => {
     it('Find Project Keys', () => {
       return findProjectKey(dummyJira)
               .then(key => {
@@ -20,7 +20,7 @@ describe('JIRA Operations Tests', function() {
     });
 
     it('Missing Epic Link', done => {
-      dummyJira.listFields = function() {
+      dummyJira.listFields = () => {
         return Promise.resolve(dummyJira.fields.noEpicLink);
       };
       dummyJira.host = 'jira.host2.com';
@@ -43,7 +43,7 @@ describe('JIRA Operations Tests', function() {
     });
 
     it('Find Parent from Story by EpicLink', () => {
-      dummyJira.listFields = function() {
+      dummyJira.listFields = () => {
         return Promise.resolve(dummyJira.fields.epicLink);
       };
       dummyJira.host = 'jira.host3.com';
@@ -85,17 +85,17 @@ describe('JIRA Operations Tests', function() {
 
   describe('Relates Check', () => {
     it('Good Link', () => {
-      let result = findIssueLinkParentKey(dummyJira.issues.Story2);
+      const result = findIssueLinkParentKey(dummyJira.issues.Story2);
       assert.equal(result, 'I2');
     });
 
     it('Bad Link', () => {
-      let result = findIssueLinkParentKey(dummyJira.issues.Story5);
+      const result = findIssueLinkParentKey(dummyJira.issues.Story5);
       assert.equal(result, null);
     });
   });
 
-  describe('Memoization Tests', function() {
+  describe('Memoization Tests', () => {
     let spy;
 
     it('findParent with Same Key is Called Only Once', () => {

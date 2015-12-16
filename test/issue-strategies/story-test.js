@@ -1,7 +1,7 @@
 import * as storyStrat from '../../src/issue-strategies/story.js';
 import DummyJira from '../dummy-jira.js';
 
-let dummyJira = new DummyJira();
+const dummyJira = new DummyJira();
 
 describe('Story/Sub-task Strategy Apply Tests', () => {
   describe('Okay to commit against', () => {

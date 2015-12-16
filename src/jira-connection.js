@@ -3,14 +3,13 @@ import {JiraApi} from 'jira';
 import _ from 'lodash';
 
 function promisify(func) {
-  return function(...args) {
+  return function promiseFunc(...args) {
     return new Promise((fulfill, reject) => {
       args.push((error, result) => {
-        if(error) {
-          return reject(error);
-        }
-        else {
+        if (!error) {
           fulfill(result);
+        } else {
+          return reject(error);
         }
       });
 
@@ -20,21 +19,21 @@ function promisify(func) {
 }
 
 Object.keys(JiraApi.prototype).forEach(key => {
-  let currentProperty = JiraApi.prototype[key];
+  const currentProperty = JiraApi.prototype[key];
 
-  if(typeof currentProperty === 'function') {
+  if (typeof currentProperty === 'function') {
     JiraApi.prototype[key] = _.memoize(promisify(currentProperty));
   }
 });
 
-//Grabs data from files and returns a JIRA connection object wrapped in promise
+// Grabs data from files and returns a JIRA connection object wrapped in promise
 export function getJiraAPI(configPath) {
   return getAPIConfig(configPath)
     .then(({projectName, protocol, host, port, version, verbose, strictSSL}) => {
-      let jiraClient = new JiraApi(protocol, host, port, '', '', version, verbose, strictSSL);
+      const jiraClient = new JiraApi(protocol, host, port, '', '', version, verbose, strictSSL);
 
-      //Temporary hack until resolved: https://github.com/steves/node-jira/pull/107
-      jiraClient.doRequest = function(options, callback) {
+      // Temporary hack until resolved: https://github.com/steves/node-jira/pull/107
+      jiraClient.doRequest = (options, callback) => {
         jiraClient.request(options, callback);
       };
 

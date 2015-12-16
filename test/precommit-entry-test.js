@@ -1,24 +1,24 @@
 import * as pce from '../src/precommit-entry';
 import * as issueHandler from '../src/issue-handler';
-import os from 'os';
+import opsys from 'os';
 import * as connection from '../src/jira-connection';
 import * as operations from '../src/jira-operations';
 import {JiraApi} from 'jira';
 import * as fileUtils from '../src/fs-utils';
 
-let eol = os.EOL;
+const eol = opsys.EOL;
 
 describe('precommit-entry tests', () => {
   describe('Hook Message', () => {
     beforeEach(() => {
-      let stubJson = {
+      const stubJson = {
         'issueType': {
           'name': 'Story'
         }
       };
 
       sinon.stub(issueHandler, 'issueStrategizer', issues => {
-        let jsonObjects = [stubJson, stubJson, stubJson];
+        const jsonObjects = [stubJson, stubJson, stubJson];
         return jsonObjects;
       });
 
@@ -26,7 +26,7 @@ describe('precommit-entry tests', () => {
         return Promise.resolve(new JiraApi('http', 'www.jira.com', 80, 'UserDudeBro', 'SuperSecret', '2.0.0'));
       });
 
-      operations.findProjectKey = function(api) {
+      operations.findProjectKey = (api) => {
         return 'TW';
       };
 
@@ -81,7 +81,7 @@ describe('precommit-entry tests', () => {
     });
 
     it('Parse issue number, ignore issue numbers in comments', () => {
-      let content = 'TW-2345' + eol + '#TW-6346';
+      const content = 'TW-2345' + eol + '#TW-6346';
       pce.getIssueReference(content, 'TW').should.eql(['TW-2345']);
     });
   });
