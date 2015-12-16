@@ -66,5 +66,9 @@
   "bugs": {
     "url": "https://github.com/TWExchangeSolutions/jira-precommit-hook/issues"
   },
+  "engines": {
+    "node": ">=4.2.3",
+    "npm": ">=2.13.1"
+  },
   "homepage": "https://github.com/TWExchangeSolutions/jira-precommit-hook#readme"
 }
