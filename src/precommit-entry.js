@@ -55,7 +55,7 @@ export function precommit(path) {
       return getCommitMsg(readPromise)
         .then(() => {
           console.log('[jira-precommit-hook] '.grey + 'Commit message successfully verified.'.cyan);
-          let client = new ChuckClient();
+          const client = new ChuckClient();
 
           if (client.isChuckEnabled()) {
             return client.getRandomJoke()
