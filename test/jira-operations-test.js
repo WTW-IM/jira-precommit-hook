@@ -1,4 +1,4 @@
-import {findProjectKey, getEpicLinkField, findParent, findIssueLinkParentKey} from '../src/jira-operations.js';
+import { findProjectKey, getEpicLinkField, findParent, findIssueLinkParentKey } from '../src/jira-operations.js';
 import DummyJira from './dummy-jira.js';
 
 const dummyJira = new DummyJira();

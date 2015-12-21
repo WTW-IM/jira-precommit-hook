@@ -1,5 +1,5 @@
-import {getAPIConfig, getAuthentication, validateAPIConfig, validateAuthentication} from '../src/jira-configuration.js';
-import {findParentFolder} from '../src/fs-utils.js';
+import { getAPIConfig, getAuthentication, validateAPIConfig, validateAuthentication } from '../src/jira-configuration.js';
+import { findParentFolder } from '../src/fs-utils.js';
 import path from 'path';
 
 const jiraPath = findParentFolder(path.join(process.cwd(), 'test'), '.jirarc');
@@ -58,11 +58,11 @@ describe('JIRA Configuration Tests', () => {
     });
 
     it('Missing Host', () => {
-      assert.throw( () => { validateAPIConfig(missingHost); }, '.jirarc missing host url. Please check the README for details');
+      assert.throw(() => { validateAPIConfig(missingHost); }, '.jirarc missing host url. Please check the README for details');
     });
 
     it('Missing Project Name', () => {
-      assert.throw( () => { validateAPIConfig(missingProjectName); }, '.jirarc missing project name. Please check the README for details');
+      assert.throw(() => { validateAPIConfig(missingProjectName); }, '.jirarc missing project name. Please check the README for details');
     });
   });
 
@@ -94,11 +94,11 @@ describe('JIRA Configuration Tests', () => {
     });
 
     it('Missing Username', () => {
-      assert.throw( () => { validateAuthentication(missingUsername); }, '.userconfig missing username');
+      assert.throw(() => { validateAuthentication(missingUsername); }, '.userconfig missing username');
     });
 
     it('Missing Password', () => {
-      assert.throw( () => { validateAuthentication(missingPassword); }, '.userconfig missing password');
+      assert.throw(() => { validateAuthentication(missingPassword); }, '.userconfig missing password');
     });
   });
 });

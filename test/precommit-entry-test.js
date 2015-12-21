@@ -3,7 +3,7 @@ import * as issueHandler from '../src/issue-handler';
 import opsys from 'os';
 import * as connection from '../src/jira-connection';
 import * as operations from '../src/jira-operations';
-import {JiraApi} from 'jira';
+import { JiraApi } from 'jira';
 import * as fileUtils from '../src/fs-utils';
 
 const eol = opsys.EOL;

@@ -1,4 +1,4 @@
-import {findParentFolder, copyHookFiles, verifyHooksFolder} from '../src/fs-utils.js';
+import { findParentFolder, copyHookFiles, verifyHooksFolder } from '../src/fs-utils.js';
 import path from 'path';
 import fsys from 'fs';
 import fsp from 'fs-promise';

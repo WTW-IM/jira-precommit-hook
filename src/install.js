@@ -1,4 +1,4 @@
-import {findParentFolder, copyHookFiles, verifyHooksFolder} from './fs-utils.js';
+import { findParentFolder, copyHookFiles, verifyHooksFolder } from './fs-utils.js';
 import path from 'path';
 
 export default function install() {

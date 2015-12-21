@@ -1,5 +1,5 @@
-import {getAPIConfig} from './jira-configuration.js';
-import {JiraApi} from 'jira';
+import { getAPIConfig } from './jira-configuration.js';
+import { JiraApi } from 'jira';
 import _ from 'lodash';
 
 function promisify(func) {
@@ -29,7 +29,7 @@ Object.keys(JiraApi.prototype).forEach(key => {
 // Grabs data from files and returns a JIRA connection object wrapped in promise
 export function getJiraAPI(configPath) {
   return getAPIConfig(configPath)
-    .then(({projectName, protocol, host, port, version, verbose, strictSSL}) => {
+    .then(({ projectName, protocol, host, port, version, verbose, strictSSL }) => {
       const jiraClient = new JiraApi(protocol, host, port, '', '', version, verbose, strictSSL);
 
       // Temporary hack until resolved: https://github.com/steves/node-jira/pull/107

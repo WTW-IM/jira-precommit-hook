@@ -2,8 +2,8 @@
 import fsp from 'fs-promise';
 import _ from 'lodash';
 import * as issueHandler from './issue-handler';
-import {findProjectKey} from './jira-operations';
-import {getJiraAPI} from './jira-connection';
+import { findProjectKey } from './jira-operations';
+import { getJiraAPI } from './jira-connection';
 import * as fsUtils from './fs-utils';
 import checkOutdated from './outdated-check';
 import 'colors';
@@ -50,7 +50,7 @@ export function getCommitMsg(readPromise) {
 export function precommit(path) {
   return checkOutdated()
     .then(() => {
-      const readPromise = fsp.readFile(path, {encoding: 'utf8'});
+      const readPromise = fsp.readFile(path, { encoding: 'utf8' });
 
       return getCommitMsg(readPromise)
         .then(() => {

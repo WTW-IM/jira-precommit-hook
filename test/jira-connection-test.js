@@ -1,4 +1,4 @@
-import {getJiraAPI} from '../src/jira-connection.js';
+import { getJiraAPI } from '../src/jira-connection.js';
 import path from 'path';
 import DummyJira from './dummy-jira.js';
 
@@ -23,7 +23,7 @@ describe('JIRA Connection Tests', () => {
 
           jiraApi.request = sinon.stub(jiraApi, 'request', (options, callback) => {
             const issueNumber = options.uri.split('/').pop().toString();
-            callback('', {statusCode: 200}, JSON.stringify(dummyJira.issues[issueNumber]));
+            callback('', { statusCode: 200 }, JSON.stringify(dummyJira.issues[issueNumber]));
           });
 
           spy = sinon.spy(jiraApi, 'doRequest');
@@ -46,7 +46,7 @@ describe('JIRA Connection Tests', () => {
         jiraApi.findIssue('Story1'),
         jiraApi.findIssue('Story2')
       ])
-      .then(([first, second]) =>{
+      .then(([first, second]) => {
         assert.equal(first.key, 'Story1');
         assert.equal(second.key, 'Story2');
         assert.equal(spy.calledTwice, true);

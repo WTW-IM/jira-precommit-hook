@@ -1,4 +1,4 @@
-import {readJSON} from './fs-utils.js';
+import { readJSON } from './fs-utils.js';
 import _ from 'lodash';
 
 export function validateAPIConfig(config) {
