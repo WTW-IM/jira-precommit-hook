@@ -66,24 +66,18 @@ describe('FS-Utils Tests', () => {
         })
     );
 
-    it('Hook Creation Test', (done) => {
-      copyHookFiles(tmpGitDir)
-      .then(() => {
-        fsys.existsSync(commitMsgPath).should.equal(true);
-        done();
-      });
+    it('Hook Creation Test', async function() {
+      await copyHookFiles(tmpGitDir);
+      fsys.existsSync(commitMsgPath).should.equal(true);
     });
 
-    it('Validate Hook File is Correct', (done) => {
+    it('Validate Hook File is Correct', async function() {
       let newFile;
       let oldFile;
-      copyHookFiles(tmpGitDir)
-      .then(() => {
-        newFile = fsys.readFileSync(commitMsgPath);
-        oldFile = fsys.readFileSync('hooks/commit-msg');
-        newFile.should.eql(oldFile);
-        done();
-      });
+      await copyHookFiles(tmpGitDir);
+      newFile = fsys.readFileSync(commitMsgPath);
+      oldFile = fsys.readFileSync('hooks/commit-msg');
+      newFile.should.eql(oldFile);
     });
   });
 });

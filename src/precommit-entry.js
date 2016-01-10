@@ -19,77 +19,69 @@ export function getIssueReference(msgToParse, prjKey) {
   return _.unique(references);
 }
 
-export function getCommitMsg(readPromise) {
+export async function getCommitMsg(readPromise) {
   let jiraAPI;
   let jiraConfigPath;
 
   try {
     jiraConfigPath = fsUtils.findParentFolder(process.cwd(), '.jirarc');
   } catch (err) {
-    return Promise.reject(new Error('.jirarc file is not found. Please refer to the readme for details about the .jirarc file'));
+    throw new Error('.jirarc file is not found. Please refer to the readme for details about the .jirarc file');
   }
 
-  return Promise.all([
+  const [projectKey, fileContents] = await Promise.all([
     getJiraAPI(jiraConfigPath)
       .then(api => jiraAPI = api)
       .then(() => findProjectKey(jiraAPI)),
     readPromise
-  ])
-  .then(([projectKey, fileContents]) => {
-    const firstWord = fileContents.split(' ')[0];
+  ]);
 
-    if (firstWord === 'Merge') {
-      return null;
-    }
+  const firstWord = fileContents.split(' ')[0];
 
-    const issues = getIssueReference(fileContents, projectKey);
-    return issueHandler.issueStrategizer(issues, jiraAPI);
-  });
+  if (firstWord === 'Merge') {
+    return null;
+  }
+
+  const issues = getIssueReference(fileContents, projectKey);
+  return issueHandler.issueStrategizer(issues, jiraAPI);
 }
 
-export function precommit(path) {
-  return checkOutdated()
-    .then(() => {
-      const readPromise = fsp.readFile(path, { encoding: 'utf8' });
+export async function precommit(path) {
+  await checkOutdated();
 
-      return getCommitMsg(readPromise)
-        .then(() => {
-          console.log('[jira-precommit-hook] '.grey + 'Commit message successfully verified.'.cyan);
-          const client = new ChuckClient();
+  const readPromise = fsp.readFile(path, { encoding: 'utf8' });
 
-          if (client.isChuckEnabled()) {
-            return client.getRandomJoke()
-              .then(joke => {
-                console.log(`Good work now enjoy this joke. You deserve it!\n\n${joke}\n`);
-                return 0;
-              })
-              .catch(fail => {
-                return 0;
-              });
-          }
+  try {
+    await getCommitMsg(readPromise);
+    console.log('[jira-precommit-hook] '.grey + 'Commit message successfully verified.'.cyan);
+    const client = new ChuckClient();
 
-          return 0;
-        })
-        .catch(err => {
-          return readPromise
-            .then(contents => {
-              console.log('Commit Message:');
-              console.log(contents);
+    if (client.isChuckEnabled()) {
+      try {
+        const joke = await client.getRandomJoke();
+        console.log(`Good work now enjoy this joke. You deserve it!\n\n${joke}\n`);
+      } catch (jokeErr) { } // eslint-disable-line
+    }
 
-              if (typeof err === 'string') {
-                console.error(err.red);
-              } else if (process.env.NODE_ENV === 'development') {
-                console.error(err.stack.red);
-              } else {
-                console.error(err.toString().red);
-              }
+    return 0;
+  } catch (err) {
+    try {
+      const contents = await readPromise;
+      console.log('Commit Message:');
+      console.log(contents);
 
-              return 1;
-            })
-            .catch(err2 => {
-              console.log('Failed to read commit message file.'.red);
-              return 1;
-            });
-        });
-    });
+      if (typeof err === 'string') {
+        console.error(err.red);
+      } else if (process.env.NODE_ENV === 'development') {
+        console.error(err.stack.red);
+      } else {
+        console.error(err.toString().red);
+      }
+
+      return 1;
+    } catch (err2) {
+      console.log('Failed to read commit message file.'.red);
+      return 1;
+    }
+  }
 }

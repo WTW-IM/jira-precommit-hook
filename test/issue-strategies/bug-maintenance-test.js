@@ -6,12 +6,12 @@ const dummyJira = new DummyJira();
 
 describe('Bug and Maintenance Strategy Apply Tests', () => {
   it('Bug open to commit against', () =>
-    bugMtStrat.apply(dummyJira.issues.Bug1).should.eventually.eql(true)
+    bugMtStrat.apply(dummyJira.issues.Bug1).should.eql(true)
   );
 
   it('Bug closed', () =>
-    bugMtStrat.apply(dummyJira.issues.Bug2)
-      .should.eventually.be.rejectedWith(Error, /Bug2 is not open to commit against/)
+     expect(() => bugMtStrat.apply(dummyJira.issues.Bug2))
+       .to.throw(Error, /Bug2 is not open to commit against/)
   );
 
   it('Bug Sub-Task, Sub-Task invalid', () =>
@@ -30,12 +30,12 @@ describe('Bug and Maintenance Strategy Apply Tests', () => {
   );
 
   it('Maintenance Task open to commit against', () =>
-    bugMtStrat.apply(dummyJira.issues.MT1).should.eventually.eql(true)
+    bugMtStrat.apply(dummyJira.issues.MT1).should.eql(true)
   );
 
   it('Maintenance Task closed', () =>
-    bugMtStrat.apply(dummyJira.issues.MT2)
-      .should.eventually.be.rejectedWith(Error, /MT2 is not open to commit against/)
+    expect(() => bugMtStrat.apply(dummyJira.issues.MT2))
+      .to.throw(Error, /MT2 is not open to commit against/)
   );
 
   it('Maintenance Sub-Task, Sub-Task invalid', () =>
