@@ -47,7 +47,7 @@ export function copyHookFiles(gitDirectory) {
   });
 }
 
-export function readJSON(filePath) {
-  return fsp.readFile(filePath)
-    .then(content => JSON.parse(content));
+export async function readJSON(filePath) {
+  const content = await fsp.readFile(filePath);
+  return JSON.parse(content);
 }

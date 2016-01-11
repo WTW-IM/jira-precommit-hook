@@ -5,7 +5,7 @@ const baseUrl = 'http://api.icndb.com/jokes/';
 const fileName = '.chuckNorris';
 
 const client = class ChuckClient {
-  getRandomJoke() {
+  async getRandomJoke() {
     const options = {
       uri: `${baseUrl}random`,
       qs: {
@@ -13,11 +13,10 @@ const client = class ChuckClient {
       }
     };
 
-    return request(options)
-      .then(json => {
-        const value = JSON.parse(json).value;
-        return value.joke;
-      });
+    const json = await request(options);
+
+    const value = JSON.parse(json).value;
+    return value.joke;
   }
 
   isChuckEnabled() {

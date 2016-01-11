@@ -31,12 +31,12 @@ export function validateAuthentication(authConfig) {
   return authConfig;
 }
 
-export function getAPIConfig(filePath) {
-  return readJSON(filePath)
-    .then(config => validateAPIConfig(config));
+export async function getAPIConfig(filePath) {
+  const config = await readJSON(filePath);
+  return validateAPIConfig(config);
 }
 
-export function getAuthentication(filePath) {
-  return readJSON(filePath)
-      .then(config => validateAuthentication(config));
+export async function getAuthentication(filePath) {
+  const config = await readJSON(filePath);
+  return validateAuthentication(config);
 }

@@ -1,22 +1,19 @@
 import _ from 'lodash';
 
-export function findProjectKey(jiraClient) {
-  return jiraClient.listProjects()
-    .then(projects => _.find(projects,
-        project => project.name === jiraClient.projectName).key);
+export async function findProjectKey(jiraClient) {
+  const projects = await jiraClient.listProjects();
+  return _.find(projects, project => project.name === jiraClient.projectName).key;
 }
 
 export const getEpicLinkField = _.memoize(
-  (jiraClient) => {
-    return jiraClient.listFields()
-      .then(fields => {
-        for (let i = 0; i < fields.length; i++) {
-          if (fields[i].name === 'Epic Link') {
-            return Promise.resolve(fields[i].id);
-          }
-        }
-        return Promise.reject('Cannot find Epic Link Field.');
-      });
+  async function getEpicLinkFieldActual(jiraClient) {
+    const fields = await jiraClient.listFields();
+    for (let i = 0; i < fields.length; i++) {
+      if (fields[i].name === 'Epic Link') {
+        return fields[i].id;
+      }
+    }
+    throw new Error('Cannot find Epic Link Field.');
   },
   (jiraClient) => {
     return jiraClient.host;
@@ -47,7 +44,7 @@ export function findIssueLinkParentKey(issue) {
 }
 
 export const findParent = _.memoize(
-  (issue, jiraClient) => {
+  async function findParentActual(issue, jiraClient) {
     switch (issue.fields.issuetype.name) {
       case 'Sub-task':
       case 'Feature Defect':
@@ -62,24 +59,26 @@ export const findParent = _.memoize(
           }
         }
 
-        return getEpicLinkField(jiraClient)
-          .then(linkField => {
-            const epicIssueNumber = issue.fields[linkField];
+        const linkField = await getEpicLinkField(jiraClient);
+        const epicIssueNumber = issue.fields[linkField];
 
-            if (!epicIssueNumber) {
-              return Promise.reject(`${issue.key} does not have an associated parent Initiative or Epic.`);
-            }
+        if (!epicIssueNumber) {
+          throw new Error(`${issue.key} does not have an associated parent Initiative or Epic.`);
+        }
 
-            return jiraClient.findIssue(issue.fields[linkField]);
-          });
+        return jiraClient.findIssue(issue.fields[linkField]);
 
       case 'Epic':
         const parentKey = findIssueLinkParentKey(issue);
 
-        return parentKey ? jiraClient.findIssue(parentKey) : Promise.reject(`Cannot find initiative from Epic ${issue.key} in issue links. Initiative should be linked by 'relates to'.`);
+        if (!parentKey) {
+          throw new Error(`Cannot find initiative from Epic ${issue.key} in issue links. Initiative should be linked by 'relates to'.`);
+        }
+
+        return jiraClient.findIssue(parentKey);
 
       default:
-        return Promise.reject(`${issue.fields.issuetype.name} should not have a parent.`);
+        throw new Error(`${issue.fields.issuetype.name} should not have a parent.`);
     }
   },
   (issue) => {

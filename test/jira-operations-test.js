@@ -20,45 +20,39 @@ describe('JIRA Operations Tests', () => {
     });
 
     it('Missing Epic Link', done => {
-      dummyJira.listFields = () => {
-        return Promise.resolve(dummyJira.fields.noEpicLink);
+      dummyJira.listFields = async function() {
+        return dummyJira.fields.noEpicLink;
       };
       dummyJira.host = 'jira.host2.com';
 
-      getEpicLinkField(dummyJira).should.eventually.be.rejected.notify(done);
+      getEpicLinkField(dummyJira)
+        .should.eventually.be.rejectedWith(/Cannot find Epic Link Field/)
+        .notify(done);
     });
 
-    it('Find Parent from Sub-task', () => {
-      return findParent(dummyJira.issues.SubTask1, dummyJira)
-        .then(parent => {
-          parent.fields.issuetype.name.should.eql('Story');
-        });
+    it('Find Parent from Sub-task', async function() {
+      const parent = await findParent(dummyJira.issues.SubTask1, dummyJira);
+      parent.fields.issuetype.name.should.eql('Story');
     });
 
-    it('Find Parent from Feature Defect', () => {
-      return findParent(dummyJira.issues.FeatureDefect1, dummyJira)
-        .then(parent => {
-          parent.fields.issuetype.name.should.eql('Story');
-        });
+    it('Find Parent from Feature Defect', async function() {
+      const parent = await findParent(dummyJira.issues.FeatureDefect1, dummyJira);
+      parent.fields.issuetype.name.should.eql('Story');
     });
 
-    it('Find Parent from Story by EpicLink', () => {
-      dummyJira.listFields = () => {
-        return Promise.resolve(dummyJira.fields.epicLink);
+    it('Find Parent from Story by EpicLink', async function() {
+      dummyJira.listFields = async function() {
+        return dummyJira.fields.epicLink;
       };
       dummyJira.host = 'jira.host3.com';
 
-      return findParent(dummyJira.issues.Story3, dummyJira)
-        .then(parent => {
-          parent.fields.issuetype.name.should.eql('Epic');
-        });
+      const parent = await findParent(dummyJira.issues.Story3, dummyJira);
+      parent.fields.issuetype.name.should.eql('Epic');
     });
 
-    it('Find Parent from Story by IssueLink', () => {
-      return findParent(dummyJira.issues.Story4, dummyJira)
-        .then(parent => {
-          parent.fields.issuetype.name.should.eql('Initiative');
-        });
+    it('Find Parent from Story by IssueLink', async function() {
+      const parent = await findParent(dummyJira.issues.Story4, dummyJira);
+      parent.fields.issuetype.name.should.eql('Initiative');
     });
 
     it('Find Parent from Story with no Epic or Initiative', (done) => {
@@ -67,62 +61,62 @@ describe('JIRA Operations Tests', () => {
         .notify(done);
     });
 
-    it('Find Parent from Epic', () => {
-      return findParent(dummyJira.issues.Epic3, dummyJira)
-        .then(parent => {
-          parent.fields.issuetype.name.should.eql('Initiative');
-        });
+    it('Find Parent from Epic', async function() {
+      const parent = await findParent(dummyJira.issues.Epic3, dummyJira);
+      parent.fields.issuetype.name.should.eql('Initiative');
     });
 
     it('No Parent Found from Epic', done => {
-      findParent(dummyJira.issues.Epic1, dummyJira).should.eventually.be.rejected.notify(done);
+      findParent(dummyJira.issues.Epic1, dummyJira)
+        .should.eventually.be.rejectedWith(/Cannot find initiative from Epic Epic1 in issue links. Initiative should be linked by 'relates to'/)
+        .notify(done);
     });
 
     it('No Parent Found from Initiative', done => {
-      findParent(dummyJira.issues.I2, dummyJira).should.eventually.be.rejected.notify(done);
+      findParent(dummyJira.issues.I2, dummyJira)
+        .should.eventually.be.rejectedWith(/Initiative should not have a parent/)
+        .notify(done);
     });
   });
 
   describe('Relates Check', () => {
     it('Good Link', () => {
       const result = findIssueLinkParentKey(dummyJira.issues.Story2);
-      assert.equal(result, 'I2');
+      result.should.equal('I2');
     });
 
     it('Bad Link', () => {
       const result = findIssueLinkParentKey(dummyJira.issues.Story5);
-      assert.equal(result, null);
+      expect(result).to.be.null;
     });
   });
 
   describe('Memoization Tests', () => {
     let spy;
 
-    it('findParent with Same Key is Called Only Once', () => {
+    it('findParent with Same Key is Called Only Once', async function() {
       spy = sinon.spy(dummyJira, 'findIssue');
 
-      return Promise.all([
+      const [first, second] = await Promise.all([
         findParent(dummyJira.issues.SubTask2, dummyJira),
         findParent(dummyJira.issues.SubTask2, dummyJira)
-      ])
-      .then(([first, second]) => {
-        assert.equal(spy.calledOnce, true);
-        assert.equal(first, second);
-      });
+      ]);
+
+      spy.calledOnce.should.be.true;
+      first.should.equal(second);
     });
 
-    it('getEpicLinkField with Same JIRA Host is Called Only Once', () => {
+    it('getEpicLinkField with Same JIRA Host is Called Only Once', async function() {
       spy = sinon.spy(dummyJira, 'listFields');
       dummyJira.host = 'jira.host4.com';
 
-      return Promise.all([
+      const [first, second] = await Promise.all([
         getEpicLinkField(dummyJira),
         getEpicLinkField(dummyJira)
-      ])
-      .then(([first, second]) => {
-        assert.equal(spy.calledOnce, true);
-        assert.equal(first, second);
-      });
+      ]);
+
+      spy.calledOnce.should.be.true;
+      first.should.equal(second);
     });
   });
 });

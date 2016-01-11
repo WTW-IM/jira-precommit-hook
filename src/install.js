@@ -1,12 +1,12 @@
 import { findParentFolder, copyHookFiles, verifyHooksFolder } from './fs-utils.js';
 import path from 'path';
 
-export default function install() {
+export default async function install() {
   const thisProjectsGitFolder = path.resolve(path.join(__dirname, '../.git'));
   let gitPath = findParentFolder(__dirname, '.git');
 
   if (thisProjectsGitFolder === gitPath) {
-    return Promise.resolve(0);
+    return 0;
   }
 
   console.log('Installing JIRA pre-commit hook....');
@@ -14,7 +14,7 @@ export default function install() {
   try {
     gitPath = findParentFolder(__dirname, '.git');
   } catch (error) {
-    return Promise.reject('Your project needs a git repository to install the hook.');
+    throw new Error('Your project needs a git repository to install the hook.');
   }
 
   console.log(`Found .git directory at: ${gitPath}`);
@@ -22,6 +22,6 @@ export default function install() {
   const hooksPath = path.join(gitPath, 'hooks');
   verifyHooksFolder(hooksPath);
 
-  return copyHookFiles(gitPath)
-    .then(() => console.log('Copied commit hook.'));
+  await copyHookFiles(gitPath);
+  console.log('Copied commit hook.');
 }
