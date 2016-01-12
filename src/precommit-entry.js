@@ -16,7 +16,7 @@ export function getIssueReference(msgToParse, prjKey) {
   const msgToParseReplaced = msgToParse.replace(commentPattern, '');
   const references = msgToParseReplaced.match(pattern);
 
-  return _.unique(references);
+  return _.uniq(references);
 }
 
 export async function getCommitMsg(readPromise) {
