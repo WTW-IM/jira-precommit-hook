@@ -59,7 +59,7 @@
     "fs-promise": "^0.3.1",
     "jira": "^0.9.2",
     "lodash": "^3.8.0",
-    "request-promise": "^1.0.2"
+    "request-promise": "^2.0.0"
   },
   "repository": {
     "type": "git",
