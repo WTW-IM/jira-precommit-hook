@@ -6,38 +6,34 @@ const jiraPath = findParentFolder(path.join(process.cwd(), 'test'), '.jirarc');
 const authPath = findParentFolder(path.join(process.cwd(), 'test'), '.userconfig');
 
 const goodJiraObject = {
-  'projectName': 'test',
-  'protocol':'https',
-  'host':'jira.com',
-  'port': 8080,
-  'version': '2.1.0',
-  'verbose': true,
-  'strictSSL': true
+  projectName: 'test',
+  protocol: 'https',
+  host: 'jira.com',
+  port: 8080,
+  version: '2.1.0',
+  verbose: true,
+  strictSSL: true
 };
 const missingHost = {
-  'projectName': 'test',
-  'port': 8080,
-  'version': '2.1.0',
-  'verbose': true,
-  'strictSSL': true
+  projectName: 'test',
+  port: 8080,
+  version: '2.1.0',
+  verbose: true,
+  strictSSL: true
 };
 const missingProjectName = {
-  'host': 'jira.com'
-};
-const incompleteJiraObject = {
-  'projectName': 'test',
-  'host': 'jira.com'
+  host: 'jira.com'
 };
 
 const goodAuthenticationObject = {
-  'username': 'UserDudeBro',
-  'password': 'SuperSecret'
+  username: 'UserDudeBro',
+  password: 'SuperSecret'
 };
 const missingUsername = {
-  'password': 'SuperSecret'
+  password: 'SuperSecret'
 };
 const missingPassword = {
-  'username' : 'UserDudeBro'
+  username: 'UserDudeBro'
 };
 
 describe('JIRA Configuration Tests', () => {
@@ -63,17 +59,6 @@ describe('JIRA Configuration Tests', () => {
 
     it('Missing Project Name', () => {
       assert.throw(() => { validateAPIConfig(missingProjectName); }, '.jirarc missing project name. Please check the README for details');
-    });
-  });
-
-  describe('Incompconste JIRA Object Tests', () => {
-    it('Comparing to Default Values', () => {
-      const object = validateAPIConfig(incompleteJiraObject);
-      object.protocol.should.equal('http');
-      object.port.should.equal(80);
-      object.version.should.equal(2);
-      object.verbose.should.equal(false);
-      object.strictSSL.should.equal(true);
     });
   });
 

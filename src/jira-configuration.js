@@ -1,5 +1,4 @@
 import { readJSON } from './fs-utils.js';
-import _ from 'lodash';
 
 export function validateAPIConfig(config) {
   // validate that this is a proper .jirarc file
@@ -9,15 +8,7 @@ export function validateAPIConfig(config) {
   if (!config.projectName) {
     throw new Error('.jirarc missing project name. Please check the README for details');
   }
-  const defaults = {
-    protocol: 'http',
-    port: 80,
-    version: 2,
-    verbose: false,
-    strictSSL: true
-  };
-  const configDefaults = _.defaults(config, defaults);
-  return configDefaults;
+  return config;
 }
 
 export function validateAuthentication(authConfig) {
