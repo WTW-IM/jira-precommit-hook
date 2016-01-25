@@ -59,6 +59,7 @@
     "fs-promise": "^0.3.1",
     "jira-client": "^1.2.0",
     "lodash": "^4.0.0",
+    "prompt": "^0.2.14",
     "request-promise": "^2.0.0"
   },
   "repository": {
