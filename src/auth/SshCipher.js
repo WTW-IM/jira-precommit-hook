@@ -20,7 +20,6 @@ export default class SshCipher {
   async getPassword() {
     if (!this._identityKey) {
       const keys = await this.requestIdentities();
-      console.log(keys);
       const possibleKeys = keys.filter(x => x.type === 'ssh-rsa');
       const key = possibleKeys[0];
       if (!key) {
@@ -44,9 +43,9 @@ export default class SshCipher {
   async decrypt(data, password) {
     const realPassword = password || await this.getPassword();
     const decrypt = crypto.createDecipher(this.algorithm, realPassword);
-    decrypt.write(data);
+    decrypt.write(new Buffer(data, 'base64'));
     decrypt.end();
 
-    return decrypt.read().toString('base64');
+    return decrypt.read().toString();
   }
 }

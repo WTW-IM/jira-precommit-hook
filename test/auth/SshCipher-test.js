@@ -53,4 +53,18 @@ describe('SshCipher', () => {
       expect(result).to.eql(someStringBase64);
     });
   });
+  describe('Encrypt/Decrypt', () => {
+    it('Encrypts the string given, not just encoded in base64', async function test() {
+      const sshAgent = new SshAgent({ client: dummySSHAgent });
+      const result = await sshAgent.encrypt(someString);
+      expect(result).to.not.eql(someStringBase64);
+    });
+
+    it('Encrypts the string given and decrypts back', async function test() {
+      const sshAgent = new SshAgent({ client: dummySSHAgent });
+      const encryptResult = await sshAgent.encrypt(someString);
+      const decryptResult = await sshAgent.decrypt(encryptResult);
+      expect(decryptResult).to.eql(someString);
+    });
+  });
 });
