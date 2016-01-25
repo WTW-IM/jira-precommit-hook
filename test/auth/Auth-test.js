@@ -1,6 +1,6 @@
 import Auth, { authVersion } from '../../src/auth/Auth';
 
-describe.only('Auth', () => {
+describe('Auth', () => {
   const filePath = '~/.jira-precommit-hook';
   let rawData;
   beforeEach(() => {

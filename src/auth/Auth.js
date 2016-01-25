@@ -3,9 +3,10 @@ import fsp from 'fs-promise';
 export const authVersion = 'v1';
 
 export default class Auth {
-  constructor(filePath, fileSystem = fsp) {
+  constructor(filePath, fileSystem = fsp, cipher = {}) {
     this.filePath = filePath;
     this.fileSystem = fileSystem;
+    this.cipher = cipher;
   }
 
   authCreds() {
@@ -32,23 +33,34 @@ export default class Auth {
     return !!this._rawData[authVersion];
   }
 
-  async load() {
+  async load(encrypted = false) {
     if (this._rawData) {
       return;
     }
 
-    const contents = await this.fileSystem.readFile(this.filePath);
+    let contents = await this.fileSystem.readFile(this.filePath);
+    if (encrypted) {
+      contents = this.cipher.decrypt(contents);
+    }
     this._rawData = JSON.parse(contents);
 
     const data = this._rawData[authVersion];
 
     if (data) {
+      this.data = data;
       this.username = data.username;
       this.password = data.password;
     }
   }
 
   async save() {
-    throw new Error('Not Implemented yet');
+    const data = JSON.stringify({
+      ...this.data,
+      [authVersion]: {
+        username: this.username,
+        password: this.password
+      }
+    });
+    await this.fileSystem.writeFile(this.filePath, data);
   }
 }
