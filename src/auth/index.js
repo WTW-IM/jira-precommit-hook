@@ -1,7 +1,7 @@
 import path from 'path';
 import Auth from './Auth';
 import authPrompt from './authPrompt';
-import SshCipher from './sshCipher';
+import SshCipher from './SshCipher';
 import fsp from 'fs-promise';
 
 const userHome = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
