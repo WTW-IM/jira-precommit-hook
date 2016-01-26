@@ -4,7 +4,16 @@ import crypto from 'crypto';
 export default class SshCipher {
   constructor(options = {}) {
     this.algorithm = options.algorithm || 'aes256';
-    this.client = options.client || new SSHAgentClient();
+    this.client = options.client;
+    if (!this.client) {
+      try {
+        this.client = new SSHAgentClient();
+      } catch (err) {
+        console.log('Unable to start default SSHAgentClient, it threw:');
+        console.log(err.stack);
+      }
+    }
+
     this.requestIdentities = function requestIdentities() {
       return new Promise((resolve, reject) => {
         this.client.requestIdentities((err, keys) => {
