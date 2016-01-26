@@ -33,34 +33,31 @@ export default class Auth {
     return !!this._rawData[authVersion];
   }
 
-  async load(encrypted = false) {
+  async load() {
     if (this._rawData) {
       return;
     }
 
-    let contents = await this.fileSystem.readFile(this.filePath);
-    if (encrypted) {
-      contents = this.cipher.decrypt(contents);
-    }
+    const contents = await this.fileSystem.readFile(this.filePath);
+
     this._rawData = JSON.parse(contents);
 
     const data = this._rawData[authVersion];
 
     if (data) {
-      this.data = data;
       this.username = data.username;
-      this.password = data.password;
+      this.password = this.cipher.decrypt(data.password);
     }
   }
 
   async save() {
     const data = JSON.stringify({
-      ...this.data,
+      ...this._rawData,
       [authVersion]: {
         username: this.username,
-        password: this.password
+        password: this.cipher.encrypt(this.password)
       }
     });
-    await this.fileSystem.writeFile(this.filePath, data);
+    return await this.fileSystem.writeFile(this.filePath, data);
   }
 }

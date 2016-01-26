@@ -106,38 +106,67 @@ describe('Auth', () => {
     });
   });
 
+  const dummyCipher = {
+    encrypt(data) {
+      return data;
+    },
+    decrypt(data) {
+      return data;
+    }
+  };
+  const encipherMap = {
+    'mypass': 'myencryptedpass',
+    'mythirdpass': 'mythirdencryptedpass'
+  };
+  const decipherMap = {
+    'myencryptedpass': 'mypass',
+    'myencryptedthirdpass': 'mythirdpass'
+  };
+  const cipherMock = {
+    encrypt(data) {
+      return encipherMap[data];
+    },
+    decrypt(data) {
+      return decipherMap[data];
+    }
+  };
+
+  const fspMock = {
+    async readFile(path) {
+      return JSON.stringify(rawData, null, 2);
+    },
+    async writeFile(fakefilePath, data) {
+      return JSON.parse(data);
+    }
+  };
+
   describe('#load', () => {
-    const fspMock = {
-      async readFile(path) {
-        return JSON.stringify(rawData, null, 2);
-      }
-    };
     it('does not re-read file if already read', async () => {
       const auth = new Auth(filePath, {
         async readFile(path) {
           throw new Error('Should not get called');
         }
-      });
+      }, dummyCipher);
       auth._rawData = rawData;
       await auth.load();
     });
 
     it('reads data from file', async () => {
-      const auth = new Auth(filePath, fspMock);
+      const auth = new Auth(filePath, fspMock, dummyCipher);
       await auth.load();
       auth._rawData.should.eql(rawData);
     });
 
     it('extracts username from file for current version', async () => {
-      const auth = new Auth(filePath, fspMock);
+      const auth = new Auth(filePath, fspMock, cipherMock);
       await auth.load();
       auth.username.should.equal('me');
     });
 
-    it('extracts password from file for current version', async () => {
-      const auth = new Auth(filePath, fspMock);
+    it('extracts password from file and calls decrypt on cipher for current version', async () => {
+      const auth = new Auth(filePath, fspMock, cipherMock);
       await auth.load();
-      auth.password.should.equal('myencryptedpass');
+      auth.password.should.equal('mypass');
     });
 
     it('extracts nother from file with no entries for current version', async () => {
@@ -147,11 +176,82 @@ describe('Auth', () => {
           password: 'myencryptedPassword'
         }
       };
-      const auth = new Auth(filePath, fspMock);
+      const auth = new Auth(filePath, fspMock, cipherMock);
       await auth.load();
       auth._rawData.should.eql(rawData);
       expect(auth.username).to.be.undefined;
       expect(auth.password).to.be.undefined;
+    });
+  });
+
+  describe('#save', () => {
+    it('writes data to a file, and calls the cipher.encrypt on the information', async () => {
+      const auth = new Auth(filePath, fspMock, cipherMock);
+      auth.username = 'me';
+      auth.password = 'mypass';
+      const result = await auth.save();
+      expect(result).to.eql({
+        v1: {
+          username: 'me',
+          password: 'myencryptedpass'
+        }
+      });
+    });
+
+    it('writes data to a file, maintaining previous usernames/passwords', async () => {
+      const auth = new Auth(filePath, fspMock, cipherMock);
+      await auth.load();
+      const result = await auth.save();
+      expect(result).to.eql({
+        otherVersion: {
+          password: 'otherMyencryptedpass',
+          username: 'otherMe'
+        },
+        v1: {
+          username: 'me',
+          password: 'myencryptedpass'
+        }
+      });
+    });
+
+    it('maintains previous usernames/passwords after updating current one', async () => {
+      const auth = new Auth(filePath, fspMock, cipherMock);
+      await auth.load();
+      auth.updateCreds('myNewUsername', 'mythirdpass');
+      const result = await auth.save();
+      expect(result).to.eql({
+        otherVersion: {
+          password: 'otherMyencryptedpass',
+          username: 'otherMe'
+        },
+        v1: {
+          username: 'myNewUsername',
+          password: 'mythirdencryptedpass'
+        }
+      });
+    });
+  });
+
+  describe('#updateCreds and #authCreds', () => {
+    it('authCreds returns the correct credentials', async () => {
+      const auth = new Auth(filePath, fspMock, cipherMock);
+      await auth.load();
+      const result = auth.authCreds();
+      expect(result).to.eql({
+        username: 'me',
+        password: 'mypass'
+      });
+    });
+
+    it('authCreds returns the correct credentials after updateCreds updates them', async () => {
+      const auth = new Auth(filePath, fspMock, cipherMock);
+      await auth.load();
+      auth.updateCreds('myNewUsername', 'mythirdpass');
+      const result = auth.authCreds();
+      expect(result).to.eql({
+        username: 'myNewUsername',
+        password: 'mythirdpass'
+      });
     });
   });
 });

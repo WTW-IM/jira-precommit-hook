@@ -64,6 +64,7 @@ describe('SshCipher', () => {
       const sshAgent = new SshAgent({ client: dummySSHAgent });
       const encryptResult = await sshAgent.encrypt(someString);
       const decryptResult = await sshAgent.decrypt(encryptResult);
+      expect(encryptResult).to.not.eql(someString);
       expect(decryptResult).to.eql(someString);
     });
   });
