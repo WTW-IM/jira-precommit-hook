@@ -2,16 +2,16 @@ import _ from 'lodash';
 
 function createIssueLinks(direction, parentKey, parentType, linkType) {
   return {
-    'fields': {
-      'issuelinks': [{
-        'type': {
-          'name': linkType
+    fields: {
+      issuelinks: [{
+        type: {
+          name: linkType
         },
         [direction]: {
-          'key': parentKey,
-          'fields': {
-            'issuetype': {
-              'name': parentType
+          key: parentKey,
+          fields: {
+            issuetype: {
+              name: parentType
             }
           }
         }
@@ -23,14 +23,14 @@ function createIssueLinks(direction, parentKey, parentType, linkType) {
 export default function createTestIssue(key, type, color, parentKey, parentType, linkType) {
   const baseIssue = {
     key,
-    'fields': {
-      'status': {
-        'statusCategory': {
-          'colorName': color
+    fields: {
+      status: {
+        statusCategory: {
+          colorName: color
         }
       },
-      'issuetype': {
-        'name': type
+      issuetype: {
+        name: type
       }
     }
   };
@@ -41,8 +41,8 @@ export default function createTestIssue(key, type, color, parentKey, parentType,
     case 'Story':
       if (parentType === 'Epic') {
         return _.merge(baseIssue, {
-          'fields': {
-            'customfield_10805': parentKey
+          fields: {
+            customfield_10805: parentKey
           }
         });
       }
@@ -50,9 +50,9 @@ export default function createTestIssue(key, type, color, parentKey, parentType,
     case 'Sub-task':
     case 'Feature Defect':
       return _.merge(baseIssue, {
-        'fields': {
-          'parent': {
-            'key': parentKey
+        fields: {
+          parent: {
+            key: parentKey
           }
         }
       });

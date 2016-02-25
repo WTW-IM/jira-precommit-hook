@@ -15,9 +15,7 @@ export const getEpicLinkField = _.memoize(
     }
     throw new Error('Cannot find Epic Link Field.');
   },
-  (jiraClient) => {
-    return jiraClient.host;
-  }
+  (jiraClient) => jiraClient.host
 );
 
 export function findIssueLinkParentKey(issue) {
@@ -43,45 +41,52 @@ export function findIssueLinkParentKey(issue) {
   return result;
 }
 
+function handleSubtask(jiraClient, issue) {
+  return jiraClient.findIssue(issue.fields.parent.key);
+}
+
+async function handleStory(jiraClient, issue) {
+  if (issue.fields.issuelinks) {
+    const parentKey = findIssueLinkParentKey(issue);
+
+    if (parentKey) {
+      return jiraClient.findIssue(parentKey);
+    }
+  }
+
+  const linkField = await getEpicLinkField(jiraClient);
+  const epicIssueNumber = issue.fields[linkField];
+
+  if (!epicIssueNumber) {
+    throw new Error(`${issue.key} does not have an associated parent Initiative or Epic.`);
+  }
+
+  return jiraClient.findIssue(issue.fields[linkField]);
+}
+
+function handleEpic(jiraClient, issue) {
+  const parentKey = findIssueLinkParentKey(issue);
+
+  if (!parentKey) {
+    throw new Error(`Cannot find initiative from Epic ${issue.key} in issue links. ` +
+                    "Initiative should be linked by 'relates to'.");
+  }
+
+  return jiraClient.findIssue(parentKey);
+}
 export const findParent = _.memoize(
   async function findParentActual(issue, jiraClient) {
     switch (issue.fields.issuetype.name) {
       case 'Sub-task':
       case 'Feature Defect':
-        return jiraClient.findIssue(issue.fields.parent.key);
-
+        return handleSubtask(jiraClient, issue);
       case 'Story':
-        if (issue.fields.issuelinks) {
-          const parentKey = findIssueLinkParentKey(issue);
-
-          if (parentKey) {
-            return jiraClient.findIssue(parentKey);
-          }
-        }
-
-        const linkField = await getEpicLinkField(jiraClient);
-        const epicIssueNumber = issue.fields[linkField];
-
-        if (!epicIssueNumber) {
-          throw new Error(`${issue.key} does not have an associated parent Initiative or Epic.`);
-        }
-
-        return jiraClient.findIssue(issue.fields[linkField]);
-
+        return await handleStory(jiraClient, issue);
       case 'Epic':
-        const parentKey = findIssueLinkParentKey(issue);
-
-        if (!parentKey) {
-          throw new Error(`Cannot find initiative from Epic ${issue.key} in issue links. Initiative should be linked by 'relates to'.`);
-        }
-
-        return jiraClient.findIssue(parentKey);
-
+        return handleEpic(jiraClient, issue);
       default:
         throw new Error(`${issue.fields.issuetype.name} should not have a parent.`);
     }
   },
-  (issue) => {
-    return JSON.stringify(issue);
-  }
+  (issue) => JSON.stringify(issue)
 );

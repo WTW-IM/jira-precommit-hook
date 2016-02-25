@@ -26,7 +26,8 @@ class DummyJira {
       // Epic2: issueGenerator('Epic2', 'Epic', 'green'), // Missing tests?
       Epic3: issueGenerator('Epic3', 'Epic', 'yellow', 'I2', 'Initiative', 'Relates'),
       Epic4: issueGenerator('Epic4', 'Epic', 'red', 'I2', 'Initiative', 'Relates'),
-      // Epic5: issueGenerator('Epic5', 'Epic', 'yellow', 'I3', 'Initiative', 'Relates'), // Missing tests?
+      // Epic5: issueGenerator('Epic5', 'Epic', 'yellow', 'I3', 'Initiative', 'Relates'),
+      // Missing tests? ^
 
       // Valid Parents
       Story1: issueGenerator('Story1', 'Story', 'yellow', 'Epic3', 'Epic'),
@@ -67,26 +68,29 @@ class DummyJira {
 
       Task1: issueGenerator('Task1', 'Task', 'yellow'),
 
-      FeatureDefect1: issueGenerator('FeatureDefect1', 'Feature Defect', 'yellow', 'Story2', 'Story')
-      // FeatureDefect2: issueGenerator('FeatureDefect2', 'Feature Defect', 'green', 'Story2', 'Story') // Missing tests?
+      FeatureDefect1: issueGenerator(
+        'FeatureDefect1', 'Feature Defect', 'yellow', 'Story2', 'Story')
+      // FeatureDefect2: issueGenerator(
+      //  'FeatureDefect2', 'Feature Defect', 'green', 'Story2', 'Story')
+      // Missing tests? ^
     };
 
     this.fields = {
-      'epicLink': [{
-        'id': 'customfield_10805',
-        'name': 'Epic Link'
+      epicLink: [{
+        id: 'customfield_10805',
+        name: 'Epic Link'
       }],
-      'noEpicLink': []
+      noEpicLink: []
     };
 
     this.projects = [
       {
-        'key': 'ABC',
-        'name': 'First Three'
+        key: 'ABC',
+        name: 'First Three'
       },
       {
-        'key': 'XYZ',
-        'name': 'Last Three'
+        key: 'XYZ',
+        name: 'Last Three'
       }
     ];
   }

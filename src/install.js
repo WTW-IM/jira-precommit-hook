@@ -24,4 +24,5 @@ export default async function install() {
 
   await copyHookFiles(gitPath);
   console.log('Copied commit hook.');
+  return 0;
 }
