@@ -4,7 +4,10 @@ async function areParentsValid(baseIssueKey, parentIssue, jiraClientAPI) {
   const parent = await parentIssue;
 
   if (parent === null || parent.fields.status.statusCategory.colorName !== 'yellow') {
-    throw new Error(`Cannot commit issue ${baseIssueKey} because parent issue ${parent.key} is not available to commit against.`);
+    throw new Error(
+      `Cannot commit issue ${baseIssueKey} because parent issue ${parent.key} is not available to` +
+      ' commit against.'
+    );
   } else if (parent.fields.issuetype.name === 'Maintenance Task' ||
              parent.fields.issuetype.name === 'Bug' ||
              parent.fields.issuetype.name === 'Initiative') {

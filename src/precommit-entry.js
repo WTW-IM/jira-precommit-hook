@@ -11,7 +11,7 @@ import ChuckClient from './chuck-client';
 
 export function getIssueReference(msgToParse, prjKey) {
   const pattern = RegExp(`${prjKey}-\\d+`, 'g');
-  const commentPattern = RegExp(`^#.*$`, 'gm');
+  const commentPattern = RegExp('^#.*$', 'gm');
 
   const msgToParseReplaced = msgToParse.replace(commentPattern, '');
   const references = msgToParseReplaced.match(pattern);
@@ -26,12 +26,13 @@ export async function getCommitMsg(readPromise) {
   try {
     jiraConfigPath = fsUtils.findParentFolder(process.cwd(), '.jirarc');
   } catch (err) {
-    throw new Error('.jirarc file is not found. Please refer to the readme for details about the .jirarc file');
+    throw new Error('.jirarc file is not found. Please refer to the readme for details about ' +
+                    'the .jirarc file');
   }
 
   const [projectKey, fileContents] = await Promise.all([
     getJiraAPI(jiraConfigPath)
-      .then(api => jiraAPI = api)
+      .then(api => jiraAPI = api) // eslint-disable-line no-return-assign
       .then(() => findProjectKey(jiraAPI)),
     readPromise
   ]);

@@ -3,10 +3,6 @@ import JiraApi from 'jira-client';
 import _ from 'lodash';
 
 class OurJiraApi extends JiraApi {
-  constructor(config) {
-    super(config);
-  }
-
   findIssue(issueNumber) {
     if (!this._findIssueCache) {
       this._findIssueCache = _.memoize(super.findIssue);
@@ -19,8 +15,8 @@ class OurJiraApi extends JiraApi {
 // Grabs data from files and returns a JIRA connection object wrapped in promise
 export async function getJiraAPI(configPath) {
   const {
-    projectName,
-    ...config
+    projectName, // eslint-disable-line no-use-before-define
+    ...config // eslint-disable-line no-use-before-define
   } = await getAPIConfig(configPath);
 
   const jiraClient = new OurJiraApi(config);

@@ -12,8 +12,8 @@ describe('precommit-entry tests', () => {
   describe('Hook Message', () => {
     beforeEach(() => {
       const stubJson = {
-        'issueType': {
-          'name': 'Story'
+        issueType: {
+          name: 'Story'
         }
       };
 
@@ -23,16 +23,20 @@ describe('precommit-entry tests', () => {
       });
 
       sinon.stub(connection, 'getJiraAPI', () => {
-        return Promise.resolve(new JiraApi('http', 'www.jira.com', 80, 'UserDudeBro', 'SuperSecret', '2.0.0'));
+        const api = new JiraApi(
+          'http',
+          'www.jira.com',
+          80,
+          'UserDudeBro',
+          'SuperSecret',
+          '2.0.0'
+        );
+        return Promise.resolve(api);
       });
 
-      operations.findProjectKey = (api) => {
-        return 'TW';
-      };
+      operations.findProjectKey = (api) => 'TW';
 
-      sinon.stub(fileUtils, 'findParentFolder', (startDir, fileName) => {
-        return './.jirarc';
-      });
+      sinon.stub(fileUtils, 'findParentFolder', (startDir, fileName) => './.jirarc');
     });
 
     afterEach(() => {
@@ -42,21 +46,21 @@ describe('precommit-entry tests', () => {
     });
 
     it('read from issue list and return JSON array', () => {
-      return pce.getCommitMsg(Promise.resolve(''))
+      pce.getCommitMsg(Promise.resolve(''))
         .then(results => {
           results.length.should.equal(3);
         });
     });
 
     it('Check for merge commit', () => {
-      return pce.getCommitMsg(Promise.resolve('Merge'))
+      pce.getCommitMsg(Promise.resolve('Merge'))
         .then(results => {
           assert.equal(results, null);
         });
     });
 
     it('Check for revert commit', () => {
-      return pce.getCommitMsg(Promise.resolve('Revert'))
+      pce.getCommitMsg(Promise.resolve('Revert'))
         .then(results => {
           results.length.should.equal(3);
         });
@@ -81,7 +85,7 @@ describe('precommit-entry tests', () => {
     });
 
     it('Parse issue number, ignore issue numbers in comments', () => {
-      const content = 'TW-2345' + eol + '#TW-6346';
+      const content = `TW-2345${eol}#TW-6346`;
       pce.getIssueReference(content, 'TW').should.eql(['TW-2345']);
     });
   });

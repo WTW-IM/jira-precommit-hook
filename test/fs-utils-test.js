@@ -17,6 +17,7 @@ describe('FS-Utils Tests', () => {
           return fsp.mkdir(tmpDir)
             .then(() => fsp.mkdir('test/tmp/.git'));
         }
+        return '';
       })
   );
 
@@ -54,6 +55,7 @@ describe('FS-Utils Tests', () => {
           if (!exists) {
             return fsp.mkdir(hooksDir);
           }
+          return '';
         })
     );
 
@@ -63,6 +65,7 @@ describe('FS-Utils Tests', () => {
           if (exists) {
             return fsp.unlink(commitMsgPath);
           }
+          return '';
         })
     );
 
@@ -72,11 +75,9 @@ describe('FS-Utils Tests', () => {
     });
 
     it('Validate Hook File is Correct', async function() {
-      let newFile;
-      let oldFile;
       await copyHookFiles(tmpGitDir);
-      newFile = fsys.readFileSync(commitMsgPath);
-      oldFile = fsys.readFileSync('hooks/commit-msg');
+      const newFile = fsys.readFileSync(commitMsgPath);
+      const oldFile = fsys.readFileSync('hooks/commit-msg');
       newFile.should.eql(oldFile);
     });
   });

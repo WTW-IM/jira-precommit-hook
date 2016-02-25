@@ -1,4 +1,5 @@
-import { findProjectKey, getEpicLinkField, findParent, findIssueLinkParentKey } from '../src/jira-operations.js';
+import { findProjectKey, getEpicLinkField, findParent, findIssueLinkParentKey }
+  from '../src/jira-operations.js';
 import DummyJira from './dummy-jira.js';
 
 const dummyJira = new DummyJira();
@@ -6,14 +7,14 @@ const dummyJira = new DummyJira();
 describe('JIRA Operations Tests', () => {
   describe('Find Issue Parent', () => {
     it('Find Project Keys', () => {
-      return findProjectKey(dummyJira)
-              .then(key => {
-                key.should.eql('XYZ');
-              });
+      findProjectKey(dummyJira)
+        .then(key => {
+          key.should.eql('XYZ');
+        });
     });
 
     it('Find Epic Link', () => {
-      return getEpicLinkField(dummyJira)
+      getEpicLinkField(dummyJira)
         .then(field => {
           field.should.eql('customfield_10805');
         });
@@ -56,8 +57,9 @@ describe('JIRA Operations Tests', () => {
     });
 
     it('Find Parent from Story with no Epic or Initiative', (done) => {
-      return findParent(dummyJira.issues.Story9, dummyJira)
-        .should.eventually.be.rejectedWith(/Story9 does not have an associated parent Initiative or Epic./)
+      findParent(dummyJira.issues.Story9, dummyJira)
+        .should.eventually.be.rejectedWith(
+          /Story9 does not have an associated parent Initiative or Epic./)
         .notify(done);
     });
 
@@ -68,7 +70,8 @@ describe('JIRA Operations Tests', () => {
 
     it('No Parent Found from Epic', done => {
       findParent(dummyJira.issues.Epic1, dummyJira)
-        .should.eventually.be.rejectedWith(/Cannot find initiative from Epic Epic1 in issue links. Initiative should be linked by 'relates to'/)
+        .should.eventually.be.rejectedWith(
+          /initiative from Epic Epic1 in issue links. Initiative should be linked by 'relates to'/)
         .notify(done);
     });
 

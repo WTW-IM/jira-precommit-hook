@@ -20,7 +20,8 @@ describe('Issue Handler Test', () => {
   it('1 bad issue', done => {
     const testIssueArr = ['SubTask8'];
     issueHandler.issueStrategizer(testIssueArr, dummyJira)
-      .should.eventually.be.rejectedWith(Error, /Cannot commit issue SubTask8 because parent issue I3 is not available to commit/)
+      .should.eventually.be.rejectedWith(Error,
+        /Cannot commit issue SubTask8 because parent issue I3 is not available to commit/)
       .notify(done);
   });
 
@@ -53,7 +54,8 @@ describe('Issue Handler Test', () => {
       err.should.be.an('Array');
       err.length.should.equal(2);
       err[0].message.should.match(/Issue Story6 is not open to commit against/);
-      err[1].message.should.match(/Cannot commit issue SubTask7 because parent issue Epic4 is not available to commit/);
+      err[1].message.should.match(
+        /Cannot commit issue SubTask7 because parent issue Epic4 is not available to commit/);
       return;
     }
     throw new Error('Should not hit this part of the test.');
