@@ -52,7 +52,7 @@
     "sinon-chai": "^2.7.0"
   },
   "dependencies": {
-    "babel-runtime": "^6.3.13",
+    "babel-runtime": "^6.6.1",
     "colors": "^1.1.0",
     "es6-promise": "^3.0.2",
     "fs-promise": "^0.4.0",
