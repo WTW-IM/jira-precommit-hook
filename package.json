@@ -7,8 +7,11 @@
     "build": "rm -rf lib && babel src --out-dir lib",
     "lint": "eslint ./",
     "prepublish": "npm run test && npm run build",
-    "test": "mocha && npm run lint",
+    "test": " npm run lint && mocha",
     "install": "node bin/install"
+  },
+  "bin": {
+    "jira-precommit": "./bin/jira-precommit"
   },
   "keywords": [
     "jira",
@@ -52,13 +55,18 @@
     "sinon-chai": "^2.7.0"
   },
   "dependencies": {
+    "argparse": "^1.0.7",
     "babel-runtime": "^6.3.13",
     "chalk": "^1.1.1",
+    "boxen": "^0.5.0",
+    "configstore": "^2.0.0",
     "es6-promise": "^3.0.2",
     "fs-promise": "^0.5.0",
     "jira-client": "^1.2.0",
     "lodash": "^4.0.0",
-    "request-promise": "^2.0.0"
+    "request-promise": "^2.0.0",
+    "window-size": "^0.2.0",
+    "wordwrap": "^1.0.0"
   },
   "repository": {
     "type": "git",
