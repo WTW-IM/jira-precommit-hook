@@ -1,4 +1,4 @@
-import 'colors';
+import chalk from 'chalk';
 import pkg from '../package.json';
 import updateNotifier from 'update-notifier';
 
@@ -7,9 +7,11 @@ export default async function checkOutdated() {
 
   if (notifier.update) {
     const { current, latest } = notifier.update;
-    let message = `WARNING: You are using version ${current} of the jira-precommit-hook. `.yellow;
-    message += `However, version ${latest} has been released. To update run:`.yellow;
-    message += '\n> '.grey + `npm install ${pkg.name}@${latest} --save-dev\n`.green;
-    console.warn(message);
+    const warning = chalk.yellow(`WARNING: You are using version ${current} of the ` +
+                               `jira-precommit-hook. However, version ${latest} has been ` +
+                               'released. To update run:');
+    const arrow = chalk.grey('\n> ');
+    const updateCommand = chalk.green(`npm install ${pkg.name}@${latest} --save-dev\n`);
+    console.warn(warning + arrow + updateCommand);
   }
 }
