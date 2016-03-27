@@ -6,7 +6,7 @@ import { findProjectKey } from './jira-operations';
 import { getJiraAPI } from './jira-connection';
 import * as fsUtils from './fs-utils';
 import checkOutdated from './outdated-check';
-import 'colors';
+import chalk from 'chalk';
 import ChuckClient from './chuck-client';
 
 export function getIssueReference(msgToParse, prjKey) {
@@ -54,7 +54,8 @@ export async function precommit(path) {
 
   try {
     await getCommitMsg(readPromise);
-    console.log('[jira-precommit-hook] '.grey + 'Commit message successfully verified.'.cyan);
+    console.log(chalk.grey('[jira-precommit-hook] ') +
+                chalk.cyan('Commit message successfully verified.'));
     const client = new ChuckClient();
 
     if (client.isChuckEnabled()) {
@@ -72,16 +73,16 @@ export async function precommit(path) {
       console.log(contents);
 
       if (typeof err === 'string') {
-        console.error(err.red);
+        console.error(chalk.red(err));
       } else if (process.env.NODE_ENV === 'development') {
-        console.error(err.stack.red);
+        console.error(chalk.red(err.stack));
       } else {
-        console.error(err.toString().red);
+        console.error(chalk.red(err.toString()));
       }
 
       return 1;
     } catch (err2) {
-      console.log('Failed to read commit message file.'.red);
+      console.log(chalk.red('Failed to read commit message file.'));
       return 1;
     }
   }
