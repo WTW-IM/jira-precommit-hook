@@ -7,7 +7,8 @@ import { getJiraAPI } from './jira-connection';
 import * as fsUtils from './fs-utils';
 import checkOutdated from './outdated-check';
 import chalk from 'chalk';
-import ChuckClient from './chuck-client';
+import fetchJoke from './joke';
+import config from './config';
 
 export function getIssueReference(msgToParse, prjKey) {
   const pattern = RegExp(`${prjKey}-\\d+`, 'g');
@@ -48,23 +49,16 @@ export async function getCommitMsg(readPromise) {
 }
 
 export async function precommit(path) {
+  const showJoke = fetchJoke(config);
   await checkOutdated();
 
   const readPromise = fsp.readFile(path, { encoding: 'utf8' });
 
   try {
     await getCommitMsg(readPromise);
+    await showJoke();
     console.log(chalk.grey('[jira-precommit-hook] ') +
                 chalk.cyan('Commit message successfully verified.'));
-    const client = new ChuckClient();
-
-    if (client.isChuckEnabled()) {
-      try {
-        const joke = await client.getRandomJoke();
-        console.log(`Good work now enjoy this joke. You deserve it!\n\n${joke}\n`);
-      } catch (jokeErr) { } // eslint-disable-line
-    }
-
     return 0;
   } catch (err) {
     try {
