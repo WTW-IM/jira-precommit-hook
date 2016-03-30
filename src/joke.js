@@ -6,7 +6,7 @@ import chalk from 'chalk';
 
 export default function fetchJoke(config) {
   if (!config.get('jokes')) {
-    return Promise.resolve();
+    return async () => {};
   }
 
   const options = {
