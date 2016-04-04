@@ -1,10 +1,14 @@
 import chalk from 'chalk';
 import { exec } from 'child-process-promise';
 
+export function isWorkEmail(email) {
+  return /@(extendhealth|towerswatson|willistowerswatson)\.com/i.test(email);
+}
+
 export default async function checkUserEmail() {
   const { stdout } = await exec('git config --get user.email');
   const email = stdout.trim();
-  if (!/@(extendhealth|towerswatson|willistowerswatson)\.com/.test(email)) {
+  if (!isWorkEmail(email)) {
     const message =
       chalk.yellow(`WARNING: The email address you have configured in Git, '${email}', is not ` +
                    'your work email address. To configure your work email address for this ' +
