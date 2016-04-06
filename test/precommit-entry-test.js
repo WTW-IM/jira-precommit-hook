@@ -76,6 +76,14 @@ describe('precommit-entry tests', () => {
       pce.getIssueReference('TW-5734', 'TW').should.eql(['TW-5734']);
     });
 
+    it('Parse issue number lowercase', () => {
+      pce.getIssueReference('tw-5734', 'TW').should.eql(['TW-5734']);
+    });
+
+    it('Parse issue number mixed case', () => {
+      pce.getIssueReference('tW-5734', 'TW').should.eql(['TW-5734']);
+    });
+
     it('Parse multiple issue numbers', () => {
       pce.getIssueReference('TW-763 blah TW-856', 'TW').should.eql(['TW-763', 'TW-856']);
     });

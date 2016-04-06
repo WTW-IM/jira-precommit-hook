@@ -12,13 +12,13 @@ import config from './config';
 import checkUserEmail from './user-email-check';
 
 export function getIssueReference(msgToParse, prjKey) {
-  const pattern = RegExp(`${prjKey}-\\d+`, 'g');
+  const pattern = RegExp(`${prjKey}-\\d+`, 'gi');
   const commentPattern = RegExp('^#.*$', 'gm');
 
   const msgToParseReplaced = msgToParse.replace(commentPattern, '');
   const references = msgToParseReplaced.match(pattern);
 
-  return _.uniq(references);
+  return _.uniq(references).map(x => x.toUpperCase());
 }
 
 export async function getCommitMsg(readPromise) {
