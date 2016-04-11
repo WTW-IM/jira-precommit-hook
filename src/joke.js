@@ -17,6 +17,7 @@ export default function fetchJoke(config) {
   };
 
   const jokeRequest = request(options);
+  jokeRequest.catch(err => {}); // This is to hide any errors from hitting the console.
 
   return async () => {
     try {
@@ -33,8 +34,6 @@ export default function fetchJoke(config) {
           margin: 1
         }
       ));
-    } catch (err) {
-      console.log('SHOULD NOT HIT THIS');
-    } // eslint-disable-line
+    } catch (err) {} // eslint-disable-line
   };
 }
