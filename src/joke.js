@@ -12,7 +12,8 @@ export default function fetchJoke(config) {
   const options = {
     uri: 'http://api.icndb.com/jokes/random',
     qs: {
-      escape: 'javascript'
+      escape: 'javascript',
+      exclude: (!config.get('explicit')) ? 'explicit' : ''
     }
   };
 
