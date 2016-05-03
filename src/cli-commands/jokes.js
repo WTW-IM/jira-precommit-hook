@@ -10,6 +10,12 @@ export default {
     } else if (decision === 'disable') {
       config.set('jokes', false);
       console.log('Jokes disabled!');
+    } else if (decision === 'explicit') {
+      config.set('explicit', true);
+      console.log('Profane joke filter disabled!');
+    } else if (decision === 'clean') {
+      config.set('explicit', false);
+      console.log('Profane joke filter enabled!');
     }
 
     return 0;
@@ -21,7 +27,7 @@ export default {
     });
 
     joke.addArgument('decision', {
-      choices: ['enable', 'disable']
+      choices: ['enable', 'disable', 'explicit', 'clean']
     });
   }
 };
