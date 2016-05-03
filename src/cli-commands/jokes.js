@@ -18,7 +18,6 @@ export default {
       console.log('Profane joke filter enabled!');
     }
 
-
     return 0;
   },
   register(subparsers) {
@@ -28,7 +27,7 @@ export default {
     });
 
     joke.addArgument('decision', {
-      choices: ['enable', 'disable']
+      choices: ['enable', 'disable', 'explicit', 'clean']
     });
   }
 };

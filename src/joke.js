@@ -9,13 +9,23 @@ export default function fetchJoke(config) {
     return async () => {};
   }
 
-  const options = {
-    uri: 'http://api.icndb.com/jokes/random',
-    qs: {
-      escape: 'javascript',
-      exclude: (!config.get('explicit')) ? 'explicit' : ''
-    }
-  };
+  let options;
+  if (!config.get('explicit')) {
+    options = {
+      uri: 'http://api.icndb.com/jokes/random',
+      qs: {
+        escape: 'javascript',
+        limitTo: 'nerdy'
+      }
+    };
+  } else {
+    options = {
+      uri: 'http://api.icndb.com/jokes/random',
+      qs: {
+        escape: 'javascript'
+      }
+    };
+  }
 
   const jokeRequest = request(options);
   jokeRequest.catch(err => {}); // This is to hide any errors from hitting the console.
