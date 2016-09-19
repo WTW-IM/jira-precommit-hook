@@ -63,7 +63,7 @@
     "configstore": "^2.0.0",
     "es6-promise": "^3.0.2",
     "fs-promise": "^0.5.0",
-    "jira-client": "^3.0.0",
+    "jira-client": "^3.0.4",
     "lodash": "^4.0.0",
     "request-promise": "^3.0.0",
     "window-size": "^0.2.0",
