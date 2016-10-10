@@ -25,20 +25,26 @@ describe('JIRA Connection Tests', () => {
     });
 
     it('findIssue with Same Key is Run Only Once', async () => {
+      console.log(jiraApi);
       const [first, second] = await Promise.all([
         jiraApi.findIssue('Story5'),
         jiraApi.findIssue('Story5')
       ]);
+      console.log(first);
+      console.log(second);
 
       assert.equal(spy.calledOnce, true);
       assert.equal(first, second);
     });
 
     it('findIssue with Different Keys is Run Twice', async () => {
+      console.log(jiraApi);
       const [first, second] = await Promise.all([
         jiraApi.findIssue('Story1'),
         jiraApi.findIssue('Story2')
       ]);
+      console.log(first);
+      console.log(second);
 
       assert.equal(first.key, 'Story1');
       assert.equal(second.key, 'Story2');

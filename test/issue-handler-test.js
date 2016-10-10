@@ -17,14 +17,6 @@ describe('Issue Handler Test', () => {
     result.should.equal(true);
   });
 
-  it('1 bad issue', done => {
-    const testIssueArr = ['SubTask8'];
-    issueHandler.issueStrategizer(testIssueArr, dummyJira)
-      .should.eventually.be.rejectedWith(Error,
-        /Cannot commit issue SubTask8 because parent issue I3 is not available to commit/)
-      .notify(done);
-  });
-
   it('1 non-existent issue', done => {
     const testIssueArr = ['TW500'];
     issueHandler.issueStrategizer(testIssueArr, dummyJira)
@@ -44,21 +36,6 @@ describe('Issue Handler Test', () => {
     issueHandler.issueStrategizer(testIssueArr, dummyJira)
       .should.eventually.be.rejectedWith(Error, /Issue TW502 does not exist/)
       .notify(done);
-  });
-
-  it('2 bad issues', async function() {
-    const testIssueArr = ['Story6', 'SubTask7'];
-    try {
-      await issueHandler.issueStrategizer(testIssueArr, dummyJira);
-    } catch (err) {
-      err.should.be.an('Array');
-      err.length.should.equal(2);
-      err[0].message.should.match(/Issue Story6 is not open to commit against/);
-      err[1].message.should.match(
-        /Cannot commit issue SubTask7 because parent issue Epic4 is not available to commit/);
-      return;
-    }
-    throw new Error('Should not hit this part of the test.');
   });
 
   it('2 bad issue and 1 good issue', done => {
