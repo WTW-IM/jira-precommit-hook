@@ -8,7 +8,7 @@ describe('JIRA Connection Tests', () => {
     testJira.projectName.should.eql('test');
   });
 
-  describe('findIssue Memoization', () => {
+  xdescribe('findIssue Memoization', () => {
     let jiraApi;
     let spy;
 
@@ -18,6 +18,8 @@ describe('JIRA Connection Tests', () => {
       const testJira = await getJiraAPI(path.join(process.cwd(), 'test', '.jirarc'));
       jiraApi = testJira;
 
+      // doRequest is part of the super class and isn't visible to sinon here...
+      // these tests compare undefined to undefined...
       spy = sinon.stub(jiraApi, 'doRequest', async function(options) {
         const issueNumber = options.uri.split('/').pop().toString();
         return dummyJira.issues[issueNumber];
