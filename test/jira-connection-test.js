@@ -8,7 +8,7 @@ describe('JIRA Connection Tests', () => {
     testJira.projectName.should.eql('test');
   });
 
-  describe('findIssue Memoization', () => {
+  xdescribe('findIssue Memoization', () => {
     let jiraApi;
     let spy;
 
@@ -18,6 +18,8 @@ describe('JIRA Connection Tests', () => {
       const testJira = await getJiraAPI(path.join(process.cwd(), 'test', '.jirarc'));
       jiraApi = testJira;
 
+      // doRequest is part of the super class and isn't visible to sinon here...
+      // these tests compare undefined to undefined...
       spy = sinon.stub(jiraApi, 'doRequest', async function(options) {
         const issueNumber = options.uri.split('/').pop().toString();
         return dummyJira.issues[issueNumber];
@@ -25,26 +27,20 @@ describe('JIRA Connection Tests', () => {
     });
 
     it('findIssue with Same Key is Run Only Once', async () => {
-      console.log(jiraApi);
       const [first, second] = await Promise.all([
         jiraApi.findIssue('Story5'),
         jiraApi.findIssue('Story5')
       ]);
-      console.log(first);
-      console.log(second);
 
       assert.equal(spy.calledOnce, true);
       assert.equal(first, second);
     });
 
     it('findIssue with Different Keys is Run Twice', async () => {
-      console.log(jiraApi);
       const [first, second] = await Promise.all([
         jiraApi.findIssue('Story1'),
         jiraApi.findIssue('Story2')
       ]);
-      console.log(first);
-      console.log(second);
 
       assert.equal(first.key, 'Story1');
       assert.equal(second.key, 'Story2');
