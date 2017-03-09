@@ -80,3 +80,17 @@ all need it.
 ```
 ***To disable***
 To disable the joke feature simply delete the .chuckNorris file from your home directory.
+
+## Hubot Deployments Config
+
+For repositories that have a hubot-deployments-config.json, this precommit hook
+will not allow you to commit if that file is an invalid json file.  In addition
+it also provides a command to show what files are covered and uncovered by the
+regex patterns in that file.
+
+### Check Config command
+```bash
+> ./node_modules/.bin/jira-precommit checkconfig
+```
+
+This output is often long for a project, so it is useful to pipe into a file.
