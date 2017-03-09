@@ -1,4 +1,4 @@
-import { checkValidJSON } from '../src/deployments-config-check';
+import checkValidJSON from '../src/deployments-config-check';
 
 const dummyFS = {
   readFile(arg) {
@@ -44,9 +44,15 @@ describe('Checking Valid Hubot Deployments Config', () => {
   }).should.eventually.be.rejectedWith('hubot-deployments-config.json is not a valid JSON file')
     .and.notify(done));
 
-  it('File does not exist', (done) => checkValidJSON({
-    fileSystemUtils: dummyNotExistFileUtils,
-    fileSystem: dummyFS
-  }).should.eventually.be.rejectedWith('Cannot find hubot-deployments-config.json')
-    .and.notify(done));
+  it('File does not exist', (done) => {
+    function fakeLog(string) {
+      assert(string === 'No hubot-deployments-config.json set up for this repository.');
+    }
+    return checkValidJSON({
+      fileSystemUtils: dummyNotExistFileUtils,
+      fileSystem: dummyFS,
+      log: fakeLog
+    }).should.eventually.equal(false)
+      .and.notify(done);
+  });
 });

@@ -1,9 +1,10 @@
 import fs from 'fs-promise'; // eslint-disable-line id-length
 import fsUtils from './fs-utils.js';
 
-export async function checkValidJSON({
+export default async function checkValidJSON({
   fileSystem = fs,
-  fileSystemUtils = fsUtils
+  fileSystemUtils = fsUtils,
+  log = console.log
 }) {
   try {
     const filePath = fileSystemUtils.findParentFolder(process.cwd(),
@@ -16,6 +17,11 @@ export async function checkValidJSON({
     if (err.message.indexOf('Unexpected token') > -1) {
       throw new Error('hubot-deployments-config.json is not a valid JSON file.  Committing will ' +
                       `not succeed until the JSON is fixed. ${err.message}`);
+    }
+    if (err.message.indexOf('Cannot find') > -1
+        && err.message.indexOf('hubot-deployments-config.json') > -1) {
+      log('No hubot-deployments-config.json set up for this repository.');
+      return false;
     }
 
     throw err;
