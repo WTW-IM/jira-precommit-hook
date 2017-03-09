@@ -60,7 +60,11 @@ export async function precommit(path) {
     await Promise.all([
       getCommitMsg(readPromise),
       checkUserEmail(),
-      checkValidJSON()
+      checkValidJSON({
+        fileSystem: fsp,
+        fileSystemUtils: fsUtils,
+        log: console.log
+      })
     ]);
     await showJoke();
     console.log(chalk.grey('[jira-precommit-hook] ') +
