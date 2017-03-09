@@ -10,6 +10,7 @@ import chalk from 'chalk';
 import fetchJoke from './joke';
 import config from './config';
 import checkUserEmail from './user-email-check';
+import checkValidJSON from './deployments-config-check';
 
 export function getIssueReference(msgToParse, prjKey) {
   const pattern = RegExp(`${prjKey}-\\d+`, 'gi');
@@ -58,7 +59,12 @@ export async function precommit(path) {
   try {
     await Promise.all([
       getCommitMsg(readPromise),
-      checkUserEmail()
+      checkUserEmail(),
+      checkValidJSON({
+        fileSystem: fsp,
+        fileSystemUtils: fsUtils,
+        log: console.log
+      })
     ]);
     await showJoke();
     console.log(chalk.grey('[jira-precommit-hook] ') +
