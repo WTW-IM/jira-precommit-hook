@@ -14,7 +14,8 @@ export async function checkValidJSON({
     return !!jsonResult;
   } catch (err) {
     if (err.message.indexOf('Unexpected token') > -1) {
-      return false;
+      throw new Error('hubot-deployments-config.json is not a valid JSON file.  Committing will ' +
+                      `not succeed until the JSON is fixed. ${err.message}`);
     }
 
     throw err;
