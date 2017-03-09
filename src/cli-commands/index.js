@@ -1,7 +1,8 @@
 import jokes from './jokes';
-
+import configcheck from './configcheck';
 const map = {
-  [jokes.command]: jokes
+  [jokes.command]: jokes,
+  [configcheck.command]: configcheck
 };
 
 export function register(parser) {
