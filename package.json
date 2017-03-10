@@ -61,7 +61,7 @@
     "chalk": "^1.1.1",
     "child-process-promise": "^2.0.1",
     "configstore": "^2.0.0",
-    "es6-promise": "^3.0.2",
+    "es6-promise": "^4.0.3",
     "fs-promise": "^0.5.0",
     "jira-client": "^3.0.0",
     "lodash": "^4.0.0",
