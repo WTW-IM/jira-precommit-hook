@@ -64,7 +64,7 @@
     "es6-promise": "^3.0.2",
     "fs-promise": "^0.5.0",
     "jira-client": "^3.0.0",
-    "lodash": "^4.0.0",
+    "lodash": "^4.16.4",
     "request-promise": "^3.0.0",
     "window-size": "^0.2.0",
     "wordwrap": "^1.0.0"
