@@ -62,7 +62,7 @@
     "child-process-promise": "^2.0.1",
     "configstore": "^2.0.0",
     "es6-promise": "^3.0.2",
-    "fs-promise": "^0.5.0",
+    "fs-promise": "^2.0.1",
     "jira-client": "^3.0.0",
     "lodash": "^4.0.0",
     "request-promise": "^3.0.0",
