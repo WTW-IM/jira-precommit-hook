@@ -8,6 +8,7 @@
     "lint": "eslint ./",
     "prepublish": "npm run test && npm run build",
     "test": " npm run lint && mocha",
+    "test:watch": "watch \" npm run test \" ./src ./test ./hooks ./bin --ignoreDotFiles --ignoreDIrectoryPattern=./test/tmp",
     "install": "node bin/install"
   },
   "bin": {
@@ -52,7 +53,8 @@
     "rimraf": "^2.3.4",
     "sinon": "^1.14.1",
     "sinon-as-promised": "^4.0.0",
-    "sinon-chai": "^2.7.0"
+    "sinon-chai": "^2.7.0",
+    "watch": "^1.0.2"
   },
   "dependencies": {
     "argparse": "^1.0.7",
