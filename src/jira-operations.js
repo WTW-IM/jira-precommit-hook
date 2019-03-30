@@ -2,7 +2,24 @@ import _ from 'lodash';
 
 export async function findProjectKey(jiraClient) {
   const projects = await jiraClient.listProjects();
-  return _.find(projects, project => project.name === jiraClient.projectName).key;
+
+  const foundConfiguredProject =
+    _.find(projects, project => project.name === jiraClient.projectName);
+
+  console.log(`PROJECT NAME=`, jiraClient.projectName);
+  console.log('PROJECT KEYS', projects.map(x => x.key));
+  console.log('PROJECT NAMES', projects.map(x => x.name));
+
+  if (foundConfiguredProject === null) {
+    const errorMsg =
+      `Configured project, '${foundConfiguredProject}',
+      was not found on server, '${jiraClient.host}'.`;
+
+    console.error(errorMsg);
+    throw new Error(errorMsg);
+  }
+
+  return foundConfiguredProject.key;
 }
 
 export const getEpicLinkField = _.memoize(
