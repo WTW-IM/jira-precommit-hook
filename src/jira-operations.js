@@ -2,7 +2,17 @@ import _ from 'lodash';
 
 export async function findProjectKey(jiraClient) {
   const projects = await jiraClient.listProjects();
-  return _.find(projects, project => project.name === jiraClient.projectName).key;
+
+  const foundProject = _.find(projects, project => project.name === jiraClient.projectName);
+
+  if (foundProject === null) {
+    const err = `Configured project, '${jiraClient.projectName}' was not found.
+      Please make sure that your project is Public.`;
+    console.error(`${err} Only the following project's were found...`, projects);
+    throw new Error(err);
+  }
+
+  return foundProject.key;
 }
 
 export const getEpicLinkField = _.memoize(
