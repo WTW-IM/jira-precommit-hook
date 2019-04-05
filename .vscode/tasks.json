@@ -10,6 +10,11 @@
         },
         {
             "type": "npm",
+            "script": "build:watch",
+            "problemMatcher": []
+        },
+        {
+            "type": "npm",
             "script": "install",
             "problemMatcher": []
         },

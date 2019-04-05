@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "rm -rf lib && babel src --out-dir lib",
+    "build:watch": "watch \" npm run build \" ./src ./hooks ./bin --ignoreDotFiles",
     "lint": "eslint ./",
     "prepublish": "npm run test && npm run build",
     "test": " npm run lint && mocha",
